@@ -106,30 +106,62 @@ async function loadFiles() {
 
         fileList.innerHTML = '';
 
-        // Add Search Data File first
-        if (searchDataFile) {
+        // Helper to create file item
+        const createFileItem = (file, label = null) => {
             const li = document.createElement('li');
             li.className = 'file-item';
-            li.style.borderLeft = "4px solid #f59e0b"; // Highlight
             li.innerHTML = `
-                <span><strong>src/searchData.js</strong> (Edit Search Index)</span>
-                <button class="btn-secondary" onclick="editFile('${searchDataFile.path}')">Edit</button>
+                <span>${label || file.name}</span>
+                <button class="btn-secondary" onclick="editFile('${file.path}')">Edit</button>
             `;
-            li.querySelector('button').addEventListener('click', () => loadFileContent(searchDataFile.path));
+            li.querySelector('button').addEventListener('click', () => loadFileContent(file.path));
+            return li;
+        };
+
+        // 1. Search Data
+        if (searchDataFile) {
+            const li = createFileItem(searchDataFile, '<strong>src/searchData.js</strong> (Edit Search Index)');
+            li.style.borderLeft = "4px solid #f59e0b";
             fileList.appendChild(li);
         }
 
         const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'admin.html');
 
+        // Grouping Logic
+        const groups = {
+            'Class 9': [],
+            'Class 10': [],
+            'Class 11': [],
+            'Class 12': [],
+            'General Articles': [],
+            'Pages': []
+        };
+
         htmlFiles.forEach(file => {
-            const li = document.createElement('li');
-            li.className = 'file-item';
-            li.innerHTML = `
-                <span>${file.name}</span>
-                <button class="btn-secondary" onclick="editFile('${file.path}')">Edit</button>
-            `;
-            li.querySelector('button').addEventListener('click', () => loadFileContent(file.path));
-            fileList.appendChild(li);
+            if (file.name.includes('class9')) groups['Class 9'].push(file);
+            else if (file.name.includes('class10')) groups['Class 10'].push(file);
+            else if (file.name.includes('class11')) groups['Class 11'].push(file);
+            else if (file.name.includes('class12')) groups['Class 12'].push(file);
+            else if (file.name.startsWith('article-')) groups['General Articles'].push(file);
+            else groups['Pages'].push(file);
+        });
+
+        // Render Groups
+        Object.entries(groups).forEach(([groupName, groupFiles]) => {
+            if (groupFiles.length === 0) return;
+
+            const groupHeader = document.createElement('li');
+            groupHeader.style.padding = '1rem 0.5rem 0.5rem';
+            groupHeader.style.fontWeight = '700';
+            groupHeader.style.color = 'var(--color-primary)';
+            groupHeader.style.borderBottom = '2px solid var(--color-border)';
+            groupHeader.style.marginTop = '1rem';
+            groupHeader.innerText = groupName;
+            fileList.appendChild(groupHeader);
+
+            groupFiles.forEach(file => {
+                fileList.appendChild(createFileItem(file));
+            });
         });
 
     } catch (error) {
@@ -145,7 +177,8 @@ async function loadFileContent(path) {
         currentFileSha = data.sha;
         currentFilePath = path;
 
-        const content = atob(data.content);
+        // FIX: Correctly decode UTF-8 content
+        const content = decodeURIComponent(escape(atob(data.content)));
 
         if (path.endsWith('.js')) {
             // Text editor for JS files
