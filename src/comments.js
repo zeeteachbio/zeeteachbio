@@ -7,25 +7,25 @@ export class CommentSystem {
     init() {
         if (!this.container) return;
 
-        // Clear any existing content (like the old form)
+        // Clear any existing content
         this.container.innerHTML = '';
 
-        const script = document.createElement('script');
-        script.src = 'https://giscus.app/client.js';
-        script.setAttribute('data-repo', 'zeeteachbio/zeeteachbio');
-        script.setAttribute('data-repo-id', 'R_kgDOQcJzKw');
-        script.setAttribute('data-category', 'Announcements');
-        script.setAttribute('data-category-id', 'DIC_kwDOQcJzK84Cy6CN');
-        script.setAttribute('data-mapping', 'pathname');
-        script.setAttribute('data-strict', '0');
-        script.setAttribute('data-reactions-enabled', '1');
-        script.setAttribute('data-emit-metadata', '0');
-        script.setAttribute('data-input-position', 'bottom');
-        script.setAttribute('data-theme', 'preferred_color_scheme');
-        script.setAttribute('data-lang', 'en');
-        script.setAttribute('crossorigin', 'anonymous');
-        script.async = true;
+        // Create the Disqus thread container
+        const disqusThread = document.createElement('div');
+        disqusThread.id = 'disqus_thread';
+        this.container.appendChild(disqusThread);
 
-        this.container.appendChild(script);
+        // Configure Disqus
+        // We need to ensure this is available globally for Disqus to read
+        window.disqus_config = function () {
+            this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = window.location.pathname; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        // Inject the Disqus script
+        const script = document.createElement('script');
+        script.src = 'https://https-zeeteachbio-vercel-app.disqus.com/embed.js';
+        script.setAttribute('data-timestamp', +new Date());
+        (document.head || document.body).appendChild(script);
     }
 }
