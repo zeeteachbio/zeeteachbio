@@ -22,12 +22,21 @@ const saveBtn = document.getElementById('save-btn');
 const pageTitleInput = document.getElementById('page-title');
 const statusMsg = document.getElementById('status-msg');
 
-// Initialize TinyMCE
-tinymce.init({
-    selector: '#content-editor',
-    height: 500,
-    plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+// Initialize Quill
+const quill = new Quill('#content-editor', {
+    theme: 'snow',
+    modules: {
+        toolbar: [
+            [{ 'header': [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'script': 'sub' }, { 'script': 'super' }],
+            [{ 'color': [] }, { 'background': [] }],
+            ['link', 'image', 'video'],
+            ['clean']
+        ]
+    }
 });
 
 // Navigation
@@ -46,12 +55,6 @@ loginBtn.addEventListener('click', async () => {
         const { data: user } = await octokit.request('GET /user');
         console.log(`Logged in as ${user.login}`);
 
-        // Try to find the repo automatically or default to hardcoded
-        // For this user, we know the repo is zeeteachbio/zeeteach or similar
-        // We'll stick to the one we know works or let them configure if needed.
-        // For now, assuming zeeteachbio/zeeteach based on previous context.
-        // Actually, user said 'zeeteachbio/zeeteachbio' for Giscus, let's try to detect.
-
         await loadFiles();
         showScreen('dashboard');
     } catch (error) {
@@ -64,12 +67,6 @@ loginBtn.addEventListener('click', async () => {
 async function loadFiles() {
     fileList.innerHTML = '<p>Loading files...</p>';
     try {
-        // Fetch root directory
-        // Note: This assumes the repo name. If it fails, we might need to ask user for repo name.
-        // Let's try the one from Giscus config first: zeeteachbio/zeeteachbio
-        // Or the one from earlier: zeeteachbio/zeeteach
-        // We'll try a list of candidates.
-
         let files = [];
         const candidates = ['zeeteach', 'zeeteachbio'];
         let found = false;
@@ -100,7 +97,6 @@ async function loadFiles() {
                 <span>${file.name}</span>
                 <button class="btn-secondary" onclick="editFile('${file.path}')">Edit</button>
             `;
-            // We need to attach event listener properly or use global function
             li.querySelector('button').addEventListener('click', () => loadFileContent(file.path));
             fileList.appendChild(li);
         });
@@ -125,8 +121,7 @@ async function loadFileContent(path) {
         const doc = parser.parseFromString(content, 'text/html');
 
         const title = doc.querySelector('title') ? doc.querySelector('title').innerText : path;
-        // We assume content is in <main> or <article> or body
-        // Let's try to be smart: look for .article-body, then main, then body
+
         let bodyContent = '';
         const articleBody = doc.querySelector('.article-body');
         const main = doc.querySelector('main');
@@ -140,7 +135,15 @@ async function loadFileContent(path) {
         }
 
         pageTitleInput.value = title.replace(' - Zee Teach', ''); // Clean title
-        tinymce.get('content-editor').setContent(bodyContent);
+
+        // Load content into Quill
+        // We need to use clipboard to convert HTML to Delta
+        // Note: Quill's clipboard matcher might need some help with full HTML, but basic usage works.
+        // For better results, we reset the editor first.
+        quill.setContents([]);
+        const delta = quill.clipboard.convert(bodyContent);
+        quill.setContents(delta, 'silent');
+
         document.getElementById('current-file').innerText = path;
 
         showScreen('editor');
@@ -172,8 +175,9 @@ saveBtn.addEventListener('click', async () => {
             doc.querySelector('title').innerText = `${pageTitleInput.value} - Zee Teach`;
         }
 
-        // 3. Update Body
-        const newBodyHtml = tinymce.get('content-editor').getContent();
+        // 3. Update Body from Quill
+        const newBodyHtml = quill.root.innerHTML;
+
         const articleBody = doc.querySelector('.article-body');
         const main = doc.querySelector('main');
 
@@ -182,8 +186,6 @@ saveBtn.addEventListener('click', async () => {
         } else if (main) {
             main.innerHTML = newBodyHtml;
         } else {
-            // Fallback: replace everything in body except scripts? 
-            // This is risky, let's just append to body if structure is weird
             doc.body.innerHTML = newBodyHtml;
         }
 
