@@ -27,6 +27,11 @@ export class CommentSystem {
     }
 
     renderForm() {
+        // Generate random math problem
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        this.captchaAnswer = num1 + num2;
+
         const formHtml = `
             <div class="comment-form">
                 <h3>Leave a Comment</h3>
@@ -41,6 +46,12 @@ export class CommentSystem {
                     </div>
                 </div>
                 <div class="editor" contenteditable="true" placeholder="Write your comment here..."></div>
+                
+                <div class="captcha-container">
+                    <label for="captcha-input">Security Check: What is ${num1} + ${num2}?</label>
+                    <input type="number" id="captcha-input" class="captcha-input" placeholder="?">
+                </div>
+
                 <button class="submit-btn">Post Comment</button>
             </div>
         `;
@@ -109,6 +120,18 @@ export class CommentSystem {
 
         submitBtn.addEventListener('click', async () => {
             const content = editor.innerHTML;
+            const captchaInput = this.container.querySelector('.captcha-input');
+
+            if (!captchaInput.value) {
+                alert("Please answer the security question.");
+                return;
+            }
+
+            if (parseInt(captchaInput.value) !== this.captchaAnswer) {
+                alert("Incorrect security answer. Please try again.");
+                return;
+            }
+
             if (editor.innerText.trim()) {
                 // Optimistic UI update could happen here, but for now we wait
                 submitBtn.disabled = true;
@@ -117,6 +140,13 @@ export class CommentSystem {
                 try {
                     await api.postComment(this.articleId, { content });
                     editor.innerHTML = '';
+                    captchaInput.value = ''; // Clear captcha
+                    // Regenerate captcha for next time
+                    const num1 = Math.floor(Math.random() * 10) + 1;
+                    const num2 = Math.floor(Math.random() * 10) + 1;
+                    this.captchaAnswer = num1 + num2;
+                    this.container.querySelector('label[for="captcha-input"]').textContent = `Security Check: What is ${num1} + ${num2}?`;
+
                     await this.loadComments(); // Reload to get updated list with ID
                 } catch (error) {
                     console.error("Failed to post comment:", error);
