@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Zee Teach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .login-screen,
+        .dashboard-screen,
+        .editor-screen {
+            display: none;
+        }
+
+        .active-screen {
+            display: block;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: var(--color-bg);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: var(--color-bg-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .status-msg {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+
+        .status-success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        /* TinyMCE overrides */
+        .tox-tinymce {
+            border-radius: var(--radius-md) !important;
+        }
+    </style>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container header-content">
+                <a href="/" class="logo">Zee Teach Admin</a>
+            </div>
+        </header>
+
+        <main class="admin-container">
+            <!-- Login Screen -->
+            <div id="login-screen" class="login-screen active-screen">
+                <h2>Admin Login</h2>
+                <p>Please enter your GitHub Personal Access Token to continue.</p>
+                <div style="margin: 1.5rem 0;">
+                    <input type="password" id="github-token" placeholder="ghp_..."
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                </div>
+                <button id="login-btn" class="btn-primary">Login</button>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">
+                    Don't have a token? <a href="https://github.com/settings/tokens/new?scopes=repo"
+                        target="_blank">Generate one here</a> (Select 'repo' scope).
+                </p>
+            </div>
+
+            <!-- Dashboard Screen -->
+            <div id="dashboard-screen" class="dashboard-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Your Articles</h2>
+                    <button id="refresh-btn" class="btn-secondary">Refresh</button>
+                </div>
+                <ul id="file-list" class="file-list">
+                    <!-- Files will be loaded here -->
+                </ul>
+            </div>
+
+            <!-- Editor Screen -->
+            <div id="editor-screen" class="editor-screen">
+                <div class="editor-toolbar">
+                    <button id="back-btn" class="btn-secondary">← Back</button>
+                    <div>
+                        <span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span>
+                        <button id="save-btn" class="btn-primary">Publish Changes</button>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page Title</label>
+                    <input type="text" id="page-title"
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                </div>
+                <textarea id="content-editor"></textarea>
+                <div id="status-msg" class="status-msg"></div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="/src/admin.js"></script>
+</body>
+
+</html>
