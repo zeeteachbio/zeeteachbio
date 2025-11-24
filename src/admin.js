@@ -3,7 +3,7 @@ import { Octokit } from "https://esm.sh/octokit";
 // State
 let octokit = null;
 let owner = 'zeeteachbio';
-let repo = 'zeeteach'; // Default, will try to detect or ask
+let repo = 'zeeteach';
 let currentFileSha = null;
 let currentFilePath = null;
 
@@ -21,6 +21,14 @@ const backBtn = document.getElementById('back-btn');
 const saveBtn = document.getElementById('save-btn');
 const pageTitleInput = document.getElementById('page-title');
 const statusMsg = document.getElementById('status-msg');
+
+// New Article Elements
+const newArticleBtn = document.getElementById('new-article-btn');
+const newArticleModal = document.getElementById('new-article-modal');
+const createNewBtn = document.getElementById('create-new-btn');
+const cancelNewBtn = document.getElementById('cancel-new-btn');
+const newFilenameInput = document.getElementById('new-filename');
+const newTitleInput = document.getElementById('new-title');
 
 // Initialize Quill
 const quill = new Quill('#content-editor', {
@@ -87,7 +95,30 @@ async function loadFiles() {
             throw new Error("Could not find repository 'zeeteach' or 'zeeteachbio'");
         }
 
+        // Also fetch src/searchData.js to allow editing it
+        let searchDataFile = null;
+        try {
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+            searchDataFile = data;
+        } catch (e) {
+            console.log("searchData.js not found in src/");
+        }
+
         fileList.innerHTML = '';
+
+        // Add Search Data File first
+        if (searchDataFile) {
+            const li = document.createElement('li');
+            li.className = 'file-item';
+            li.style.borderLeft = "4px solid #f59e0b"; // Highlight
+            li.innerHTML = `
+                <span><strong>src/searchData.js</strong> (Edit Search Index)</span>
+                <button class="btn-secondary" onclick="editFile('${searchDataFile.path}')">Edit</button>
+            `;
+            li.querySelector('button').addEventListener('click', () => loadFileContent(searchDataFile.path));
+            fileList.appendChild(li);
+        }
+
         const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'admin.html');
 
         htmlFiles.forEach(file => {
@@ -116,7 +147,25 @@ async function loadFileContent(path) {
 
         const content = atob(data.content);
 
-        // Parse HTML to find title and main content
+        if (path.endsWith('.js')) {
+            // Text editor for JS files
+            pageTitleInput.value = path;
+            pageTitleInput.disabled = true; // Can't rename JS files easily here
+
+            // For JS, we just put text in Quill? No, Quill is for HTML.
+            // We should probably use a simple textarea for JS or force Quill to be text only.
+            // For simplicity, let's just use Quill as a text editor but it adds HTML tags.
+            // Actually, let's just use the innerText of Quill.
+            // Better: Replace Quill with a textarea for JS files?
+            // For now, let's just load it into Quill as code block?
+            // Let's just load it as text.
+            quill.setText(content);
+            document.getElementById('current-file').innerText = path;
+            showScreen('editor');
+            return;
+        }
+
+        // HTML Parsing
         const parser = new DOMParser();
         const doc = parser.parseFromString(content, 'text/html');
 
@@ -134,12 +183,9 @@ async function loadFileContent(path) {
             bodyContent = doc.body.innerHTML;
         }
 
-        pageTitleInput.value = title.replace(' - Zee Teach', ''); // Clean title
+        pageTitleInput.value = title.replace(' - Zee Teach', '');
+        pageTitleInput.disabled = false;
 
-        // Load content into Quill
-        // We need to use clipboard to convert HTML to Delta
-        // Note: Quill's clipboard matcher might need some help with full HTML, but basic usage works.
-        // For better results, we reset the editor first.
         quill.setContents([]);
         const delta = quill.clipboard.convert(bodyContent);
         quill.setContents(delta, 'silent');
@@ -163,37 +209,40 @@ saveBtn.addEventListener('click', async () => {
     statusMsg.style.display = 'none';
 
     try {
-        // 1. Get original content to preserve head/scripts
-        const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/${currentFilePath}`);
-        const originalContent = atob(data.content);
+        let newContentBase64;
 
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(originalContent, 'text/html');
-
-        // 2. Update Title
-        if (doc.querySelector('title')) {
-            doc.querySelector('title').innerText = `${pageTitleInput.value} - Zee Teach`;
-        }
-
-        // 3. Update Body from Quill
-        const newBodyHtml = quill.root.innerHTML;
-
-        const articleBody = doc.querySelector('.article-body');
-        const main = doc.querySelector('main');
-
-        if (articleBody) {
-            articleBody.innerHTML = newBodyHtml;
-        } else if (main) {
-            main.innerHTML = newBodyHtml;
+        if (currentFilePath.endsWith('.js')) {
+            // Save JS file (plain text)
+            const newText = quill.getText();
+            newContentBase64 = btoa(unescape(encodeURIComponent(newText)));
         } else {
-            doc.body.innerHTML = newBodyHtml;
+            // Save HTML file
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/${currentFilePath}`);
+            const originalContent = atob(data.content);
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(originalContent, 'text/html');
+
+            if (doc.querySelector('title')) {
+                doc.querySelector('title').innerText = `${pageTitleInput.value} - Zee Teach`;
+            }
+
+            const newBodyHtml = quill.root.innerHTML;
+            const articleBody = doc.querySelector('.article-body');
+            const main = doc.querySelector('main');
+
+            if (articleBody) {
+                articleBody.innerHTML = newBodyHtml;
+            } else if (main) {
+                main.innerHTML = newBodyHtml;
+            } else {
+                doc.body.innerHTML = newBodyHtml;
+            }
+
+            const newHtml = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
+            newContentBase64 = btoa(unescape(encodeURIComponent(newHtml)));
         }
 
-        // 4. Serialize back to string
-        const newHtml = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-        const newContentBase64 = btoa(unescape(encodeURIComponent(newHtml))); // Handle unicode
-
-        // 5. Commit to GitHub
         await octokit.request(`PUT /repos/${owner}/${repo}/contents/${currentFilePath}`, {
             message: `Update ${currentFilePath} via Admin Dashboard`,
             content: newContentBase64,
@@ -204,7 +253,6 @@ saveBtn.addEventListener('click', async () => {
         statusMsg.classList.add('status-success');
         statusMsg.style.display = 'block';
 
-        // Update SHA for next save
         const { data: newData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/${currentFilePath}`);
         currentFileSha = newData.sha;
 
@@ -216,6 +264,92 @@ saveBtn.addEventListener('click', async () => {
     } finally {
         saveBtn.disabled = false;
         saveBtn.innerText = 'Publish Changes';
+    }
+});
+
+// New Article Logic
+newArticleBtn.addEventListener('click', () => {
+    newArticleModal.style.display = 'flex';
+});
+
+cancelNewBtn.addEventListener('click', () => {
+    newArticleModal.style.display = 'none';
+});
+
+createNewBtn.addEventListener('click', async () => {
+    const filename = newFilenameInput.value.trim();
+    const title = newTitleInput.value.trim();
+
+    if (!filename || !title) return alert("Please fill in all fields");
+
+    const fullFilename = filename.endsWith('.html') ? filename : `${filename}.html`;
+
+    createNewBtn.disabled = true;
+    createNewBtn.innerText = "Creating...";
+
+    try {
+        // Template for new article
+        const template = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${title} - Zee Teach</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
+                    Zee Teach
+                </a>
+                <nav class="nav">
+                    <a href="/" class="nav-link">Home</a>
+                </nav>
+            </div>
+        </header>
+        <main>
+            <article class="article">
+                <div class="container article-container">
+                    <header class="article-header">
+                        <h1 class="article-title">${title}</h1>
+                        <div class="article-meta">Category • 5 min read</div>
+                    </header>
+                    <div class="article-body">
+                        <p>Write your content here...</p>
+                    </div>
+                </div>
+            </article>
+        </main>
+        <footer class="footer">
+            <div class="container footer-content">
+                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>`;
+
+        const contentBase64 = btoa(unescape(encodeURIComponent(template)));
+
+        await octokit.request(`PUT /repos/${owner}/${repo}/contents/${fullFilename}`, {
+            message: `Create ${fullFilename} via Admin Dashboard`,
+            content: contentBase64
+        });
+
+        alert("Article created! It will appear in the list shortly.");
+        newArticleModal.style.display = 'none';
+        await loadFiles();
+
+    } catch (error) {
+        console.error(error);
+        alert(`Error creating file: ${error.message}`);
+    } finally {
+        createNewBtn.disabled = false;
+        createNewBtn.innerText = "Create";
     }
 });
 

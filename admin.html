@@ -213,40 +213,20 @@
                 </div>
                 <button id="login-btn" class="btn-primary">Login</button>
                 <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">
-                    Don't have a token? <a href="https://github.com/settings/tokens/new?scopes=repo"
-                        target="_blank">Generate one here</a> (Select 'repo' scope).
-                </p>
-            </div>
-
-            <!-- Dashboard Screen -->
-            <div id="dashboard-screen" class="dashboard-screen">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Your Articles</h2>
-                    <button id="refresh-btn" class="btn-secondary">Refresh</button>
+                <div>
+                    <span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span>
+                    <button id="save-btn" class="btn-primary">Publish Changes</button>
                 </div>
-                <ul id="file-list" class="file-list">
-                    <!-- Files will be loaded here -->
-                </ul>
             </div>
-
-            <!-- Editor Screen -->
-            <div id="editor-screen" class="editor-screen">
-                <div class="editor-toolbar">
-                    <button id="back-btn" class="btn-secondary">← Back</button>
-                    <div>
-                        <span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span>
-                        <button id="save-btn" class="btn-primary">Publish Changes</button>
-                    </div>
-                </div>
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page Title</label>
-                    <input type="text" id="page-title"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                </div>
-                <div id="content-editor"></div>
-                <div id="status-msg" class="status-msg"></div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page Title</label>
+                <input type="text" id="page-title"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div>
-        </main>
+            <div id="content-editor"></div>
+            <div id="status-msg" class="status-msg"></div>
+    </div>
+    </main>
     </div>
     <script type="module" src="/src/admin.js"></script>
 </body>
