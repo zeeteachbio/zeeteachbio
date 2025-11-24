@@ -354,38 +354,38 @@ const initApp = async () => {
 
 
     // --- Comment System Injection ---
-    // Only inject on article pages (files starting with 'article-')
-    if (window.location.pathname.includes('article-')) {
+    // Inject on any page with an article body
+    const articleBody = document.querySelector('.article-body');
+    if (articleBody || window.location.pathname.includes('article-')) {
         console.log("Injecting comment system...");
-        const article = document.querySelector('article');
-        if (article) {
-            // Check if already injected
-            if (!document.getElementById('comments-section')) {
-                // Create a container for the comments
-                const commentSection = document.createElement('section');
-                commentSection.id = 'comments-section';
-                commentSection.className = 'section';
+        const article = document.querySelector('article') || document.querySelector('main') || document.body;
 
-                const container = document.createElement('div');
-                container.className = 'container';
-                container.style.maxWidth = '800px';
+        // Check if already injected
+        if (!document.getElementById('comments-section')) {
+            // Create a container for the comments
+            const commentSection = document.createElement('section');
+            commentSection.id = 'comments-section';
+            commentSection.className = 'section';
 
-                commentSection.appendChild(container);
+            const container = document.createElement('div');
+            container.className = 'container';
+            container.style.maxWidth = '800px';
 
-                // Append to the main element, after the article
-                const main = document.querySelector('main');
-                if (main) {
-                    main.appendChild(commentSection);
-                } else {
-                    // Fallback if no main tag
-                    document.body.appendChild(commentSection);
-                }
+            commentSection.appendChild(container);
 
-                // Initialize the comment system
-                new CommentSystem('comments-section');
+            // Append to the article or main element
+            // If article tag exists, append after it. If not, append to main.
+            const articleTag = document.querySelector('article');
+            if (articleTag) {
+                articleTag.after(commentSection);
+            } else if (document.querySelector('main')) {
+                document.querySelector('main').appendChild(commentSection);
+            } else {
+                document.body.appendChild(commentSection);
             }
-        } else {
-            console.warn("No article tag found to inject comments.");
+
+            // Initialize the comment system
+            new CommentSystem('comments-section');
         }
     }
 };
