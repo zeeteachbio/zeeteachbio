@@ -6,6 +6,12 @@ export const searchIndex = [
         category: "General"
     },
     {
+        title: "My art demo",
+        url: "/hi-new-topic.html",
+        excerpt: "just looking whether it is working or not.",
+        category: "General"
+    },
+    {
         title: "Understanding Mitosis vs Meiosis",
         url: "/article-mitosis.html",
         excerpt: "A deep dive into cell division processes and their significance.",
