@@ -300,6 +300,24 @@ saveBtn.addEventListener('click', async () => {
     }
 });
 
+// New Article Elements
+const newArticleBtn = document.getElementById('new-article-btn');
+const newArticleModal = document.getElementById('new-article-modal');
+const createNewBtn = document.getElementById('create-new-btn');
+const cancelNewBtn = document.getElementById('cancel-new-btn');
+const newFilenameInput = document.getElementById('new-filename');
+const newTitleInput = document.getElementById('new-title');
+
+// Add Category Select to Modal (We'll inject this into HTML later, but for now let's assume it exists or create it dynamically if needed)
+// Actually, we need to update admin.html to have this select. 
+// But we can also just use a prompt or inject it via JS if we want to avoid editing HTML again.
+// Let's edit HTML properly in next step. For now, let's update JS to expect it.
+// Wait, I should update HTML first or do it in parallel?
+// I'll assume I'll update HTML next.
+const newCategorySelect = document.getElementById('new-category');
+
+// ... (Quill init and other code remains same) ...
+
 // New Article Logic
 newArticleBtn.addEventListener('click', () => {
     newArticleModal.style.display = 'flex';
@@ -312,6 +330,7 @@ cancelNewBtn.addEventListener('click', () => {
 createNewBtn.addEventListener('click', async () => {
     const filename = newFilenameInput.value.trim();
     const title = newTitleInput.value.trim();
+    const category = newCategorySelect ? newCategorySelect.value : "General"; // Default if not found
 
     if (!filename || !title) return alert("Please fill in all fields");
 
@@ -321,7 +340,7 @@ createNewBtn.addEventListener('click', async () => {
     createNewBtn.innerText = "Creating...";
 
     try {
-        // Template for new article
+        // 1. Create the HTML File
         const template = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -349,7 +368,7 @@ createNewBtn.addEventListener('click', async () => {
                 <div class="container article-container">
                     <header class="article-header">
                         <h1 class="article-title">${title}</h1>
-                        <div class="article-meta">Category • 5 min read</div>
+                        <div class="article-meta">${category} • 5 min read</div>
                     </header>
                     <div class="article-body">
                         <p>Write your content here...</p>
@@ -373,7 +392,45 @@ createNewBtn.addEventListener('click', async () => {
             content: contentBase64
         });
 
-        alert("Article created! It will appear in the list shortly.");
+        // 2. Update src/searchData.js
+        try {
+            const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+            const currentContent = decodeURIComponent(escape(atob(searchData.content)));
+
+            // Create new entry
+            const newEntry = {
+                title: title,
+                url: `/${fullFilename}`,
+                excerpt: `${title} - ${category} notes.`,
+                category: category
+            };
+
+            // Insert before the last closing bracket ]
+            // We assume the file ends with ]; or ]
+            const lastBracketIndex = currentContent.lastIndexOf(']');
+            if (lastBracketIndex !== -1) {
+                const newEntryString = ",\n    " + JSON.stringify(newEntry, null, 4);
+                const newSearchContent = currentContent.slice(0, lastBracketIndex) + newEntryString + currentContent.slice(lastBracketIndex);
+
+                const newSearchBase64 = btoa(unescape(encodeURIComponent(newSearchContent)));
+
+                await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
+                    message: `Add ${title} to search index`,
+                    content: newSearchBase64,
+                    sha: searchData.sha
+                });
+                console.log("Updated searchData.js");
+            } else {
+                console.error("Could not find closing bracket in searchData.js");
+                alert("Article created, but failed to update search index automatically. Please update it manually.");
+            }
+
+        } catch (e) {
+            console.error("Error updating searchData.js", e);
+            alert("Article created, but failed to update search index automatically. Please update it manually.");
+        }
+
+        alert("Article created and added to search!");
         newArticleModal.style.display = 'none';
         await loadFiles();
 
