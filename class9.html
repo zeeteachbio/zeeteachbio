@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class 9 Biology - Zee Teach</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script type="module" src="/src/main.js"></script>
     <link rel="stylesheet" href="/src/style.css">
 </head>
@@ -24,7 +24,7 @@
                 <nav class="nav">
                     <a href="/" class="nav-link">Home</a>
                     <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">Notes â¾</a>
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">Notes ▾</a>
                         <div class="dropdown-menu">
                             <a href="/class9.html" class="dropdown-item">Class 9</a>
                             <a href="/class10.html" class="dropdown-item">Class 10</a>
@@ -39,15 +39,90 @@
                         <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            <a href="#" class="social-link">YouTube</a>
-                            <a href="#" class="social-link">Instagram</a>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            </footer>
+        </header>
+
+        <main>
+            <section class="hero" style="padding: 4rem 0;">
+                <div class="container hero-content">
+                    <h1 class="hero-title" style="font-size: 2.5rem;">Class 9 Biology</h1>
+                    <div class="class-search-container">
+                        <input type="text" class="class-search-input" placeholder="Search in Class 9...">
+                        <button class="class-search-btn">
+                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="notes-grid section">
+                <div class="container">
+                    <div class="grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <!-- Articles -->
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">The Fundamental Unit of Life</h3>
+                                <p class="card-text">Cell structure, plasma membrane, nucleus, and cell organelles.</p>
+                                <a href="/article-class9-unit-life.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">Tissues: Plant and Animal</h3>
+                                <p class="card-text">Plant and animal tissues: Meristematic, permanent, epithelial, and
+                                    connective.</p>
+                                <a href="/article-class9-tissues.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">Improvement in Food Resources</h3>
+                                <p class="card-text">Improvement in food resources, crop variety, and animal husbandry.
+                                </p>
+                                <a href="/article-class9-food.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">Why Do We Fall Ill?</h3>
+                                <p class="card-text">Health and failure, infectious diseases, and prevention principles.
+                                </p>
+                                <a href="/article-class9-illness.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">Natural Resources</h3>
+                                <p class="card-text">The breath of life: Air, water, and soil pollution.</p>
+                                <a href="/article-class9-resources.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">Basics of Photosynthesis</h3>
+                                <p class="card-text">How plants make food using sunlight (Level 1).</p>
+                                <a href="/article-photosynthesis-level1.html" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container footer-content">
+                <p>&copy; 2025 Zeeteach.</p>
+            </div>
+        </footer>
     </div>
-    <script type="module" src="/src/main.js"></script>
-
-
 </body>
 
 </html>
