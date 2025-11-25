@@ -1,7 +1,8 @@
 import { searchIndex } from '../searchData.js';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || !API_BASE_URL;
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true' || !API_BASE_URL || !isLocal;
 
 // Mock API Service (Fallback)
 const mockApi = {
