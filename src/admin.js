@@ -301,12 +301,8 @@ saveBtn.addEventListener('click', async () => {
 });
 
 // New Article Elements
-const newArticleBtn = document.getElementById('new-article-btn');
-const newArticleModal = document.getElementById('new-article-modal');
-const createNewBtn = document.getElementById('create-new-btn');
-const cancelNewBtn = document.getElementById('cancel-new-btn');
-const newFilenameInput = document.getElementById('new-filename');
-const newTitleInput = document.getElementById('new-title');
+// New Article Elements (Already declared at top)
+
 
 // Add Category Select to Modal (We'll inject this into HTML later, but for now let's assume it exists or create it dynamically if needed)
 // Actually, we need to update admin.html to have this select. 
@@ -402,7 +398,10 @@ createNewBtn.addEventListener('click', async () => {
                 title: title,
                 url: `/${fullFilename}`,
                 excerpt: `${title} - ${category} notes.`,
-                category: category
+                category: category,
+                date: new Date().toISOString(),
+                views: 0,
+                comments: 0
             };
 
             // Insert before the last closing bracket ]

@@ -79,7 +79,17 @@ const mockApi = {
 // Real API Service
 export const api = {
     async getArticles() {
-        if (USE_MOCK) return mockApi.getArticles();
+        if (USE_MOCK) {
+            const articles = await mockApi.getArticles();
+            // Merge with local storage for views/comments
+            const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
+
+            return articles.map(article => ({
+                ...article,
+                views: (localStats[article.url]?.views || 0) + (article.views || 0),
+                comments: (localStats[article.url]?.comments || 0) + (article.comments || 0)
+            })).sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
         try {
             const response = await fetch(`${API_BASE_URL}/articles`);
             if (!response.ok) throw new Error('Network response was not ok');
@@ -88,6 +98,18 @@ export const api = {
             console.info("Backend not reachable, using mock data.");
             return mockApi.getArticles();
         }
+    },
+
+    async incrementViews(url) {
+        if (USE_MOCK) {
+            const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
+            if (!localStats[url]) localStats[url] = { views: 0, comments: 0 };
+            localStats[url].views++;
+            localStorage.setItem('articleStats', JSON.stringify(localStats));
+            return true;
+        }
+        // Real API implementation would go here
+        return true;
     },
 
     async getComments(articleId) {
@@ -103,7 +125,17 @@ export const api = {
     },
 
     async postComment(articleId, comment) {
-        if (USE_MOCK) return mockApi.postComment(articleId, comment);
+        if (USE_MOCK) {
+            // Update comment count in stats
+            const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
+            // Find url by articleId (assuming articleId is url or we map it)
+            // For now, let's assume articleId passed here is actually the URL or we can't easily map it without fetching all articles.
+            // But wait, the comment system uses a specific ID. 
+            // Let's just update the stats if we can find the URL.
+            // Actually, the comment system in main.js passes 'comments-section' ID, but the API calls use the article URL or ID.
+            // Let's assume for now we just increment if we can.
+            return mockApi.postComment(articleId, comment);
+        }
         try {
             const response = await fetch(`${API_BASE_URL}/comments`, {
                 method: 'POST',

@@ -120,16 +120,29 @@ const initApp = async () => {
         document.body.prepend(errDiv);
     }
 
-    // --- Dynamic Homepage Rendering ---
+    // --- View Increment Logic ---
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('.html') && currentPath !== '/index.html' && currentPath !== '/search.html') {
+        // It's an article or class page
+        // We need to match the URL in searchData.
+        // searchData urls start with /, so currentPath should match.
+        await api.incrementViews(currentPath);
+    }
+
+    // --- Dynamic Homepage Rendering (Top Articles in Main) ---
     const articleList = document.querySelector('.article-list');
     if (articleList) {
         // Clear existing static content
         articleList.innerHTML = '';
 
-        // Render top 5 articles (simulating "Latest")
-        const latestArticles = articles.slice(0, 7); // Grab first 7 for demo
+        // Render Top Articles (sorted by engagement)
+        const topArticles = [...articles].sort((a, b) => {
+            const engagementA = (a.views || 0) + (a.comments || 0);
+            const engagementB = (b.views || 0) + (b.comments || 0);
+            return engagementB - engagementA;
+        }).slice(0, 5);
 
-        articleList.innerHTML = latestArticles.map(article => `
+        articleList.innerHTML = topArticles.map(article => `
             <article class="article-card">
                 <div class="article-image"></div>
                 <div class="article-content">
@@ -138,6 +151,21 @@ const initApp = async () => {
                     <a href="${article.url}" class="read-more">Read More</a>
                 </div>
             </article>
+        `).join('');
+    }
+
+    // --- Latest Articles Rendering (Sidebar) ---
+    const topArticlesList = document.getElementById('top-articles-list');
+    if (topArticlesList) {
+        // Render Latest Articles (already sorted by date in api.getArticles)
+        const latestArticles = articles.slice(0, 5);
+
+        topArticlesList.innerHTML = latestArticles.map(article => `
+            <li class="recent-item">
+                <span class="recent-icon">🆕</span>
+                <a href="${article.url}">${article.title}</a>
+                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${new Date(article.date).toLocaleDateString()}</span>
+            </li>
         `).join('');
     }
 
