@@ -8,9 +8,15 @@
     "build": "vite build",
     "preview": "vite preview",
     "update-index": "node scripts/update_index.js",
-    "publish-articles": "npm run update-index && git add . && git commit -m \"Auto-update content\" && git push"
+    "publish-articles": "npm run update-index && git add . && git commit -m \"Auto-update content\" && git push",
+    "start-server": "node server/server.js"
   },
   "devDependencies": {
     "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
   }
 }

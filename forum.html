@@ -261,43 +261,22 @@
                     </div>
                     <div class="form-group">
                         <label for="login-password" style="display: block; margin-bottom: 0.5rem;">Password</label>
-                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password"
-                            required>
+                        <button id="cancel-create-btn" class="btn btn-secondary">Cancel</button>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
-                </form>
-                <div style="margin-top: 1rem;">
-                    <button id="forgot-password-btn" class="link-btn">Forgot Password?</button>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
-                        <span id="user-display" style="color: var(--color-text-light);"></span>
-                        <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
-                        <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
-                    </div>
-                </div>
-                <div id="topics-container" class="topic-list">
-                    <!-- Topics injected here -->
-                </div>
-            </div>
-
-            <!-- Create Topic View -->
-            <div id="create-view" class="hidden">
-                <div class="forum-header">
-                    <h1 class="section-title" style="margin: 0; text-align: left;">Ask a Question</h1>
-                    <button id="cancel-create-btn" class="btn btn-secondary">Cancel</button>
-                </div>
-                <form id="create-topic-form" class="login-card" style="max-width: 100%;">
-                    <div class="form-group">
-                        <label for="topic-title" style="display: block; margin-bottom: 0.5rem;">Question Title</label>
-                        <input type="text" id="topic-title" class="form-input" placeholder="What's your question?"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="topic-content" style="display: block; margin-bottom: 0.5rem;">Details</label>
-                        <textarea id="topic-content" class="textarea-input"
-                            placeholder="Provide more details... (Text only, no images)" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Post Question</button>
-                </form>
+                    <form id="create-topic-form" class="login-card" style="max-width: 100%;">
+                        <div class="form-group">
+                            <label for="topic-title" style="display: block; margin-bottom: 0.5rem;">Question
+                                Title</label>
+                            <input type="text" id="topic-title" class="form-input" placeholder="What's your question?"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="topic-content" style="display: block; margin-bottom: 0.5rem;">Details</label>
+                            <textarea id="topic-content" class="textarea-input"
+                                placeholder="Provide more details... (Text only, no images)" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Post Question</button>
+                    </form>
             </div>
 
             <!-- Topic Detail View -->

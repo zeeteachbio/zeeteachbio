@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import fs from 'fs'
-
 import { exec } from 'child_process'
 
 // Dynamically find all HTML files in the root directory
@@ -29,6 +28,14 @@ const updateIndexPlugin = () => {
 
 export default defineConfig({
     plugins: [updateIndexPlugin()],
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000',
+                changeOrigin: true
+            }
+        }
+    },
     base: '/',
     build: {
         rollupOptions: {
