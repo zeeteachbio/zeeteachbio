@@ -1,11 +1,14 @@
 import { api } from './services/api.js';
+import { authService } from './services/authService.js';
 
 const initForum = async () => {
     // Views
     const landingView = document.getElementById('landing-view');
     const loginView = document.getElementById('login-view');
     const signupView = document.getElementById('signup-view');
+    const verifyView = document.getElementById('verify-view');
     const forgotView = document.getElementById('forgot-view');
+    const resetView = document.getElementById('reset-view');
     const listView = document.getElementById('list-view');
     const createView = document.getElementById('create-view');
     const detailView = document.getElementById('detail-view');
@@ -17,15 +20,30 @@ const initForum = async () => {
     const backToLandingSignup = document.getElementById('back-to-landing-from-signup');
     const forgotPasswordBtn = document.getElementById('forgot-password-btn');
     const backToLoginForgot = document.getElementById('back-to-login-from-forgot');
+    const resendCodeBtn = document.getElementById('resend-code-btn');
 
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
+    const verifyForm = document.getElementById('verify-form');
     const forgotForm = document.getElementById('forgot-form');
+    const resetForm = document.getElementById('reset-form');
 
+    // Inputs
     const loginEmailInput = document.getElementById('login-email');
+    const loginPasswordInput = document.getElementById('login-password');
+
     const signupNameInput = document.getElementById('signup-name');
     const signupEmailInput = document.getElementById('signup-email');
+    const signupPasswordInput = document.getElementById('signup-password');
+    const captchaInput = document.getElementById('captcha-input');
+    const captchaQuestion = document.getElementById('captcha-question');
+
+    const verifyCodeInput = document.getElementById('verify-code');
+    const verifyEmailDisplay = document.getElementById('verify-email-display');
+
     const forgotEmailInput = document.getElementById('forgot-email');
+    const resetCodeInput = document.getElementById('reset-code');
+    const newPasswordInput = document.getElementById('new-password');
 
     const userDisplay = document.getElementById('user-display');
     const logoutBtn = document.getElementById('logout-btn');
@@ -44,12 +62,14 @@ const initForum = async () => {
     const replyForm = document.getElementById('reply-form');
     const replyContentInput = document.getElementById('reply-content');
 
-    let currentUser = localStorage.getItem('forum_user');
+    let currentUser = JSON.parse(localStorage.getItem('forum_user_session'));
     let currentQuestionId = null;
+    let pendingEmail = null; // For verification flow
+    let captchaAnswer = 0;
 
     // --- Navigation & View Management ---
     const showView = (view) => {
-        [landingView, loginView, signupView, forgotView, listView, createView, detailView].forEach(el => {
+        [landingView, loginView, signupView, verifyView, forgotView, resetView, listView, createView, detailView].forEach(el => {
             if (el) el.classList.add('hidden');
         });
         if (view) view.classList.remove('hidden');
@@ -57,7 +77,7 @@ const initForum = async () => {
 
     const updateAuth = () => {
         if (currentUser) {
-            userDisplay.textContent = `Hi, ${currentUser}`;
+            userDisplay.textContent = `Hi, ${currentUser.name}`;
             showView(listView);
             loadQuestions();
         } else {
@@ -65,9 +85,21 @@ const initForum = async () => {
         }
     };
 
+    // --- CAPTCHA Logic ---
+    const generateCaptcha = () => {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        captchaAnswer = num1 + num2;
+        if (captchaQuestion) captchaQuestion.textContent = `${num1} + ${num2} = ?`;
+        if (captchaInput) captchaInput.value = '';
+    };
+
     // --- Auth Navigation ---
     toLoginBtn?.addEventListener('click', () => showView(loginView));
-    toSignupBtn?.addEventListener('click', () => showView(signupView));
+    toSignupBtn?.addEventListener('click', () => {
+        generateCaptcha();
+        showView(signupView);
+    });
     backToLandingLogin?.addEventListener('click', () => showView(landingView));
     backToLandingSignup?.addEventListener('click', () => showView(landingView));
     forgotPasswordBtn?.addEventListener('click', () => showView(forgotView));
@@ -78,53 +110,131 @@ const initForum = async () => {
         return email && email.toLowerCase().endsWith('@gmail.com');
     };
 
-    loginForm?.addEventListener('submit', (e) => {
+    // LOGIN
+    loginForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = loginEmailInput.value.trim();
+        const password = loginPasswordInput.value;
 
         if (!validateGmail(email)) {
-            alert('Please enter a valid Gmail address (e.g., user@gmail.com)');
+            alert('Please enter a valid Gmail address');
             return;
         }
 
-        // Simulating login - in a real app, verify password
-        const name = email.split('@')[0];
-        currentUser = name; // Use part of email as name for now
-        localStorage.setItem('forum_user', name);
-        updateAuth();
+        try {
+            const result = await authService.signIn(email, password);
+            if (result.success) {
+                currentUser = result.user;
+                localStorage.setItem('forum_user_session', JSON.stringify(currentUser));
+                updateAuth();
+            }
+        } catch (error) {
+            alert(error.message);
+            if (error.message.includes('not verified')) {
+                pendingEmail = email;
+                verifyEmailDisplay.textContent = email;
+                showView(verifyView);
+            }
+        }
     });
 
-    signupForm?.addEventListener('submit', (e) => {
+    // SIGN UP
+    signupForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = signupNameInput.value.trim();
         const email = signupEmailInput.value.trim();
+        const password = signupPasswordInput.value;
+        const captcha = parseInt(captchaInput.value);
 
-        if (!validateGmail(email)) {
-            alert('Please enter a valid Gmail address (e.g., user@gmail.com)');
+        if (captcha !== captchaAnswer) {
+            alert('Incorrect security answer. Please try again.');
+            generateCaptcha();
             return;
         }
 
-        if (name && email) {
-            currentUser = name;
-            localStorage.setItem('forum_user', name);
-            updateAuth();
+        if (!validateGmail(email)) {
+            alert('Please enter a valid Gmail address');
+            return;
+        }
+
+        try {
+            const result = await authService.signUp(name, email, password);
+            if (result.success) {
+                // Show mock verification code
+                alert(`[DEMO] Verification Code: ${result.verificationCode}`);
+
+                pendingEmail = email;
+                verifyEmailDisplay.textContent = email;
+                showView(verifyView);
+            }
+        } catch (error) {
+            alert(error.message);
         }
     });
 
-    forgotForm?.addEventListener('submit', (e) => {
+    // VERIFY
+    verifyForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const code = verifyCodeInput.value.trim();
+
+        try {
+            const result = await authService.verifyEmail(pendingEmail, code);
+            if (result.success) {
+                alert('Email verified! Please sign in.');
+                showView(loginView);
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    resendCodeBtn?.addEventListener('click', async () => {
+        // In a real app, call resend endpoint. Here we just simulate.
+        alert('A new code has been sent (check console/demo alert).');
+    });
+
+    // FORGOT PASSWORD
+    forgotForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = forgotEmailInput.value.trim();
-        if (validateGmail(email)) {
-            alert(`Password reset link sent to ${email}`);
-            showView(loginView);
-        } else {
+
+        if (!validateGmail(email)) {
             alert('Please enter a valid Gmail address');
+            return;
+        }
+
+        try {
+            const result = await authService.requestPasswordReset(email);
+            if (result.resetCode) {
+                alert(`[DEMO] Reset Code: ${result.resetCode}`);
+            }
+            pendingEmail = email; // Reuse this for reset flow
+            showView(resetView);
+        } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    // RESET PASSWORD
+    resetForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const code = resetCodeInput.value.trim();
+        const newPassword = newPasswordInput.value;
+
+        try {
+            const result = await authService.resetPassword(pendingEmail, code, newPassword);
+            if (result.success) {
+                alert('Password updated. Please sign in.');
+                showView(loginView);
+            }
+        } catch (error) {
+            alert(error.message);
         }
     });
 
     logoutBtn?.addEventListener('click', () => {
         currentUser = null;
-        localStorage.removeItem('forum_user');
+        localStorage.removeItem('forum_user_session');
         updateAuth();
     });
 
@@ -178,7 +288,7 @@ const initForum = async () => {
                 await api.postQuestion({
                     title,
                     content,
-                    author: currentUser
+                    author: currentUser.name
                 });
                 // Reset form
                 topicTitleInput.value = '';
@@ -253,7 +363,7 @@ const initForum = async () => {
             try {
                 const newAnswer = await api.postAnswer(currentQuestionId, {
                     content,
-                    author: currentUser
+                    author: currentUser.name
                 });
 
                 replyContentInput.value = '';
