@@ -390,38 +390,41 @@ a {
   border-radius: 2px;
 }
 
-/* Latest Articles (Now Top Articles Grid) */
+/* Latest Articles (List Style with Fixed Size) */
 .article-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .article-card {
   display: flex;
-  flex-direction: column;
-  /* Stack image and content */
+  flex-direction: row;
+  /* Horizontal layout */
   background-color: white;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
   transition: all 0.3s ease;
-  height: 100%;
-  /* Equal height cards */
+  height: 180px;
+  /* Fixed height for uniformity */
 }
 
 .article-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
   border-color: var(--color-primary);
 }
 
 .article-image {
-  width: 100%;
-  height: 180px;
-  /* Fixed height */
+  width: 240px;
+  /* Fixed width */
+  height: 100%;
+  /* Full height */
   background-color: #e2e8f0;
   object-fit: cover;
+  flex-shrink: 0;
+  /* Prevent shrinking */
 }
 
 .article-content {
