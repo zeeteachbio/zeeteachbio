@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Forum - Zee Teach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        /* Forum Specific Styles */
+        .forum-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .forum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-bg-alt);
+            color: var(--color-text);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+        }
+
+        /* Login Form */
+        #login-view {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .login-card {
+            background: var(--color-bg-card);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid var(--color-border);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: inherit;
+        }
+
+        /* Topic List */
+        .topic-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .topic-card {
+            background: var(--color-bg-card);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .topic-meta {
+            font-size: 0.85rem;
+            color: var(--color-text-light);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .topic-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .topic-preview {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Topic Detail */
+        .detail-card {
+            background: var(--color-bg-card);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            margin-bottom: 2rem;
+        }
+
+        .answer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .answer-card {
+            background: var(--color-bg-alt);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--color-primary);
+        }
+
+        .textarea-input {
+            width: 100%;
+            min-height: 100px;
+            resize: vertical;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: inherit;
+            margin-bottom: 1rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
+                    Zee Teach
+                </a>
+                <nav class="nav">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/forum.html" class="nav-link active">Forum</a>
+                    <div class="dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">Courses &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="/class9.html" class="dropdown-item">Class 9</a>
+                            <a href="/class10.html" class="dropdown-item">Class 10</a>
+                            <a href="/class11.html" class="dropdown-item">Class 11</a>
+                            <a href="/class12.html" class="dropdown-item">Class 12</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search topics...">
+                    <button class="search-btn">
+                        <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="forum-container">
+            <!-- Login View -->
+            <div id="login-view" class="hidden">
+                <div class="login-card">
+                    <h2 style="margin-bottom: 1.5rem;">Join the Discussion</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username" style="display: block; margin-bottom: 0.5rem;">Enter your Name</label>
+                            <input type="text" id="username" class="form-input" placeholder="e.g. Student123" required
+                                autocomplete="off">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Start Chatting</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Topic List View -->
+            <div id="list-view" class="hidden">
+                <div class="forum-header">
+                    <h1 class="section-title" style="margin: 0; text-align: left;">Student Forum</h1>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span id="user-display" style="color: var(--color-text-light);"></span>
+                        <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
+                        <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
+                    </div>
+                </div>
+                <div id="topics-container" class="topic-list">
+                    <!-- Topics injected here -->
+                </div>
+            </div>
+
+            <!-- Create Topic View -->
+            <div id="create-view" class="hidden">
+                <div class="forum-header">
+                    <h1 class="section-title" style="margin: 0; text-align: left;">Ask a Question</h1>
+                    <button id="cancel-create-btn" class="btn btn-secondary">Cancel</button>
+                </div>
+                <form id="create-topic-form" class="login-card" style="max-width: 100%;">
+                    <div class="form-group">
+                        <label for="topic-title" style="display: block; margin-bottom: 0.5rem;">Question Title</label>
+                        <input type="text" id="topic-title" class="form-input" placeholder="What's your question?"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="topic-content" style="display: block; margin-bottom: 0.5rem;">Details</label>
+                        <textarea id="topic-content" class="textarea-input"
+                            placeholder="Provide more details... (Text only, no images)" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post Question</button>
+                </form>
+            </div>
+
+            <!-- Topic Detail View -->
+            <div id="detail-view" class="hidden">
+                <button id="back-to-list-btn" class="btn btn-secondary" style="margin-bottom: 1rem;">&larr; Back to
+                    Forum</button>
+                <div id="question-display">
+                    <!-- Question details injected here -->
+                </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Answers</h3>
+                <div id="answers-container" class="answer-list">
+                    <!-- Answers injected here -->
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>Your Answer</h3>
+                    <form id="reply-form" style="margin-top: 1rem;">
+                        <textarea id="reply-content" class="textarea-input" placeholder="Type your answer here..."
+                            required></textarea>
+                        <button type="submit" class="btn btn-primary">Post Answer</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container footer-content">
+                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/forum.js"></script>
+</body>
+
+</html>

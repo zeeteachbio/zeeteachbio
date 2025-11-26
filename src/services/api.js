@@ -73,6 +73,49 @@ const mockApi = {
             return true;
         }
         return false;
+    },
+
+    // --- Forum Methods ---
+    async getQuestions() {
+        await this.delay();
+        return JSON.parse(localStorage.getItem('forum_questions')) || [];
+    },
+
+    async getQuestion(id) {
+        await this.delay();
+        const questions = JSON.parse(localStorage.getItem('forum_questions')) || [];
+        return questions.find(q => q.id === id);
+    },
+
+    async postQuestion(data) {
+        await this.delay();
+        const questions = JSON.parse(localStorage.getItem('forum_questions')) || [];
+        const newQuestion = {
+            id: Date.now().toString(),
+            ...data,
+            date: new Date().toISOString(),
+            answers: []
+        };
+        questions.unshift(newQuestion);
+        localStorage.setItem('forum_questions', JSON.stringify(questions));
+        return newQuestion;
+    },
+
+    async postAnswer(questionId, data) {
+        await this.delay();
+        const questions = JSON.parse(localStorage.getItem('forum_questions')) || [];
+        const question = questions.find(q => q.id === questionId);
+        if (question) {
+            const newAnswer = {
+                id: Date.now().toString(),
+                ...data,
+                date: new Date().toISOString()
+            };
+            question.answers.push(newAnswer);
+            localStorage.setItem('forum_questions', JSON.stringify(questions));
+            return newAnswer;
+        }
+        throw new Error('Question not found');
     }
 };
 

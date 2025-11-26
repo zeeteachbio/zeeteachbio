@@ -21,8 +21,9 @@
         </a>
         <nav class="nav">
           <a href="/" class="nav-link">Home</a>
+                    <a href="/forum.html" class="nav-link">Forum</a>
           <div class="dropdown">
-            <a href="javascript:void(0)" class="nav-link dropdown-toggle">Notes &#9662;</a>
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle">Courses &#9662;</a>
             <div class="dropdown-menu">
               <a href="/class9.html" class="dropdown-item">Class 9</a>
               <a href="/class10.html" class="dropdown-item">Class 10</a>
@@ -41,84 +42,70 @@
           </button>
         </div>
       </div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="container hero-content">
-          <h1 class="hero-title">Zee Teach: Biology made simple</h1>
-          <div class="hero-actions">
-            <a href="#notes" class="btn btn-primary">Explore Web</a>
+      <div class="content-area">
+        <section class="latest-articles">
+          <h2 class="section-title-left">Top Articles</h2>
+          <div id="latest-articles-container" class="article-list">
+            <div class="loading-spinner" style="text-align: center; padding: 2rem;">Loading articles...</div>
           </div>
-        </div>
-      </section>
-
-      <div class="container page-layout">
-        <!-- Main Content -->
-        <div class="content-area">
-          <section class="latest-articles">
-            <h2 class="section-title-left">Top Articles</h2>
-            <div id="latest-articles-container" class="article-list">
-              <div class="loading-spinner" style="text-align: center; padding: 2rem;">Loading articles...</div>
-            </div>
-          </section>
-        </div>
-
-        <!-- Sidebar -->
-        <aside class="sidebar">
-          <div class="sidebar-widget">
-            <h3 class="widget-title">Latest Articles</h3>
-            <ul id="top-articles-list" class="recent-list">
-              <li class="recent-item">Loading...</li>
-            </ul>
-          </div>
-        </aside>
+        </section>
       </div>
 
-      <section id="notes" class="section">
-        <div class="container">
-          <h2 class="section-title">Choose Class</h2>
-          <p class="section-desc">Select your class to access curated notes and study materials.</p>
-          <div class="grid notes-grid">
-            <div class="card note-card">
-              <div class="card-icon">📚</div>
-              <h3 class="card-title">Class 9</h3>
-              <p class="card-text">Fundamental concepts of biology for 9th grade.</p>
-              <a href="/class9.html" class="card-link">View Notes &rarr;</a>
-            </div>
-            <div class="card note-card">
-              <div class="card-icon">🔬</div>
-              <h3 class="card-title">Class 10</h3>
-              <p class="card-text">Board exam preparation and core biological processes.</p>
-              <a href="/class10.html" class="card-link">View Notes &rarr;</a>
-            </div>
-            <div class="card note-card">
-              <div class="card-icon">🧬</div>
-              <h3 class="card-title">Class 11</h3>
-              <p class="card-text">In-depth study of diversity, physiology, and cell biology.</p>
-              <a href="/class11.html" class="card-link">View Notes &rarr;</a>
-            </div>
-            <div class="card note-card">
-              <div class="card-icon">🎓</div>
-              <h3 class="card-title">Class 12</h3>
-              <p class="card-text">Advanced genetics, ecology, and reproduction topics.</p>
-              <a href="/class12.html" class="card-link">View Notes &rarr;</a>
-            </div>
-          </div>
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-widget">
+          <h3 class="widget-title">Latest Articles</h3>
+          <ul id="top-articles-list" class="recent-list">
+            <li class="recent-item">Loading...</li>
+          </ul>
         </div>
-      </section>
-    </main>
+      </aside>
+  </div>
 
-    <footer class="footer">
-      <div class="container footer-content">
-        <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-        <div class="social-links">
-          <a href="#" class="social-link">Twitter</a>
-          <a href="#" class="social-link">YouTube</a>
-          <a href="#" class="social-link">Instagram</a>
+  <section id="notes" class="section">
+    <div class="container">
+      <h2 class="section-title">Choose Class</h2>
+      <p class="section-desc">Select your class to access curated notes and study materials.</p>
+      <div class="grid notes-grid">
+        <div class="card note-card">
+          <div class="card-icon">📚</div>
+          <h3 class="card-title">Class 9</h3>
+          <p class="card-text">Fundamental concepts of biology for 9th grade.</p>
+          <a href="/class9.html" class="card-link">View Notes &rarr;</a>
+        </div>
+        <div class="card note-card">
+          <div class="card-icon">🔬</div>
+          <h3 class="card-title">Class 10</h3>
+          <p class="card-text">Board exam preparation and core biological processes.</p>
+          <a href="/class10.html" class="card-link">View Notes &rarr;</a>
+        </div>
+        <div class="card note-card">
+          <div class="card-icon">🧬</div>
+          <h3 class="card-title">Class 11</h3>
+          <p class="card-text">In-depth study of diversity, physiology, and cell biology.</p>
+          <a href="/class11.html" class="card-link">View Notes &rarr;</a>
+        </div>
+        <div class="card note-card">
+          <div class="card-icon">🎓</div>
+          <h3 class="card-title">Class 12</h3>
+          <p class="card-text">Advanced genetics, ecology, and reproduction topics.</p>
+          <a href="/class12.html" class="card-link">View Notes &rarr;</a>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" class="social-link">Twitter</a>
+        <a href="#" class="social-link">YouTube</a>
+        <a href="#" class="social-link">Instagram</a>
+      </div>
+    </div>
+  </footer>
   </div>
   <script type="module" src="/src/main.js"></script>
 </body>
