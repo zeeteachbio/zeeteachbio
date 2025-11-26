@@ -4,6 +4,7 @@ import { Octokit } from "https://esm.sh/octokit";
 let octokit = null;
 let owner = 'zeeteachbio';
 let repo = 'zeeteach';
+let currentUser = null;
 let currentFileSha = null;
 let currentFilePath = null;
 
@@ -58,16 +59,23 @@ loginBtn.addEventListener('click', async () => {
     const token = tokenInput.value.trim();
     if (!token) return alert('Please enter a token');
 
+    loginBtn.disabled = true;
+    loginBtn.innerText = 'Logging in...';
+
     try {
         octokit = new Octokit({ auth: token });
         const { data: user } = await octokit.request('GET /user');
         console.log(`Logged in as ${user.login}`);
+        currentUser = user.login;
 
         await loadFiles();
         showScreen('dashboard');
     } catch (error) {
         console.error(error);
-        alert('Login failed. Please check your token.');
+        alert('Login failed. Please check your token and network connection.');
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerText = 'Login';
     }
 });
 
@@ -76,18 +84,28 @@ async function loadFiles() {
     fileList.innerHTML = '<p>Loading files...</p>';
     try {
         let files = [];
-        const candidates = ['zeeteach', 'zeeteachbio'];
+        // Try current user first, then default owner
+        const owners = [currentUser, 'zeeteachbio'].filter(Boolean);
+        // Remove duplicates
+        const uniqueOwners = [...new Set(owners)];
+
+        const repoNames = ['zeeteach', 'zeeteachbio'];
         let found = false;
 
-        for (const r of candidates) {
-            try {
-                const { data } = await octokit.request(`GET /repos/${owner}/${r}/contents/`);
-                repo = r;
-                files = data;
-                found = true;
-                break;
-            } catch (e) {
-                console.log(`Repo ${r} not found, trying next...`);
+        outerLoop:
+        for (const o of uniqueOwners) {
+            for (const r of repoNames) {
+                try {
+                    console.log(`Trying repo: ${o}/${r}`);
+                    const { data } = await octokit.request(`GET /repos/${o}/${r}/contents/`);
+                    owner = o;
+                    repo = r;
+                    files = data;
+                    found = true;
+                    break outerLoop;
+                } catch (e) {
+                    console.log(`Repo ${o}/${r} not found.`);
+                }
             }
         }
 
