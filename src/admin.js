@@ -382,7 +382,7 @@ createNewBtn.addEventListener('click', async () => {
                 <div class="container article-container">
                     <header class="article-header">
                         <h1 class="article-title">${title}</h1>
-                        <div class="article-meta">${category} • 5 min read</div>
+                        <div class="article-meta">${category} &bull; 5 min read</div>
                     </header>
                     <div class="article-body">
                         <p>Write your content here...</p>
