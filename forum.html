@@ -15,6 +15,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1rem;
+            min-height: 60vh;
         }
 
         .forum-header {
@@ -45,24 +46,33 @@
             cursor: pointer;
         }
 
-        /* Login Form */
-        #login-view {
-            text-align: center;
-            padding: 4rem 0;
-        }
-
-        .login-card {
+        /* Auth Views */
+        .auth-card {
             background: var(--color-bg-card);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-sm);
-            max-width: 400px;
-            margin: 0 auto;
+            max-width: 450px;
+            margin: 2rem auto;
             border: 1px solid var(--color-border);
+            text-align: center;
+        }
+
+        .auth-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .auth-desc {
+            color: var(--color-text-light);
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
 
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             text-align: left;
         }
 
@@ -74,6 +84,38 @@
             background: var(--color-bg);
             color: var(--color-text);
             font-family: inherit;
+        }
+
+        .auth-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .divider {
+            margin: 1.5rem 0;
+            border-top: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        .divider span {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-bg-card);
+            padding: 0 0.5rem;
+            color: var(--color-text-light);
+            font-size: 0.85rem;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: var(--color-primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
         }
 
         /* Topic List */
@@ -191,11 +233,95 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <div style="display: flex; gap: 1rem; align-items: center;">
-                            <span id="user-display" style="color: var(--color-text-light);"></span>
-                            <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
-                            <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
-                        </div>
+                    </button>
+                    <!-- User controls will be injected here if needed, or we keep them in the main view -->
+                </div>
+            </div>
+        </header>
+
+        <main class="forum-container">
+            <!-- Landing View (Welcome) -->
+            <div id="landing-view" class="auth-card">
+                <h1 class="auth-title">Welcome to Zee Teach Forum</h1>
+                <p class="auth-desc">Join our community of students and teachers. Ask questions, share knowledge, and
+                    learn together.</p>
+                <div class="auth-actions">
+                    <button id="to-login-btn" class="btn btn-primary">Sign In</button>
+                    <button id="to-signup-btn" class="btn btn-secondary">Create Account</button>
+                </div>
+            </div>
+
+            <!-- Login View -->
+            <div id="login-view" class="auth-card hidden">
+                <h2 class="auth-title">Sign In</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email" style="display: block; margin-bottom: 0.5rem;">Email Address</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="user@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password" style="display: block; margin-bottom: 0.5rem;">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                </form>
+                <div style="margin-top: 1rem;">
+                    <button id="forgot-password-btn" class="link-btn">Forgot Password?</button>
+                </div>
+                <div class="divider"><span>OR</span></div>
+                <button id="back-to-landing-from-login" class="link-btn">Back to Home</button>
+            </div>
+
+            <!-- Sign Up View -->
+            <div id="signup-view" class="auth-card hidden">
+                <h2 class="auth-title">Create Account</h2>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="signup-name" style="display: block; margin-bottom: 0.5rem;">Full Name</label>
+                        <input type="text" id="signup-name" class="form-input" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email" style="display: block; margin-bottom: 0.5rem;">Email Address</label>
+                        <input type="email" id="signup-email" class="form-input" placeholder="user@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password" style="display: block; margin-bottom: 0.5rem;">Password</label>
+                        <input type="password" id="signup-password" class="form-input" placeholder="Create a password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign Up</button>
+                </form>
+                <div style="margin-top: 1rem;">
+                    <button id="back-to-landing-from-signup" class="link-btn">Back to Home</button>
+                </div>
+            </div>
+
+            <!-- Forgot Password View -->
+            <div id="forgot-view" class="auth-card hidden">
+                <h2 class="auth-title">Reset Password</h2>
+                <p class="auth-desc">Enter your email to receive password reset instructions.</p>
+                <form id="forgot-form">
+                    <div class="form-group">
+                        <label for="forgot-email" style="display: block; margin-bottom: 0.5rem;">Email Address</label>
+                        <input type="email" id="forgot-email" class="form-input" placeholder="user@gmail.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Reset Link</button>
+                </form>
+                <div style="margin-top: 1rem;">
+                    <button id="back-to-login-from-forgot" class="link-btn">Back to Login</button>
+                </div>
+            </div>
+
+            <!-- Topic List View -->
+            <div id="list-view" class="hidden">
+                <div class="forum-header">
+                    <h1 class="section-title" style="margin: 0; text-align: left;">Student Forum</h1>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <span id="user-display" style="color: var(--color-text-light);"></span>
+                        <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
+                        <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
+                    </div>
                 </div>
                 <div id="topics-container" class="topic-list">
                     <!-- Topics injected here -->
@@ -245,13 +371,13 @@
                     </form>
                 </div>
             </div>
-            </main>
+        </main>
 
-            <footer class="footer">
-                <div class="container footer-content">
-                    <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-                </div>
-            </footer>
+        <footer class="footer">
+            <div class="container footer-content">
+                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/forum.js"></script>

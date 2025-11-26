@@ -1,14 +1,32 @@
 import { api } from './services/api.js';
 
 const initForum = async () => {
-    const app = document.getElementById('app');
+    // Views
+    const landingView = document.getElementById('landing-view');
     const loginView = document.getElementById('login-view');
+    const signupView = document.getElementById('signup-view');
+    const forgotView = document.getElementById('forgot-view');
     const listView = document.getElementById('list-view');
     const createView = document.getElementById('create-view');
     const detailView = document.getElementById('detail-view');
 
-    const usernameInput = document.getElementById('username');
+    // Buttons & Forms
+    const toLoginBtn = document.getElementById('to-login-btn');
+    const toSignupBtn = document.getElementById('to-signup-btn');
+    const backToLandingLogin = document.getElementById('back-to-landing-from-login');
+    const backToLandingSignup = document.getElementById('back-to-landing-from-signup');
+    const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+    const backToLoginForgot = document.getElementById('back-to-login-from-forgot');
+
     const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const forgotForm = document.getElementById('forgot-form');
+
+    const loginEmailInput = document.getElementById('login-email');
+    const signupNameInput = document.getElementById('signup-name');
+    const signupEmailInput = document.getElementById('signup-email');
+    const forgotEmailInput = document.getElementById('forgot-email');
+
     const userDisplay = document.getElementById('user-display');
     const logoutBtn = document.getElementById('logout-btn');
 
@@ -30,41 +48,81 @@ const initForum = async () => {
     let currentQuestionId = null;
 
     // --- Navigation & View Management ---
-    const showView = (viewId) => {
-        [loginView, listView, createView, detailView].forEach(el => el.classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
+    const showView = (view) => {
+        [landingView, loginView, signupView, forgotView, listView, createView, detailView].forEach(el => {
+            if (el) el.classList.add('hidden');
+        });
+        if (view) view.classList.remove('hidden');
     };
 
     const updateAuth = () => {
         if (currentUser) {
             userDisplay.textContent = `Hi, ${currentUser}`;
-            showView('list-view');
+            showView(listView);
             loadQuestions();
         } else {
-            showView('login-view');
+            showView(landingView);
         }
     };
 
-    // --- Auth Logic ---
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = usernameInput.value.trim();
+    // --- Auth Navigation ---
+    toLoginBtn?.addEventListener('click', () => showView(loginView));
+    toSignupBtn?.addEventListener('click', () => showView(signupView));
+    backToLandingLogin?.addEventListener('click', () => showView(landingView));
+    backToLandingSignup?.addEventListener('click', () => showView(landingView));
+    forgotPasswordBtn?.addEventListener('click', () => showView(forgotView));
+    backToLoginForgot?.addEventListener('click', () => showView(loginView));
 
-        if (!email.endsWith('@gmail.com')) {
+    // --- Auth Logic ---
+    const validateGmail = (email) => {
+        return email && email.toLowerCase().endsWith('@gmail.com');
+    };
+
+    loginForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = loginEmailInput.value.trim();
+
+        if (!validateGmail(email)) {
             alert('Please enter a valid Gmail address (e.g., user@gmail.com)');
             return;
         }
 
-        if (email) {
-            // Extract name from email for display
-            const name = email.split('@')[0];
+        // Simulating login - in a real app, verify password
+        const name = email.split('@')[0];
+        currentUser = name; // Use part of email as name for now
+        localStorage.setItem('forum_user', name);
+        updateAuth();
+    });
+
+    signupForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = signupNameInput.value.trim();
+        const email = signupEmailInput.value.trim();
+
+        if (!validateGmail(email)) {
+            alert('Please enter a valid Gmail address (e.g., user@gmail.com)');
+            return;
+        }
+
+        if (name && email) {
             currentUser = name;
             localStorage.setItem('forum_user', name);
             updateAuth();
         }
     });
 
-    logoutBtn.addEventListener('click', () => {
+    forgotForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = forgotEmailInput.value.trim();
+        if (validateGmail(email)) {
+            alert(`Password reset link sent to ${email}`);
+            showView(loginView);
+        } else {
+            alert('Please enter a valid Gmail address');
+        }
+    });
+
+    logoutBtn?.addEventListener('click', () => {
         currentUser = null;
         localStorage.removeItem('forum_user');
         updateAuth();
@@ -101,16 +159,16 @@ const initForum = async () => {
         }
     };
 
-    newTopicBtn.addEventListener('click', () => {
-        showView('create-view');
+    newTopicBtn?.addEventListener('click', () => {
+        showView(createView);
     });
 
     // --- Create Question Logic ---
-    cancelCreateBtn.addEventListener('click', () => {
-        showView('list-view');
+    cancelCreateBtn?.addEventListener('click', () => {
+        showView(listView);
     });
 
-    createTopicForm.addEventListener('submit', async (e) => {
+    createTopicForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = topicTitleInput.value.trim();
         const content = topicContentInput.value.trim();
@@ -125,7 +183,7 @@ const initForum = async () => {
                 // Reset form
                 topicTitleInput.value = '';
                 topicContentInput.value = '';
-                showView('list-view');
+                showView(listView);
                 loadQuestions();
             } catch (error) {
                 alert('Failed to post question');
@@ -136,7 +194,7 @@ const initForum = async () => {
     // --- Question Detail Logic ---
     const loadQuestionDetail = async (id) => {
         currentQuestionId = id;
-        showView('detail-view');
+        showView(detailView);
         questionDisplay.innerHTML = 'Loading...';
         answersContainer.innerHTML = '';
 
@@ -180,14 +238,14 @@ const initForum = async () => {
         }
     };
 
-    backToListBtn.addEventListener('click', () => {
+    backToListBtn?.addEventListener('click', () => {
         currentQuestionId = null;
-        showView('list-view');
+        showView(listView);
         loadQuestions(); // Refresh to update answer counts
     });
 
     // --- Reply Logic ---
-    replyForm.addEventListener('submit', async (e) => {
+    replyForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const content = replyContentInput.value.trim();
 
@@ -201,7 +259,6 @@ const initForum = async () => {
                 replyContentInput.value = '';
 
                 // Optimistically append or reload
-                // Let's reload the question data to be safe
                 const question = await api.getQuestion(currentQuestionId);
                 renderAnswers(question.answers);
 
