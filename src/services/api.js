@@ -210,46 +210,4 @@ export const api = {
         }
     },
 
-    // --- Forum Methods (Backend Integration) ---
-    async getQuestions() {
-        try {
-            const response = await fetch('/api/questions');
-            if (!response.ok) throw new Error('Failed to fetch questions');
-            return await response.json();
-        } catch (error) {
-            console.error('API Error:', error);
-            return [];
-        }
-    },
-
-    async getQuestion(id) {
-        try {
-            const response = await fetch(`/api/questions/${id}`);
-            if (!response.ok) return null;
-            return await response.json();
-        } catch (error) {
-            console.error('API Error:', error);
-            return null;
-        }
-    },
-
-    async postQuestion(data) {
-        const response = await fetch('/api/questions', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) throw new Error('Failed to post question');
-        return await response.json();
-    },
-
-    async postAnswer(questionId, data) {
-        const response = await fetch(`/api/questions/${questionId}/answers`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        if (!response.ok) throw new Error('Failed to post answer');
-        return await response.json();
-    }
 };
