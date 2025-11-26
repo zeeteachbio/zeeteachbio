@@ -208,5 +208,22 @@ export const api = {
             console.info("Backend not reachable, using mock data.");
             return mockApi.likeComment(articleId, commentId);
         }
+    },
+
+    // --- Forum Methods (Mock Only for now) ---
+    async getQuestions() {
+        return mockApi.getQuestions();
+    },
+
+    async getQuestion(id) {
+        return mockApi.getQuestion(id);
+    },
+
+    async postQuestion(data) {
+        return mockApi.postQuestion(data);
+    },
+
+    async postAnswer(questionId, data) {
+        return mockApi.postAnswer(questionId, data);
     }
 };

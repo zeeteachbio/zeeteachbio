@@ -48,8 +48,16 @@ const initForum = async () => {
     // --- Auth Logic ---
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const name = usernameInput.value.trim();
-        if (name) {
+        const email = usernameInput.value.trim();
+
+        if (!email.endsWith('@gmail.com')) {
+            alert('Please enter a valid Gmail address (e.g., user@gmail.com)');
+            return;
+        }
+
+        if (email) {
+            // Extract name from email for display
+            const name = email.split('@')[0];
             currentUser = name;
             localStorage.setItem('forum_user', name);
             updateAuth();

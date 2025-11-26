@@ -191,36 +191,11 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="forum-container">
-            <!-- Login View -->
-            <div id="login-view" class="hidden">
-                <div class="login-card">
-                    <h2 style="margin-bottom: 1.5rem;">Join the Discussion</h2>
-                    <form id="login-form">
-                        <div class="form-group">
-                            <label for="username" style="display: block; margin-bottom: 0.5rem;">Enter your Name</label>
-                            <input type="text" id="username" class="form-input" placeholder="e.g. Student123" required
-                                autocomplete="off">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <span id="user-display" style="color: var(--color-text-light);"></span>
+                            <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
+                            <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Start Chatting</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Topic List View -->
-            <div id="list-view" class="hidden">
-                <div class="forum-header">
-                    <h1 class="section-title" style="margin: 0; text-align: left;">Student Forum</h1>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
-                        <span id="user-display" style="color: var(--color-text-light);"></span>
-                        <button id="new-topic-btn" class="btn btn-primary">+ Ask Question</button>
-                        <button id="logout-btn" class="btn btn-secondary" style="font-size: 0.8rem;">Logout</button>
-                    </div>
                 </div>
                 <div id="topics-container" class="topic-list">
                     <!-- Topics injected here -->
@@ -270,13 +245,13 @@
                     </form>
                 </div>
             </div>
-        </main>
+            </main>
 
-        <footer class="footer">
-            <div class="container footer-content">
-                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-            </div>
-        </footer>
+            <footer class="footer">
+                <div class="container footer-content">
+                    <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+                </div>
+            </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/forum.js"></script>
