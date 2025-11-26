@@ -362,6 +362,13 @@ a {
   gap: 3rem;
   padding-top: 2rem;
   padding-bottom: 4rem;
+  align-items: start;
+  /* Prevent sidebar from stretching */
+}
+
+.content-area {
+  min-width: 0;
+  /* Prevent grid blowout */
 }
 
 .section-title-left {
@@ -383,57 +390,79 @@ a {
   border-radius: 2px;
 }
 
-/* Latest Articles */
+/* Latest Articles (Now Top Articles Grid) */
 .article-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
 }
 
 .article-card {
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
+  /* Stack image and content */
   background-color: white;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border);
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  height: 100%;
+  /* Equal height cards */
 }
 
 .article-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
 }
 
 .article-image {
-  width: 200px;
-  height: 150px;
-  /* Fixed height to prevent CLS */
+  width: 100%;
+  height: 180px;
+  /* Fixed height */
   background-color: #e2e8f0;
-  flex-shrink: 0;
   object-fit: cover;
 }
 
 .article-content {
   padding: 1.5rem;
-  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .article-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
 }
 
 .article-excerpt {
   color: var(--color-text-light);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  flex-grow: 1;
+  /* Push button to bottom */
 }
 
 .read-more {
   color: var(--color-primary);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.read-more::after {
+  content: '→';
+  transition: transform 0.2s;
+}
+
+.read-more:hover::after {
+  transform: translateX(4px);
 }
 
 /* Sidebar */
