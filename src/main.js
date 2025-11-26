@@ -169,6 +169,35 @@ const initApp = async () => {
         `).join('');
     }
 
+    // --- Dynamic Class Page Rendering ---
+    const classArticlesContainer = document.getElementById('class-articles-container');
+    if (classArticlesContainer) {
+        // Determine class from URL or Title
+        let currentClass = null;
+        if (window.location.pathname.includes('class9')) currentClass = 'Class 9';
+        else if (window.location.pathname.includes('class10')) currentClass = 'Class 10';
+        else if (window.location.pathname.includes('class11')) currentClass = 'Class 11';
+        else if (window.location.pathname.includes('class12')) currentClass = 'Class 12';
+
+        if (currentClass) {
+            const classArticles = articles.filter(article => article.category === currentClass);
+
+            if (classArticles.length > 0) {
+                classArticlesContainer.innerHTML = classArticles.map(article => `
+                    <div class="card note-card">
+                        <div class="card-body">
+                            <h3 class="card-title">${article.title}</h3>
+                            <p class="card-text">${article.excerpt}</p>
+                            <a href="${article.url}" class="read-more">Read Notes &rarr;</a>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                classArticlesContainer.innerHTML = `<p style="grid-column: 1 / -1; text-align: center;">No articles found for ${currentClass} yet.</p>`;
+            }
+        }
+    }
+
 
     // --- Search Functionality ---
 
