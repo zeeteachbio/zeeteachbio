@@ -459,16 +459,6 @@ export const searchIndex = [
         "comments": 0
     },
     {
-        "title": "this is class 11",
-        "url": "/thi-is-class-11.html",
-        "excerpt": "this is class 11 - Class 11 notes.",
-        "category": "Class 11",
-        "date": "2025-11-27T15:51:54.956Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
         "title": "Zoology",
         "url": "/hi-new-topic-09.html",
         "excerpt": "Zoology - Class 9 notes.",
