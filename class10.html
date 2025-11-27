@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="/vite.svg">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Class 10 Biology - Zee Teach</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" src="/src/main.js"></script>
     <link rel="stylesheet" href="/src/style.css">
 </head>
 
@@ -25,20 +26,7 @@
                     <div class="dropdown">
                         <a href="javascript:void(0)" class="nav-link dropdown-toggle">Courses &#9662;</a>
                         <div class="dropdown-menu">
-                            <div class="dropdown-submenu">
-                                <a href="/class9.html" class="dropdown-item submenu-toggle">Class 9</a>
-                                <div class="dropdown-menu submenu">
-                                    <a href="#" class="dropdown-item">Chapter 1: Introduction to Biology</a>
-                                    <a href="#" class="dropdown-item">Chapter 2: Solving a Biological Problem</a>
-                                    <a href="#" class="dropdown-item">Chapter 3: Biodiversity</a>
-                                    <a href="#" class="dropdown-item">Chapter 4: Cells and Tissues</a>
-                                    <a href="#" class="dropdown-item">Chapter 5: Cell Cycle</a>
-                                    <a href="#" class="dropdown-item">Chapter 6: Enzymes</a>
-                                    <a href="#" class="dropdown-item">Chapter 7: Bioenergetics</a>
-                                    <a href="#" class="dropdown-item">Chapter 8: Nutrition</a>
-                                    <a href="#" class="dropdown-item">Chapter 9: Transport</a>
-                                </div>
-                            </div>
+                            <a href="/class9.html" class="dropdown-item">Class 9</a>
                             <a href="/class10.html" class="dropdown-item">Class 10</a>
                             <a href="/class11.html" class="dropdown-item">Class 11</a>
                             <a href="/class12.html" class="dropdown-item">Class 12</a>
@@ -56,16 +44,14 @@
                 </div>
             </div>
         </header>
-
         <main>
-            <section class="hero" style="padding: 4rem 0;">
-                <div class="container hero-content">
-                    <h1 class="hero-title" style="font-size: 2.5rem;">Class 10 Biology</h1>
+            <section class="hero-section">
+                <div class="container">
+                    <h1 class="section-title">Class 10 Biology</h1>
                     <div class="class-search-container">
                         <input type="text" class="class-search-input" placeholder="Search in Class 10...">
                         <button class="class-search-btn">
-                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round"
-                                stroke-linejoin="round">
+                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
@@ -73,31 +59,30 @@
                     </div>
                 </div>
             </section>
-
-            <section class="notes-grid section">
-                <div class="container">
-                    <!-- Dynamic Articles Container -->
-                    <div id="class-articles-container" class="grid notes-grid"
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                        <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
-                            Loading articles...</div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <div class="container footer-content">
-                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">Twitter</a>
-                    <a href="#" class="social-link">YouTube</a>
-                    <a href="#" class="social-link">Instagram</a>
-                </div>
+<section class="notes-grid section">
+        <div class="container">
+            <!-- Dynamic Articles Container -->
+            <div id="class-articles-container" class="grid notes-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                    Loading articles...</div>
             </div>
-        </footer>
+        </div>
+    </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">Twitter</a>
+                <a href="#" class="social-link">YouTube</a>
+                <a href="#" class="social-link">Instagram</a>
+            </div>
+        </div>
+    </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
-</body>
+    </body>
 
 </html>

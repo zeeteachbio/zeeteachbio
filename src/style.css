@@ -1070,3 +1070,55 @@ a {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+/* Chapter Table Styles */
+.chapter-table-container {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.chapter-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  text-align: left;
+}
+
+.chapter-table th,
+.chapter-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.chapter-table th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.chapter-table tr:last-child td {
+  border-bottom: none;
+}
+
+.chapter-table tr:hover {
+  background-color: var(--color-bg);
+}
+
+.btn-sm {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-sm:hover {
+  background-color: var(--color-primary-dark);
+}
