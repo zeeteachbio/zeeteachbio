@@ -129,20 +129,16 @@ const initApp = async () => {
         await api.incrementViews(currentPath);
     }
 
-    // --- Dynamic Homepage Rendering (Top Articles in Main) ---
+    // --- Dynamic Homepage Rendering (Latest Articles in Main) ---
     const articleList = document.querySelector('.article-list');
     if (articleList) {
         // Clear existing static content
         articleList.innerHTML = '';
 
-        // Render Top Articles (sorted by engagement)
-        const topArticles = [...articles].sort((a, b) => {
-            const engagementA = (a.views || 0) + (a.comments || 0);
-            const engagementB = (b.views || 0) + (b.comments || 0);
-            return engagementB - engagementA;
-        }).slice(0, 5);
+        // Render Latest Articles (already sorted by date in api.getArticles)
+        const latestArticles = articles.slice(0, 5);
 
-        articleList.innerHTML = topArticles.map(article => {
+        articleList.innerHTML = latestArticles.map(article => {
             // Use article.thumbnail if available, else default placeholder
             const bgStyle = article.thumbnail
                 ? `background-image: url('${article.thumbnail}'); background-size: cover; background-position: center;`
@@ -160,17 +156,21 @@ const initApp = async () => {
         `}).join('');
     }
 
-    // --- Latest Articles Rendering (Sidebar) ---
+    // --- Top Articles Rendering (Sidebar) ---
     const topArticlesList = document.getElementById('top-articles-list');
     if (topArticlesList) {
-        // Render Latest Articles (already sorted by date in api.getArticles)
-        const latestArticles = articles.slice(0, 5);
+        // Render Top Articles (sorted by engagement)
+        const topArticles = [...articles].sort((a, b) => {
+            const engagementA = (a.views || 0) + (a.comments || 0);
+            const engagementB = (b.views || 0) + (b.comments || 0);
+            return engagementB - engagementA;
+        }).slice(0, 5);
 
-        topArticlesList.innerHTML = latestArticles.map(article => `
+        topArticlesList.innerHTML = topArticles.map(article => `
             <li class="recent-item">
-                <span class="badge-new">NEW</span>
+                <span class="badge-new">TOP</span>
                 <a href="${article.url}">${article.title}</a>
-                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${new Date(article.date).toLocaleDateString()}</span>
+                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${(article.views || 0) + (article.comments || 0)} views</span>
             </li>
         `).join('');
     }
