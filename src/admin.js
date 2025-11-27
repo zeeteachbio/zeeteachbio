@@ -22,6 +22,7 @@ const backBtn = document.getElementById('back-btn');
 const saveBtn = document.getElementById('save-btn');
 const pageTitleInput = document.getElementById('page-title');
 const statusMsg = document.getElementById('status-msg');
+const editorDeleteBtn = document.getElementById('editor-delete-btn');
 
 // New Article Elements
 const newArticleBtn = document.getElementById('new-article-btn');
@@ -30,6 +31,9 @@ const createNewBtn = document.getElementById('create-new-btn');
 const cancelNewBtn = document.getElementById('cancel-new-btn');
 const newFilenameInput = document.getElementById('new-filename');
 const newTitleInput = document.getElementById('new-title');
+const newCategorySelect = document.getElementById('new-category');
+
+console.log('Admin script loaded');
 
 // Initialize Quill
 const quill = new Quill('#content-editor', {
@@ -153,9 +157,25 @@ async function loadFiles() {
             li.className = 'file-item';
             li.innerHTML = `
                 <span>${label || file.name}</span>
-                <button class="btn-secondary" onclick="editFile('${file.path}')">Edit</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn-secondary">Edit</button>
+                    <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444;">Delete</button>
+                </div>
             `;
-            li.querySelector('button').addEventListener('click', () => loadFileContent(file.path));
+
+            const buttons = li.querySelectorAll('button');
+            const editBtn = buttons[0];
+            const deleteBtn = buttons[1];
+
+            editBtn.addEventListener('click', () => loadFileContent(file.path));
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent file item click if any
+                if (confirm(`Are you sure you want to delete ${file.name}?`)) {
+                    deleteFile(file.path, file.sha);
+                }
+            });
+
             return li;
         };
 
@@ -189,7 +209,9 @@ async function loadFiles() {
 
         // Render Groups
         Object.entries(groups).forEach(([groupName, groupFiles]) => {
-            if (groupFiles.length === 0) return;
+            // Always show class groups even if empty, to allow adding new articles
+            const isClassGroup = groupName.startsWith('Class');
+            if (groupFiles.length === 0 && !isClassGroup) return;
 
             const groupHeader = document.createElement('li');
             groupHeader.style.padding = '1rem 0.5rem 0.5rem';
@@ -197,7 +219,26 @@ async function loadFiles() {
             groupHeader.style.color = 'var(--color-primary)';
             groupHeader.style.borderBottom = '2px solid var(--color-border)';
             groupHeader.style.marginTop = '1rem';
-            groupHeader.innerText = groupName;
+            groupHeader.style.display = 'flex';
+            groupHeader.style.justifyContent = 'space-between';
+            groupHeader.style.alignItems = 'center';
+
+            groupHeader.innerHTML = `<span>${groupName}</span>`;
+
+            // Add "New Article" button for Class groups
+            if (isClassGroup) {
+                const addBtn = document.createElement('button');
+                addBtn.className = 'btn-primary';
+                addBtn.style.padding = '0.25rem 0.75rem';
+                addBtn.style.fontSize = '0.8rem';
+                addBtn.innerText = '+ New Article';
+                addBtn.onclick = () => {
+                    if (newCategorySelect) newCategorySelect.value = groupName;
+                    newArticleModal.style.display = 'flex';
+                };
+                groupHeader.appendChild(addBtn);
+            }
+
             fileList.appendChild(groupHeader);
 
             groupFiles.forEach(file => {
@@ -224,15 +265,7 @@ async function loadFileContent(path) {
         if (path.endsWith('.js')) {
             // Text editor for JS files
             pageTitleInput.value = path;
-            pageTitleInput.disabled = true; // Can't rename JS files easily here
-
-            // For JS, we just put text in Quill? No, Quill is for HTML.
-            // We should probably use a simple textarea for JS or force Quill to be text only.
-            // For simplicity, let's just use Quill as a text editor but it adds HTML tags.
-            // Actually, let's just use the innerText of Quill.
-            // Better: Replace Quill with a textarea for JS files?
-            // For now, let's just load it into Quill as code block?
-            // Let's just load it as text.
+            pageTitleInput.disabled = true;
             quill.setText(content);
             document.getElementById('current-file').innerText = path;
             showScreen('editor');
@@ -271,6 +304,16 @@ async function loadFileContent(path) {
         console.error(error);
         alert('Error loading file content');
     }
+}
+
+// Editor Delete Button
+if (editorDeleteBtn) {
+    editorDeleteBtn.addEventListener('click', () => {
+        if (!currentFilePath || !currentFileSha) return;
+        if (confirm(`Are you sure you want to delete ${currentFilePath}? This cannot be undone.`)) {
+            deleteFile(currentFilePath, currentFileSha);
+        }
+    });
 }
 
 // Save File
@@ -340,20 +383,6 @@ saveBtn.addEventListener('click', async () => {
         saveBtn.innerText = 'Publish Changes';
     }
 });
-
-// New Article Elements
-// New Article Elements (Already declared at top)
-
-
-// Add Category Select to Modal (We'll inject this into HTML later, but for now let's assume it exists or create it dynamically if needed)
-// Actually, we need to update admin.html to have this select. 
-// But we can also just use a prompt or inject it via JS if we want to avoid editing HTML again.
-// Let's edit HTML properly in next step. For now, let's update JS to expect it.
-// Wait, I should update HTML first or do it in parallel?
-// I'll assume I'll update HTML next.
-const newCategorySelect = document.getElementById('new-category');
-
-// ... (Quill init and other code remains same) ...
 
 // New Article Logic
 newArticleBtn.addEventListener('click', () => {
@@ -445,11 +474,10 @@ createNewBtn.addEventListener('click', async () => {
                 date: new Date().toISOString(),
                 views: 0,
                 comments: 0,
-                thumbnail: thumbnail || null // Use provided thumbnail or null (will be updated later if image added)
+                thumbnail: thumbnail || null
             };
 
             // Insert before the last closing bracket ]
-            // We assume the file ends with ]; or ]
             const lastBracketIndex = currentContent.lastIndexOf(']');
             if (lastBracketIndex !== -1) {
                 const newEntryString = ",\n    " + JSON.stringify(newEntry, null, 4);
@@ -486,28 +514,80 @@ createNewBtn.addEventListener('click', async () => {
     }
 });
 
-// Auto-extract thumbnail on save
-// We need to modify the save logic to check for images if no thumbnail is set
-// But wait, the user asked for "thumbnail should be add separately during article publishing at admin page OR article should derive its thumbnail from images given in articles"
-// The creation step handles the separate addition.
-// The derivation should happen when saving the article content if the thumbnail is not already set.
-// However, searchData is separate. To update searchData on save is complex because we need to parse it again.
-// A simpler approach for "derive from images" is:
-// When creating, if no thumbnail is provided, we can't derive yet because content is empty.
-// So, we should probably add a "Thumbnail" field to the EDITOR screen as well, which can be auto-filled from content images.
-// Or, when saving, we check if there's an image in the content, and if so, we update the searchData entry.
-// For now, let's stick to the creation time input. The "derive" part is tricky if content is added later.
-// Actually, the user said "article should derive its thumbnail from images given in articles".
-// This implies that if I add an image to the article, it should become the thumbnail.
-// This would require parsing the content on save, finding the first image, and updating searchData.js.
-// That's a bit more involved. Let's start with the input field at creation, which covers the "add separately" part.
-// For the "derive" part, we can add logic in the save handler to update searchData if it finds an image.
-// But updating searchData on every save is heavy.
-// Let's just implement the creation input for now as it satisfies "add separately".
-// The "derive" part can be: if I paste an image in the editor, I might want it to be the thumbnail.
-// Maybe I can add a "Update Thumbnail" button in the editor?
-// Let's stick to the creation input first. It's the most direct solution.
+// Delete File Function (Robust)
+async function deleteFile(path, sha) {
+    try {
+        // 1. Delete the file
+        await octokit.request(`DELETE /repos/${owner}/${repo}/contents/${path}`, {
+            message: `Delete ${path} via Admin Dashboard`,
+            sha: sha
+        });
 
+        // 2. Update searchData.js if it's an article
+        if (path.endsWith('.html') && !path.includes('admin') && !path.includes('index')) {
+            try {
+                const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+                const currentContent = decodeURIComponent(escape(atob(searchData.content)));
+
+                const urlToDelete = `/${path}`;
+
+                // Simple parser for the array of objects
+                const lines = currentContent.split('\n');
+                const newLines = [];
+                let insideObject = false;
+                let currentObjectLines = [];
+                let skipObject = false;
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    if (line.trim().startsWith('{')) {
+                        insideObject = true;
+                        currentObjectLines = [line];
+                        skipObject = false;
+                    } else if (insideObject) {
+                        currentObjectLines.push(line);
+                        if (line.includes(`url: "${urlToDelete}"`) || line.includes(`url: '${urlToDelete}'`)) {
+                            skipObject = true;
+                        }
+                        if (line.trim().startsWith('}') || line.trim().startsWith('},')) {
+                            insideObject = false;
+                            if (!skipObject) {
+                                newLines.push(...currentObjectLines);
+                            } else {
+                                console.log(`Removing entry for ${urlToDelete} from searchData.js`);
+                            }
+                        }
+                    } else {
+                        newLines.push(line);
+                    }
+                }
+
+                const newContent = newLines.join('\n');
+
+                if (newContent !== currentContent) {
+                    const newContentBase64 = btoa(unescape(encodeURIComponent(newContent)));
+                    await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
+                        message: `Remove ${path} from search index`,
+                        content: newContentBase64,
+                        sha: searchData.sha
+                    });
+                    console.log("Updated searchData.js");
+                }
+
+            } catch (e) {
+                console.error("Error updating searchData.js during delete", e);
+                alert("File deleted, but failed to update search index. Please check manually.");
+            }
+        }
+
+        alert(`Successfully deleted ${path}`);
+        showScreen('dashboard');
+        await loadFiles(); // Refresh list
+    } catch (error) {
+        console.error(error);
+        alert(`Error deleting file: ${error.message}`);
+    }
+}
 
 backBtn.addEventListener('click', () => {
     showScreen('dashboard');
