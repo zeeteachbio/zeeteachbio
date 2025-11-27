@@ -481,6 +481,17 @@ createNewBtn.addEventListener('click', async () => {
             const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
             const currentContent = decodeURIComponent(escape(atob(searchData.content)));
 
+            // Robust parsing: extract array and parse as JS
+            const arrayString = currentContent.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
+            let currentSearchIndex;
+            try {
+                // Use Function constructor to safely parse JS object literal
+                currentSearchIndex = new Function('return ' + arrayString)();
+            } catch (e) {
+                console.error("Failed to parse searchData.js", e);
+                throw new Error("Failed to parse search index");
+            }
+
             // Create new entry
             const newEntry = {
                 title: title,
@@ -493,24 +504,19 @@ createNewBtn.addEventListener('click', async () => {
                 thumbnail: thumbnail || null
             };
 
-            // Insert before the last closing bracket ]
-            const lastBracketIndex = currentContent.lastIndexOf(']');
-            if (lastBracketIndex !== -1) {
-                const newEntryString = ",\n    " + JSON.stringify(newEntry, null, 4);
-                const newSearchContent = currentContent.slice(0, lastBracketIndex) + newEntryString + currentContent.slice(lastBracketIndex);
+            // Add to index
+            currentSearchIndex.push(newEntry);
 
-                const newSearchBase64 = btoa(unescape(encodeURIComponent(newSearchContent)));
+            // Serialize back to string
+            const newSearchContent = `export const searchIndex = ${JSON.stringify(currentSearchIndex, null, 4)};`;
+            const newSearchBase64 = btoa(unescape(encodeURIComponent(newSearchContent)));
 
-                await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
-                    message: `Add ${title} to search index`,
-                    content: newSearchBase64,
-                    sha: searchData.sha
-                });
-                console.log("Updated searchData.js");
-            } else {
-                console.error("Could not find closing bracket in searchData.js");
-                alert("Article created, but failed to update search index automatically. Please update it manually.");
-            }
+            await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
+                message: `Add ${title} to search index`,
+                content: newSearchBase64,
+                sha: searchData.sha
+            });
+            console.log("Updated searchData.js");
 
         } catch (e) {
             console.error("Error updating searchData.js", e);
@@ -547,41 +553,25 @@ async function deleteFile(path, sha) {
 
                 const urlToDelete = `/${path}`;
 
-                // Simple parser for the array of objects
-                const lines = currentContent.split('\n');
-                const newLines = [];
-                let insideObject = false;
-                let currentObjectLines = [];
-                let skipObject = false;
-
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
-                    if (line.trim().startsWith('{')) {
-                        insideObject = true;
-                        currentObjectLines = [line];
-                        skipObject = false;
-                    } else if (insideObject) {
-                        currentObjectLines.push(line);
-                        if (line.includes(`url: "${urlToDelete}"`) || line.includes(`url: '${urlToDelete}'`)) {
-                            skipObject = true;
-                        }
-                        if (line.trim().startsWith('}') || line.trim().startsWith('},')) {
-                            insideObject = false;
-                            if (!skipObject) {
-                                newLines.push(...currentObjectLines);
-                            } else {
-                                console.log(`Removing entry for ${urlToDelete} from searchData.js`);
-                            }
-                        }
-                    } else {
-                        newLines.push(line);
-                    }
+                // Robust parsing: extract array and parse as JS
+                const arrayString = currentContent.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
+                let currentSearchIndex;
+                try {
+                    // Use Function constructor to safely parse JS object literal
+                    currentSearchIndex = new Function('return ' + arrayString)();
+                } catch (e) {
+                    console.error("Failed to parse searchData.js", e);
+                    throw new Error("Failed to parse search index");
                 }
 
-                const newContent = newLines.join('\n');
+                // Filter out the deleted article
+                const newSearchIndex = currentSearchIndex.filter(item => item.url !== urlToDelete);
 
-                if (newContent !== currentContent) {
+                if (newSearchIndex.length !== currentSearchIndex.length) {
+                    // Serialize back to string
+                    const newContent = `export const searchIndex = ${JSON.stringify(newSearchIndex, null, 4)};`;
                     const newContentBase64 = btoa(unescape(encodeURIComponent(newContent)));
+
                     await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
                         message: `Remove ${path} from search index`,
                         content: newContentBase64,
