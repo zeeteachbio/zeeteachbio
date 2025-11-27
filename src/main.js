@@ -129,16 +129,20 @@ const initApp = async () => {
         await api.incrementViews(currentPath);
     }
 
-    // --- Dynamic Homepage Rendering (Latest Articles in Main) ---
+    // --- Top Articles Rendering (Main) ---
     const articleList = document.querySelector('.article-list');
     if (articleList) {
         // Clear existing static content
         articleList.innerHTML = '';
 
-        // Render Latest Articles (already sorted by date in api.getArticles)
-        const latestArticles = articles.slice(0, 5);
+        // Render Top Articles (sorted by engagement)
+        const topArticles = [...articles].sort((a, b) => {
+            const engagementA = (a.views || 0) + (a.comments || 0);
+            const engagementB = (b.views || 0) + (b.comments || 0);
+            return engagementB - engagementA;
+        }).slice(0, 5);
 
-        articleList.innerHTML = latestArticles.map(article => {
+        articleList.innerHTML = topArticles.map(article => {
             // Use article.thumbnail if available, else default placeholder
             const bgStyle = article.thumbnail
                 ? `background-image: url('${article.thumbnail}'); background-size: cover; background-position: center;`
@@ -156,21 +160,17 @@ const initApp = async () => {
         `}).join('');
     }
 
-    // --- Top Articles Rendering (Sidebar) ---
-    const topArticlesList = document.getElementById('top-articles-list');
-    if (topArticlesList) {
-        // Render Top Articles (sorted by engagement)
-        const topArticles = [...articles].sort((a, b) => {
-            const engagementA = (a.views || 0) + (a.comments || 0);
-            const engagementB = (b.views || 0) + (b.comments || 0);
-            return engagementB - engagementA;
-        }).slice(0, 5);
+    // --- Recent Articles Rendering (Sidebar) ---
+    const recentArticlesList = document.getElementById('recent-articles-list');
+    if (recentArticlesList) {
+        // Render Latest Articles (already sorted by date in api.getArticles)
+        const latestArticles = articles.slice(0, 5);
 
-        topArticlesList.innerHTML = topArticles.map(article => `
+        recentArticlesList.innerHTML = latestArticles.map(article => `
             <li class="recent-item">
-                <span class="badge-new">TOP</span>
+                <span class="badge-new" style="background: var(--color-primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">NEW</span>
                 <a href="${article.url}">${article.title}</a>
-                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${(article.views || 0) + (article.comments || 0)} views</span>
+                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${new Date(article.date).toLocaleDateString()}</span>
             </li>
         `).join('');
     }
