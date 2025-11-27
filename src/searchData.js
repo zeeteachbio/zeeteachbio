@@ -270,12 +270,6 @@ export const searchIndex = [
         "comments": 0
     },
     {
-        "title": "Dmeo arrtt my life",
-        "url": "/hi-new-topic.html",
-        "views": 0,
-        "comments": 0
-    },
-    {
         "title": "Biomolecules",
         "url": "/article-class11-biomolecules.html",
         "excerpt": "Chemicals found in living organisms are called biomolecules.",
@@ -461,15 +455,6 @@ export const searchIndex = [
         "excerpt": "Biology exams can be daunting with their vast syllabus and complex diagrams. However, with the right strategy, you can s...",
         "category": "General",
         "date": "2025-11-25T12:12:04.447Z",
-        "views": 0,
-        "comments": 0
-    },
-    {
-        "title": "Dmeo arrtt my life",
-        "url": "/hi-new-topic.html",
-        "excerpt": "&copy; 2025 Zeeteach. All rights reserved.",
-        "category": "General",
-        "date": "2025-11-25T12:12:04.448Z",
         "views": 0,
         "comments": 0
     },
