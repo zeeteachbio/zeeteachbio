@@ -408,6 +408,21 @@ createNewBtn.addEventListener('click', async () => {
     createNewBtn.innerText = "Creating...";
 
     try {
+        // 0. Check if file already exists
+        try {
+            await octokit.request(`GET /repos/${owner}/${repo}/contents/${fullFilename}`);
+            // If we get here, file exists
+            alert(`File ${fullFilename} already exists! Please choose a different filename.`);
+            createNewBtn.disabled = false;
+            createNewBtn.innerText = "Create";
+            return;
+        } catch (e) {
+            // 404 means file doesn't exist, which is good
+            if (e.status !== 404) {
+                throw e;
+            }
+        }
+
         // 1. Create the HTML File
         const template = `<!DOCTYPE html>
 <html lang="en">
