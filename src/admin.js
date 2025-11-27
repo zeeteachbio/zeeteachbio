@@ -199,11 +199,12 @@ async function loadFiles() {
         };
 
         htmlFiles.forEach(file => {
-            if (file.name.includes('class9')) groups['Class 9'].push(file);
-            else if (file.name.includes('class10')) groups['Class 10'].push(file);
-            else if (file.name.includes('class11')) groups['Class 11'].push(file);
-            else if (file.name.includes('class12')) groups['Class 12'].push(file);
-            else if (file.name.startsWith('article-')) groups['General Articles'].push(file);
+            const name = file.name.toLowerCase();
+            if (/class-?9/.test(name)) groups['Class 9'].push(file);
+            else if (/class-?10/.test(name)) groups['Class 10'].push(file);
+            else if (/class-?11/.test(name)) groups['Class 11'].push(file);
+            else if (/class-?12/.test(name)) groups['Class 12'].push(file);
+            else if (name.startsWith('article-')) groups['General Articles'].push(file);
             else groups['Pages'].push(file);
         });
 
