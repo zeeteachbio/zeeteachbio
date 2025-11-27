@@ -362,7 +362,7 @@ a {
   gap: 3rem;
   padding-top: 2rem;
   padding-bottom: 4rem;
-  align-items: start;
+  /* align-items: start; Removed to allow sidebar to stretch for sticky positioning */
   /* Prevent sidebar from stretching */
 }
 
@@ -377,8 +377,7 @@ a {
   margin-bottom: 2rem;
   position: relative;
   padding-bottom: 0.5rem;
-  margin-top: 1.5rem;
-  /* Align with sidebar */
+  /* margin-top: 1.5rem; Removed to align with sidebar top */
 }
 
 .section-title-left::after {
