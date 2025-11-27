@@ -377,6 +377,8 @@ a {
   margin-bottom: 2rem;
   position: relative;
   padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  /* Align with sidebar */
 }
 
 .section-title-left::after {
@@ -497,6 +499,11 @@ a {
   gap: 0.75rem;
   font-size: 0.95rem;
   color: var(--color-text);
+}
+
+.recent-item a {
+  font-weight: 600;
+  /* Bold titles */
 }
 
 .recent-item a:hover {
