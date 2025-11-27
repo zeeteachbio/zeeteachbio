@@ -278,4 +278,14 @@ export const searchIndex = [
         "views": 0,
         "comments": 0
     }
-];
+,
+    {
+    "title": "this is class 11",
+    "url": "/this-is-class-111.html",
+    "excerpt": "this is class 11 - Class 11 notes.",
+    "category": "Class 11",
+    "date": "2025-11-27T15:46:53.627Z",
+    "views": 0,
+    "comments": 0,
+    "thumbnail": null
+}];
