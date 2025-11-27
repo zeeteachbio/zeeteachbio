@@ -298,4 +298,14 @@ export const searchIndex = [
     "views": 0,
     "comments": 0,
     "thumbnail": null
+},
+    {
+    "title": "testing article",
+    "url": "/testing-article-api.html",
+    "excerpt": "testing article - Class 9 notes.",
+    "category": "Class 9",
+    "date": "2025-11-27T15:58:04.487Z",
+    "views": 0,
+    "comments": 0,
+    "thumbnail": null
 }];
