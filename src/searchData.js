@@ -482,5 +482,15 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "Zoology",
+        "url": "/hi-new-topic-09.html",
+        "excerpt": "Zoology - Class 9 notes.",
+        "category": "Class 9",
+        "date": "2025-11-27T16:14:07.497Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
