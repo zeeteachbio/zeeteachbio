@@ -142,16 +142,22 @@ const initApp = async () => {
             return engagementB - engagementA;
         }).slice(0, 5);
 
-        articleList.innerHTML = topArticles.map(article => `
+        articleList.innerHTML = topArticles.map(article => {
+            // Use article.thumbnail if available, else default placeholder
+            const bgStyle = article.thumbnail
+                ? `background-image: url('${article.thumbnail}'); background-size: cover; background-position: center;`
+                : '';
+
+            return `
             <article class="article-card">
-                <div class="article-image"></div>
+                <div class="article-image" style="${bgStyle}"></div>
                 <div class="article-content">
                     <h3 class="article-title">${article.title}</h3>
                     <p class="article-excerpt">${article.excerpt}</p>
                     <a href="${article.url}" class="read-more">Read More</a>
                 </div>
             </article>
-        `).join('');
+        `}).join('');
     }
 
     // --- Latest Articles Rendering (Sidebar) ---
@@ -162,7 +168,7 @@ const initApp = async () => {
 
         topArticlesList.innerHTML = latestArticles.map(article => `
             <li class="recent-item">
-                <span class="recent-icon">🆕</span>
+                <span class="badge-new">NEW</span>
                 <a href="${article.url}">${article.title}</a>
                 <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${new Date(article.date).toLocaleDateString()}</span>
             </li>

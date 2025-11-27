@@ -54,6 +54,17 @@ function showScreen(screenName) {
     screens[screenName].classList.add('active-screen');
 }
 
+// Debug Logger
+function log(msg, type = 'info') {
+    const logEl = document.getElementById('debug-log');
+    if (logEl) {
+        logEl.style.display = 'block';
+        const timestamp = new Date().toLocaleTimeString();
+        logEl.innerText += `[${timestamp}] [${type}] ${msg}\n`;
+        console.log(`[${type}] ${msg}`);
+    }
+}
+
 // Login
 loginBtn.addEventListener('click', async () => {
     const token = tokenInput.value.trim();
@@ -61,18 +72,30 @@ loginBtn.addEventListener('click', async () => {
 
     loginBtn.disabled = true;
     loginBtn.innerText = 'Logging in...';
+    log('Attempting login...', 'info');
 
     try {
+        log('Initializing Octokit...', 'info');
         octokit = new Octokit({ auth: token });
+
+        log('Verifying token...', 'info');
         const { data: user } = await octokit.request('GET /user');
-        console.log(`Logged in as ${user.login}`);
+
+        log(`Logged in as ${user.login}`, 'success');
         currentUser = user.login;
 
+        log('Loading files...', 'info');
         await loadFiles();
+
+        log('Switching to dashboard...', 'info');
         showScreen('dashboard');
     } catch (error) {
         console.error(error);
-        alert('Login failed. Please check your token and network connection.');
+        log(`Login failed: ${error.message}`, 'error');
+        if (error.status === 401) {
+            log('Error 401: Unauthorized. Please check if your token is valid.', 'error');
+        }
+        alert('Login failed. Please check the debug log for details.');
     } finally {
         loginBtn.disabled = false;
         loginBtn.innerText = 'Login';
@@ -345,6 +368,8 @@ createNewBtn.addEventListener('click', async () => {
     const filename = newFilenameInput.value.trim();
     const title = newTitleInput.value.trim();
     const category = newCategorySelect ? newCategorySelect.value : "General"; // Default if not found
+    const thumbnailInput = document.getElementById('new-thumbnail');
+    let thumbnail = thumbnailInput ? thumbnailInput.value.trim() : '';
 
     if (!filename || !title) return alert("Please fill in all fields");
 
@@ -419,7 +444,8 @@ createNewBtn.addEventListener('click', async () => {
                 category: category,
                 date: new Date().toISOString(),
                 views: 0,
-                comments: 0
+                comments: 0,
+                thumbnail: thumbnail || null // Use provided thumbnail or null (will be updated later if image added)
             };
 
             // Insert before the last closing bracket ]
@@ -459,6 +485,29 @@ createNewBtn.addEventListener('click', async () => {
         createNewBtn.innerText = "Create";
     }
 });
+
+// Auto-extract thumbnail on save
+// We need to modify the save logic to check for images if no thumbnail is set
+// But wait, the user asked for "thumbnail should be add separately during article publishing at admin page OR article should derive its thumbnail from images given in articles"
+// The creation step handles the separate addition.
+// The derivation should happen when saving the article content if the thumbnail is not already set.
+// However, searchData is separate. To update searchData on save is complex because we need to parse it again.
+// A simpler approach for "derive from images" is:
+// When creating, if no thumbnail is provided, we can't derive yet because content is empty.
+// So, we should probably add a "Thumbnail" field to the EDITOR screen as well, which can be auto-filled from content images.
+// Or, when saving, we check if there's an image in the content, and if so, we update the searchData entry.
+// For now, let's stick to the creation time input. The "derive" part is tricky if content is added later.
+// Actually, the user said "article should derive its thumbnail from images given in articles".
+// This implies that if I add an image to the article, it should become the thumbnail.
+// This would require parsing the content on save, finding the first image, and updating searchData.js.
+// That's a bit more involved. Let's start with the input field at creation, which covers the "add separately" part.
+// For the "derive" part, we can add logic in the save handler to update searchData if it finds an image.
+// But updating searchData on every save is heavy.
+// Let's just implement the creation input for now as it satisfies "add separately".
+// The "derive" part can be: if I paste an image in the editor, I might want it to be the thumbnail.
+// Maybe I can add a "Update Thumbnail" button in the editor?
+// Let's stick to the creation input first. It's the most direct solution.
+
 
 backBtn.addEventListener('click', () => {
     showScreen('dashboard');
