@@ -129,20 +129,16 @@ const initApp = async () => {
         await api.incrementViews(currentPath);
     }
 
-    // --- Top Articles Rendering (Main) ---
+    // --- Recent Articles Rendering (Main) ---
     const articleList = document.querySelector('.article-list');
     if (articleList) {
         // Clear existing static content
         articleList.innerHTML = '';
 
-        // Render Top Articles (sorted by engagement)
-        const topArticles = [...articles].sort((a, b) => {
-            const engagementA = (a.views || 0) + (a.comments || 0);
-            const engagementB = (b.views || 0) + (b.comments || 0);
-            return engagementB - engagementA;
-        }).slice(0, 5);
+        // Render Latest Articles (already sorted by date in api.getArticles)
+        const latestArticles = articles.slice(0, 5);
 
-        articleList.innerHTML = topArticles.map(article => {
+        articleList.innerHTML = latestArticles.map(article => {
             // Use article.thumbnail if available, else default placeholder
             const bgStyle = article.thumbnail
                 ? `background-image: url('${article.thumbnail}'); background-size: cover; background-position: center;`
@@ -160,17 +156,21 @@ const initApp = async () => {
         `}).join('');
     }
 
-    // --- Recent Articles Rendering (Sidebar) ---
-    const recentArticlesList = document.getElementById('recent-articles-list');
-    if (recentArticlesList) {
-        // Render Latest Articles (already sorted by date in api.getArticles)
-        const latestArticles = articles.slice(0, 5);
+    // --- Top Articles Rendering (Sidebar) ---
+    const topArticlesList = document.getElementById('top-articles-list');
+    if (topArticlesList) {
+        // Render Top Articles (sorted by engagement)
+        const topArticles = [...articles].sort((a, b) => {
+            const engagementA = (a.views || 0) + (a.comments || 0);
+            const engagementB = (b.views || 0) + (b.comments || 0);
+            return engagementB - engagementA;
+        }).slice(0, 5);
 
-        recentArticlesList.innerHTML = latestArticles.map(article => `
+        topArticlesList.innerHTML = topArticles.map(article => `
             <li class="recent-item">
-                <span class="badge-new" style="background: var(--color-primary); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">NEW</span>
+                <span class="badge-new">TOP</span>
                 <a href="${article.url}">${article.title}</a>
-                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${new Date(article.date).toLocaleDateString()}</span>
+                <span style="font-size: 0.7rem; color: #666; margin-left: auto;">${(article.views || 0) + (article.comments || 0)} views</span>
             </li>
         `).join('');
     }
@@ -360,11 +360,35 @@ const initApp = async () => {
         // Close when clicking an item inside
         if (menu) {
             menu.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', () => {
+                item.addEventListener('click', (e) => {
+                    // Don't close if it's a submenu toggle
+                    if (item.classList.contains('submenu-toggle')) return;
                     dropdown.classList.remove('active');
                 });
             });
         }
+    });
+
+    // Submenu Toggle Logic
+    const submenuToggles = document.querySelectorAll('.submenu-toggle');
+    submenuToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const submenu = toggle.closest('.dropdown-submenu');
+
+            // Close other submenus in the same parent dropdown
+            const parentMenu = submenu.closest('.dropdown-menu');
+            if (parentMenu) {
+                parentMenu.querySelectorAll('.dropdown-submenu.active').forEach(activeSub => {
+                    if (activeSub !== submenu) activeSub.classList.remove('active');
+                });
+            }
+
+            if (submenu) {
+                submenu.classList.toggle('active');
+            }
+        });
     });
 
     // Close dropdowns when clicking outside
