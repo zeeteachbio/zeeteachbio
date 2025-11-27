@@ -270,12 +270,6 @@ export const searchIndex = [
         "comments": 0
     },
     {
-        "title": "Dmeo arrtt my life",
-        "url": "/hi-new-topic.html",
-        "views": 0,
-        "comments": 0
-    },
-    {
         "title": "Biomolecules",
         "url": "/article-class11-biomolecules.html",
         "excerpt": "Chemicals found in living organisms are called biomolecules.",
@@ -465,20 +459,21 @@ export const searchIndex = [
         "comments": 0
     },
     {
-        "title": "Dmeo arrtt my life",
-        "url": "/hi-new-topic.html",
-        "excerpt": "&copy; 2025 Zeeteach. All rights reserved.",
-        "category": "General",
-        "date": "2025-11-25T12:12:04.448Z",
+        "title": "Zoology",
+        "url": "/hi-new-topic-09.html",
+        "excerpt": "Zoology - Class 9 notes.",
+        "category": "Class 9",
+        "date": "2025-11-27T16:14:07.497Z",
         "views": 0,
-        "comments": 0
+        "comments": 0,
+        "thumbnail": null
     },
     {
-        "title": "this is class 11",
-        "url": "/thi-is-class-11.html",
-        "excerpt": "this is class 11 - Class 11 notes.",
-        "category": "Class 11",
-        "date": "2025-11-27T15:51:54.956Z",
+        "title": "Genetics",
+        "url": "/article-genetics.html",
+        "excerpt": "Genetics - Class 12 notes.",
+        "category": "Class 12",
+        "date": "2025-11-27T16:17:50.476Z",
         "views": 0,
         "comments": 0,
         "thumbnail": null
