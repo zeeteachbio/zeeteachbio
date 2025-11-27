@@ -477,5 +477,15 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "Genetics",
+        "url": "/article-genetics.html",
+        "excerpt": "Genetics - Class 12 notes.",
+        "category": "Class 12",
+        "date": "2025-11-27T16:17:50.476Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
