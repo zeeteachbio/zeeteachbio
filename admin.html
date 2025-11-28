@@ -1,293 +1,280 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<style>
+    .admin-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+    }
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Zee Teach</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/src/style.css">
-    <!-- Quill CSS -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link rel="stylesheet" href="/src/quill-custom.css">
+    .login-screen,
+    .dashboard-screen,
+    .editor-screen {
+        display: none;
+    }
 
-    <style>
-        .admin-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-        }
+    .active-screen {
+        display: block;
+    }
 
-        .login-screen,
-        .dashboard-screen,
-        .editor-screen {
-            display: none;
-        }
+    .file-list-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
 
-        .active-screen {
-            display: block;
-        }
+    .file-column {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+    }
 
+    .file-column h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: var(--color-primary);
+        border-bottom: 2px solid var(--color-border);
+        padding-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .file-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
+
+    .file-item {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9rem;
+    }
+
+    .file-item:hover {
+        background: var(--color-bg);
+    }
+
+    .btn-primary {
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .btn-secondary {
+        background: var(--color-bg-alt);
+        color: var(--color-text);
+        border: 1px solid var(--color-border);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+    }
+
+    .editor-toolbar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .status-msg {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        display: none;
+    }
+
+    .status-success {
+        background: #dcfce7;
+        color: #166534;
+        display: block;
+    }
+
+    .status-error {
+        background: #fee2e2;
+        color: #991b1b;
+        display: block;
+    }
+
+    /* Quill overrides */
+    .ql-container {
+        border-bottom-left-radius: var(--radius-md);
+        border-bottom-right-radius: var(--radius-md);
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+    }
+
+    .ql-toolbar {
+        border-top-left-radius: var(--radius-md);
+        border-top-right-radius: var(--radius-md);
+        background: #f8fafc;
+    }
+
+    .ql-editor {
+        min-height: 400px;
+    }
+
+    @media (max-width: 1024px) {
         .file-list-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
+            grid-template-columns: repeat(2, 1fr);
         }
+    }
 
-        .file-column {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-border);
-        }
+    < !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard - Zee Teach</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/src/style.css">< !-- Quill CSS --><link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"><style>.admin-container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+    }
 
-        .file-column h3 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--color-primary);
-            border-bottom: 2px solid var(--color-border);
-            padding-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .login-screen,
+    .dashboard-screen,
+    .editor-screen {
+        display: none;
+    }
 
-        .file-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
+    .active-screen {
+        display: block;
+    }
 
-        .file-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--color-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 0.9rem;
-        }
+    .file-list-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
 
-        .file-item:hover {
-            background: var(--color-bg);
-        }
+    .file-column {
+        background: #f8fafc;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+    }
 
-        .btn-primary {
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-        }
+    .file-column h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+        color: var(--color-primary);
+        border-bottom: 2px solid var(--color-border);
+        padding-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-        .btn-secondary {
-            background: var(--color-bg-alt);
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-        }
+    .file-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 1rem;
+    }
 
-        .editor-toolbar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--color-border);
-        }
+    .file-item {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-size: 0.9rem;
+    }
 
-        .status-msg {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            display: none;
-        }
+    .file-item:hover {
+        background: var(--color-bg);
+    }
 
-        .status-success {
-            background: #dcfce7;
-            color: #166534;
-            display: block;
-        }
+    .btn-primary {
+        background: var(--color-primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        font-weight: 600;
+    }
 
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-            display: block;
-        }
+    .btn-secondary {
+        background: var(--color-bg-alt);
+        color: var(--color-text);
+        border: 1px solid var(--color-border);
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+    }
 
-        /* Quill overrides */
-        .ql-container {
-            border-bottom-left-radius: var(--radius-md);
-            border-bottom-right-radius: var(--radius-md);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-        }
+    .editor-toolbar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--color-border);
+    }
 
-        .ql-toolbar {
-            border-top-left-radius: var(--radius-md);
-            border-top-right-radius: var(--radius-md);
-            background: #f8fafc;
-        }
+    .status-msg {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        display: none;
+    }
 
-        .ql-editor {
-            min-height: 400px;
-        }
+    .status-success {
+        background: #dcfce7;
+        color: #166534;
+        display: block;
+    }
 
-        @media (max-width: 1024px) {
-            .file-list-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    .status-error {
+        background: #fee2e2;
+        color: #991b1b;
+        display: block;
+    }
 
-        < !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard - Zee Teach</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/src/style.css">< !-- Quill CSS --><link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"><style>.admin-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background: white;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-        }
+    /* Quill overrides */
+    .ql-container {
+        border-bottom-left-radius: var(--radius-md);
+        border-bottom-right-radius: var(--radius-md);
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+    }
 
-        .login-screen,
-        .dashboard-screen,
-        .editor-screen {
-            display: none;
-        }
+    .ql-toolbar {
+        border-top-left-radius: var(--radius-md);
+        border-top-right-radius: var(--radius-md);
+        background: #f8fafc;
+    }
 
-        .active-screen {
-            display: block;
-        }
+    .ql-editor {
+        min-height: 400px;
+    }
 
+    @media (max-width: 1024px) {
         .file-list-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
+            grid-template-columns: repeat(2, 1fr);
         }
-
-        .file-column {
-            background: #f8fafc;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-border);
-        }
-
-        .file-column h3 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            color: var(--color-primary);
-            border-bottom: 2px solid var(--color-border);
-            padding-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .file-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-        }
-
-        .file-item {
-            padding: 0.75rem;
-            border-bottom: 1px solid var(--color-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: background 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .file-item:hover {
-            background: var(--color-bg);
-        }
-
-        .btn-primary {
-            background: var(--color-primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .btn-secondary {
-            background: var(--color-bg-alt);
-            color: var(--color-text);
-            border: 1px solid var(--color-border);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius-md);
-            cursor: pointer;
-        }
-
-        .editor-toolbar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--color-border);
-        }
-
-        .status-msg {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: var(--radius-md);
-            display: none;
-        }
-
-        .status-success {
-            background: #dcfce7;
-            color: #166534;
-            display: block;
-        }
-
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-            display: block;
-        }
-
-        /* Quill overrides */
-        .ql-container {
-            border-bottom-left-radius: var(--radius-md);
-            border-bottom-right-radius: var(--radius-md);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-        }
-
-        .ql-toolbar {
-            border-top-left-radius: var(--radius-md);
-            border-top-right-radius: var(--radius-md);
-            background: #f8fafc;
-        }
-
-        .ql-editor {
-            min-height: 400px;
-        }
-
-        @media (max-width: 1024px) {
-            .file-list-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 
 <body>
