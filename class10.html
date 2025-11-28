@@ -9,113 +9,167 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <input type="text" class="class-search-input" placeholder="Search in Class 10...">
-    <button class="class-search-btn">
-        <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-    </button>
-    </div>
-    </div>
-    </section>
+    <link rel="stylesheet" href="/src/style.css">
+</head>
 
-    <section class="section">
-        <div class="container">
-            <h2 class="section-title-left">Chapters</h2>
-            <div class="chapter-table-container">
-                <table class="chapter-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Chapter Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Gaseous Exchange</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=1. Gaseous Exchange" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Homeostasis</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=2. Homeostasis" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Coordination and Control</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=3. Coordination and Control"
-                                    class="btn-sm">View Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Support and Movement</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=4. Support and Movement"
-                                    class="btn-sm">View Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Reproduction</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=5. Reproduction" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Inheritance</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=6. Inheritance" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>Man and His Environment</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=7. Man and His Environment"
-                                    class="btn-sm">View Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>Biotechnology</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=8. Biotechnology" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>Pharmacology</td>
-                            <td><a href="/chapter.html?class=Class 10&chapter=9. Pharmacology" class="btn-sm">View
-                                    Notes</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+<body>
+    <div id="app">
+        <header class="header">
+            <div class="container header-content">
+                <a href="/" class="logo">
+                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
+                    Zee Teach
+                </a>
+                <nav class="nav">
+                    <a href="/" class="nav-link">Home</a>
+                    <div class="dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">Courses &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="/class9.html" class="dropdown-item">Class 9</a>
+                            <a href="/class10.html" class="dropdown-item">Class 10</a>
+                            <a href="/class11.html" class="dropdown-item">Class 11</a>
+                            <a href="/class12.html" class="dropdown-item">Class 12</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
+                            <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
+                            <a href="/akueb-class11.html" class="dropdown-item">Class 11</a>
+                            <a href="/akueb-class12.html" class="dropdown-item">Class 12</a>
+                        </div>
+                    </div>
+                </nav>
+                <div class="search-container">
+                    <input type="text" class="search-input" placeholder="Search topics...">
+                    <button class="search-btn">
+                        <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
             </div>
-        </div>
-    </section>
-    <section class="notes-grid section">
-        <div class="container">
-            <!-- Dynamic Articles Container -->
-            <div id="class-articles-container" class="grid notes-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
-                    Loading articles...</div>
-            </div>
-        </div>
-    </section>
-    </main>
+        </header>
+        <main>
+            <section class="hero-section">
+                <div class="container">
+                    <h1 class="section-title">Class 10 Biology</h1>
+                    <div class="class-search-container">
+                        <input type="text" class="class-search-input" placeholder="Search in Class 10...">
+                        <button class="class-search-btn">
+                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
 
-    <footer class="footer">
-        <div class="container footer-content">
-            <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#" class="social-link">Twitter</a>
-                <a href="#" class="social-link">YouTube</a>
-                <a href="#" class="social-link">Instagram</a>
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title-left">Chapters</h2>
+                    <div class="chapter-table-container">
+                        <table class="chapter-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Chapter Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Gaseous Exchange</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=1. Gaseous Exchange"
+                                            class="btn-sm">View Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Homeostasis</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=2. Homeostasis"
+                                            class="btn-sm">View
+                                            Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Coordination and Control</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=3. Coordination and Control"
+                                            class="btn-sm">View Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Support and Movement</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=4. Support and Movement"
+                                            class="btn-sm">View Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Reproduction</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=5. Reproduction"
+                                            class="btn-sm">View
+                                            Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Inheritance</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=6. Inheritance"
+                                            class="btn-sm">View
+                                            Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>Man and His Environment</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=7. Man and His Environment"
+                                            class="btn-sm">View Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>Biotechnology</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=8. Biotechnology"
+                                            class="btn-sm">View
+                                            Notes</a></td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>Pharmacology</td>
+                                    <td><a href="/chapter.html?class=Class 10&chapter=9. Pharmacology"
+                                            class="btn-sm">View
+                                            Notes</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="notes-grid section">
+                <div class="container">
+                    <!-- Dynamic Articles Container -->
+                    <div id="class-articles-container" class="grid notes-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                            Loading articles...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container footer-content">
+                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">Twitter</a>
+                    <a href="#" class="social-link">YouTube</a>
+                    <a href="#" class="social-link">Instagram</a>
+                </div>
             </div>
-        </div>
-    </footer>
+        </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
-    </body>
+</body>
 
 </html>
