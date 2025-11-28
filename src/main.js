@@ -424,12 +424,15 @@ const initApp = async () => {
     if (window.location.pathname.includes('search.html')) {
         const params = new URLSearchParams(window.location.search);
         const query = params.get('q');
-        const display = document.getElementById('search-query-display');
         const grid = document.getElementById('search-results-grid');
         const noResults = document.getElementById('no-results-msg');
+        const sectionTitle = document.querySelector('.section-title');
 
-        if (query && display && grid) {
-            display.textContent = `Search Results for "${query}"`;
+        if (query && grid) {
+            // Update title if it exists
+            if (sectionTitle) {
+                sectionTitle.textContent = `Search Results for "${query}"`;
+            }
 
             const results = articles.filter(item =>
                 item.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -448,14 +451,14 @@ const initApp = async () => {
                         </div>
                     </div>
                 `).join('');
-                noResults.style.display = 'none';
+                if (noResults) noResults.style.display = 'none';
             } else {
                 grid.innerHTML = '';
-                noResults.style.display = 'block';
+                if (noResults) noResults.style.display = 'block';
             }
-        } else if (display) {
-            display.textContent = 'Please enter a search term';
-            noResults.style.display = 'none';
+        } else if (!query && sectionTitle) {
+            sectionTitle.textContent = 'Search Results';
+            if (grid) grid.innerHTML = '<p style="text-align: center; color: #64748b;">Please enter a search term</p>';
         }
     }
 
