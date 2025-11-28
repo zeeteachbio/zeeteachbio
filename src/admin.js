@@ -8,6 +8,34 @@ let currentUser = null;
 let currentFileSha = null;
 let currentFilePath = null;
 
+// Chapter Data
+const chapters = {
+    'Class 9': [
+        "1. Introduction to Biology", "2. Solving a Biological Problem", "3. Biodiversity",
+        "4. Cells and Tissues", "5. Cell Cycle", "6. Enzymes",
+        "7. Bioenergetics", "8. Nutrition", "9. Transport"
+    ],
+    'Class 10': [
+        "1. Gaseous Exchange", "2. Homeostasis", "3. Coordination and Control",
+        "4. Support and Movement", "5. Reproduction", "6. Inheritance",
+        "7. Man and His Environment", "8. Biotechnology", "9. Pharmacology"
+    ],
+    'Class 11': [
+        "1. Biological Molecules", "2. Enzymes", "3. Cell Structure and Function",
+        "4. Bioenergetics", "5. Acellular Life", "6. Prokaryotes",
+        "7. Protoctists and Fungi", "8. Diversity Among Plants", "9. Diversity Among Animals",
+        "10. Forms and Functions in Plant", "11. Holozoic Nutrition", "12. Circulation",
+        "13. Immunity", "14. Gaseous Exchange"
+    ],
+    'Class 12': [
+        "15. Homeostasis", "16. Support and Movement", "17. Coordination and Control",
+        "18. Reproduction", "19. Growth and Development", "20. Chromosomes and DNA",
+        "21. Cell Cycle", "22. Variation and Genetics", "23. Biotechnology",
+        "24. Evolution", "25. Ecosystem", "26. Some Major Ecosystems",
+        "27. Man and His Environment"
+    ]
+};
+
 // DOM Elements
 const screens = {
     login: document.getElementById('login-screen'),
@@ -17,7 +45,8 @@ const screens = {
 
 const loginBtn = document.getElementById('login-btn');
 const tokenInput = document.getElementById('github-token');
-const fileList = document.getElementById('file-list');
+const fileGrid = document.getElementById('file-grid'); // New Grid Container
+const fileList = document.getElementById('file-list'); // Fallback
 const backBtn = document.getElementById('back-btn');
 const saveBtn = document.getElementById('save-btn');
 const pageTitleInput = document.getElementById('page-title');
@@ -32,6 +61,8 @@ const cancelNewBtn = document.getElementById('cancel-new-btn');
 const newFilenameInput = document.getElementById('new-filename');
 const newTitleInput = document.getElementById('new-title');
 const newCategorySelect = document.getElementById('new-category');
+const newChapterSelect = document.getElementById('new-chapter');
+const chapterContainer = document.getElementById('chapter-container');
 
 console.log('Admin script loaded');
 
@@ -108,7 +139,7 @@ loginBtn.addEventListener('click', async () => {
 
 // Load Files
 async function loadFiles() {
-    fileList.innerHTML = '<p>Loading files...</p>';
+    fileGrid.innerHTML = '<p>Loading files...</p>';
     try {
         let files = [];
         // Try current user first, then default owner
@@ -149,21 +180,22 @@ async function loadFiles() {
             console.log("searchData.js not found in src/");
         }
 
+        fileGrid.innerHTML = '';
         fileList.innerHTML = '';
 
         // Helper to create file item
         const createFileItem = (file, label = null) => {
-            const li = document.createElement('li');
-            li.className = 'file-item';
-            li.innerHTML = `
-                <span>${label || file.name}</span>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn-secondary">Edit</button>
-                    <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444;">Delete</button>
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.innerHTML = `
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 0.5rem;" title="${label || file.name}">${label || file.name}</span>
+                <div style="display: flex; gap: 0.25rem;">
+                    <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
+                    <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444; padding: 0.25rem 0.5rem; font-size: 0.8rem;">Del</button>
                 </div>
             `;
 
-            const buttons = li.querySelectorAll('button');
+            const buttons = div.querySelectorAll('button');
             const editBtn = buttons[0];
             const deleteBtn = buttons[1];
 
@@ -176,15 +208,8 @@ async function loadFiles() {
                 }
             });
 
-            return li;
+            return div;
         };
-
-        // 1. Search Data
-        if (searchDataFile) {
-            const li = createFileItem(searchDataFile, '<strong>src/searchData.js</strong> (Edit Search Index)');
-            li.style.borderLeft = "4px solid #f59e0b";
-            fileList.appendChild(li);
-        }
 
         const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'admin.html');
 
@@ -193,10 +218,9 @@ async function loadFiles() {
             'Class 9': [],
             'Class 10': [],
             'Class 11': [],
-            'Class 12': [],
-            'General Articles': [],
-            'Pages': []
+            'Class 12': []
         };
+        const otherFiles = [];
 
         htmlFiles.forEach(file => {
             const name = file.name.toLowerCase();
@@ -204,52 +228,68 @@ async function loadFiles() {
             else if (/class-?10/.test(name)) groups['Class 10'].push(file);
             else if (/class-?11/.test(name)) groups['Class 11'].push(file);
             else if (/class-?12/.test(name)) groups['Class 12'].push(file);
-            else if (name.startsWith('article-')) groups['General Articles'].push(file);
-            else groups['Pages'].push(file);
+            else otherFiles.push(file);
         });
 
-        // Render Groups
+        // Render 4 Columns for Classes
         Object.entries(groups).forEach(([groupName, groupFiles]) => {
-            // Always show class groups even if empty, to allow adding new articles
-            const isClassGroup = groupName.startsWith('Class');
-            if (groupFiles.length === 0 && !isClassGroup) return;
+            const col = document.createElement('div');
+            col.className = 'file-column';
 
-            const groupHeader = document.createElement('li');
-            groupHeader.style.padding = '1rem 0.5rem 0.5rem';
-            groupHeader.style.fontWeight = '700';
-            groupHeader.style.color = 'var(--color-primary)';
-            groupHeader.style.borderBottom = '2px solid var(--color-border)';
-            groupHeader.style.marginTop = '1rem';
-            groupHeader.style.display = 'flex';
-            groupHeader.style.justifyContent = 'space-between';
-            groupHeader.style.alignItems = 'center';
+            const header = document.createElement('h3');
+            header.innerHTML = `
+                ${groupName}
+                <button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">+ New</button>
+            `;
 
-            groupHeader.innerHTML = `<span>${groupName}</span>`;
+            // Add New Article Button Logic
+            header.querySelector('button').onclick = () => {
+                newCategorySelect.value = groupName;
+                updateChapterDropdown(groupName);
+                newArticleModal.style.display = 'flex';
+            };
 
-            // Add "New Article" button for Class groups
-            if (isClassGroup) {
-                const addBtn = document.createElement('button');
-                addBtn.className = 'btn-primary';
-                addBtn.style.padding = '0.25rem 0.75rem';
-                addBtn.style.fontSize = '0.8rem';
-                addBtn.innerText = '+ New Article';
-                addBtn.onclick = () => {
-                    if (newCategorySelect) newCategorySelect.value = groupName;
-                    newArticleModal.style.display = 'flex';
-                };
-                groupHeader.appendChild(addBtn);
+            col.appendChild(header);
+
+            if (groupFiles.length === 0) {
+                col.innerHTML += '<p style="font-size: 0.8rem; color: #64748b; font-style: italic;">No articles yet.</p>';
+            } else {
+                groupFiles.forEach(file => {
+                    col.appendChild(createFileItem(file));
+                });
+            }
+            fileGrid.appendChild(col);
+        });
+
+        // Render Other Files below
+        if (otherFiles.length > 0 || searchDataFile) {
+            const otherSection = document.createElement('div');
+            otherSection.style.gridColumn = "1 / -1";
+            otherSection.style.marginTop = "2rem";
+            otherSection.innerHTML = '<h3 style="border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 1rem;">Other Files & Pages</h3>';
+
+            const list = document.createElement('div');
+            list.style.display = 'grid';
+            list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+            list.style.gap = '1rem';
+
+            if (searchDataFile) {
+                const item = createFileItem(searchDataFile, 'src/searchData.js');
+                item.style.borderLeft = "4px solid #f59e0b";
+                list.appendChild(item);
             }
 
-            fileList.appendChild(groupHeader);
-
-            groupFiles.forEach(file => {
-                fileList.appendChild(createFileItem(file));
+            otherFiles.forEach(file => {
+                list.appendChild(createFileItem(file));
             });
-        });
+
+            otherSection.appendChild(list);
+            fileGrid.appendChild(otherSection);
+        }
 
     } catch (error) {
         console.error(error);
-        fileList.innerHTML = `<p style="color: red">Error loading files: ${error.message}</p>`;
+        fileGrid.innerHTML = `<p style="color: red">Error loading files: ${error.message}</p>`;
     }
 }
 
@@ -388,20 +428,44 @@ saveBtn.addEventListener('click', async () => {
 // New Article Logic
 newArticleBtn.addEventListener('click', () => {
     newArticleModal.style.display = 'flex';
+    updateChapterDropdown(newCategorySelect.value);
 });
 
 cancelNewBtn.addEventListener('click', () => {
     newArticleModal.style.display = 'none';
 });
 
+// Update Chapter Dropdown based on Category
+function updateChapterDropdown(category) {
+    newChapterSelect.innerHTML = '<option value="">Select Chapter...</option>';
+
+    if (chapters[category]) {
+        chapterContainer.style.display = 'block';
+        chapters[category].forEach(chapter => {
+            const option = document.createElement('option');
+            option.value = chapter;
+            option.innerText = chapter;
+            newChapterSelect.appendChild(option);
+        });
+    } else {
+        chapterContainer.style.display = 'none';
+    }
+}
+
+newCategorySelect.addEventListener('change', (e) => {
+    updateChapterDropdown(e.target.value);
+});
+
 createNewBtn.addEventListener('click', async () => {
     const filename = newFilenameInput.value.trim();
     const title = newTitleInput.value.trim();
-    const category = newCategorySelect ? newCategorySelect.value : "General"; // Default if not found
+    const category = newCategorySelect ? newCategorySelect.value : "General";
+    const chapter = newChapterSelect.value;
     const thumbnailInput = document.getElementById('new-thumbnail');
     let thumbnail = thumbnailInput ? thumbnailInput.value.trim() : '';
 
     if (!filename || !title) return alert("Please fill in all fields");
+    if (chapters[category] && !chapter) return alert("Please select a chapter");
 
     const fullFilename = filename.endsWith('.html') ? filename : `${filename}.html`;
 
@@ -452,7 +516,9 @@ createNewBtn.addEventListener('click', async () => {
                 <div class="container article-container">
                     <header class="article-header">
                         <h1 class="article-title">${title}</h1>
-                        <div class="article-meta">${category} &bull; 5 min read</div>
+                        <div class="article-meta">
+                            ${category} ${chapter ? `&bull; ${chapter}` : ''} &bull; 5 min read
+                        </div>
                     </header>
                     <div class="article-body">
                         <p>Write your content here...</p>
@@ -496,8 +562,9 @@ createNewBtn.addEventListener('click', async () => {
             const newEntry = {
                 title: title,
                 url: `/${fullFilename}`,
-                excerpt: `${title} - ${category} notes.`,
+                excerpt: `${title} - ${category} ${chapter ? `(${chapter})` : ''} notes.`,
                 category: category,
+                chapter: chapter || null,
                 date: new Date().toISOString(),
                 views: 0,
                 comments: 0,
