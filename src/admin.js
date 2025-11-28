@@ -1,4 +1,4 @@
-import { Octokit } from "https://esm.sh/octokit";
+import { Octokit } from "octokit";
 
 // State
 let octokit = null;
@@ -36,7 +36,13 @@ const chapters = {
     ],
     'AKUEB Class 9': [],
     'AKUEB Class 10': [],
-    'AKUEB Class 11': [],
+    'AKUEB Class 11': [
+        "1. Biological Molecules", "2. Enzymes", "3. The Cell",
+        "4. Classification and Acellular Life", "5. Kingdom Prokaryotae",
+        "6. Kingdom Protoctista", "7. Kingdom Fungi", "8. Kingdom Plantae",
+        "9. Kingdom Animalia", "10. Bioenergetics", "11. Nutrition",
+        "12. Gaseous Exchange", "13. Transport", "14. Immune System"
+    ],
     'AKUEB Class 12': []
 };
 
