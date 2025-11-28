@@ -57,6 +57,12 @@ const screens = {
     editor: document.getElementById('editor-screen')
 };
 
+// Add version indicator
+document.title = "Admin Dashboard v2.1 - Zee Teach";
+const headerTitle = document.querySelector('.header .logo');
+if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.1)</span>';
+
+
 const loginBtn = document.getElementById('login-btn');
 const tokenInput = document.getElementById('github-token');
 const fileGrid = document.getElementById('file-grid'); // New Grid Container
