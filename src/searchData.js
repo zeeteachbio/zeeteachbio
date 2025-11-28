@@ -9,16 +9,5 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
-    },
-    {
-        "title": "Introduction to Biology",
-        "url": "/article-introduction.html",
-        "excerpt": "Introduction to Biology - STB Class 9 (1. Introduction to Biology) notes.",
-        "category": "STB Class 9",
-        "chapter": "1. Introduction to Biology",
-        "date": "2025-11-28T10:36:54.428Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
     }
 ];
