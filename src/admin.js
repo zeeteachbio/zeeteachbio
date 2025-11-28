@@ -510,8 +510,10 @@ async function loadFileContent(path) {
         pageTitleInput.value = title.replace(' - Zee Teach', '');
         pageTitleInput.disabled = false;
 
+        console.log('Body Content Length:', bodyContent.length);
         quill.setContents([]);
         const delta = quill.clipboard.convert(bodyContent);
+        console.log('Converted Delta:', delta);
         quill.setContents(delta, 'silent');
 
         document.getElementById('current-file').innerText = path;
