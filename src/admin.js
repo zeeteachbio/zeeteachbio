@@ -105,6 +105,11 @@ if (window.Quill) {
 
     window.Quill.register(LineHeightStyle, true);
     window.Quill.register(MarginBottomStyle, true);
+
+    // Register Fonts
+    const Font = window.Quill.import('formats/font');
+    Font.whitelist = ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new'];
+    window.Quill.register(Font, true);
 }
 
 const quill = new Quill('#content-editor', {
@@ -115,7 +120,8 @@ const quill = new Quill('#content-editor', {
         },
         toolbar: [
             [{ 'header': [1, 2, 3, false] }],
-            [{ 'font': [] }],
+            [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new'] }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -473,10 +479,28 @@ async function loadFileContent(path) {
         if (articleBody) {
             bodyContent = articleBody.innerHTML;
         } else if (main) {
-            bodyContent = main.innerHTML;
+            // If falling back to main, try to exclude header/meta if they exist
+            const clone = main.cloneNode(true);
+            const header = clone.querySelector('.article-header');
+            if (header) header.remove();
+            bodyContent = clone.innerHTML;
         } else {
             bodyContent = doc.body.innerHTML;
         }
+
+        // FIX: Auto-repair common encoding artifacts (Mojibake)
+        // Ã¢Â€Â¢ -> •
+        // Ã¢Â€Â” -> —
+        // Ã¢Â€Â™ -> ’
+        // Ã¢Â€Âœ -> “
+        // Ã¢Â€Â -> ”
+        bodyContent = bodyContent
+            .replace(/Ã¢Â€Â¢/g, '•')
+            .replace(/Ã¢Â€Â”/g, '—')
+            .replace(/Ã¢Â€Â™/g, '’')
+            .replace(/Ã¢Â€Âœ/g, '“')
+            .replace(/Ã¢Â€Â/g, '”')
+            .replace(/Â/g, ''); // Remove stray non-breaking space artifacts often appearing as Â
 
         pageTitleInput.value = title.replace(' - Zee Teach', '');
         pageTitleInput.disabled = false;
@@ -668,7 +692,7 @@ createNewBtn.addEventListener('click', async () => {
                     <header class="article-header">
                         <h1 class="article-title">${title}</h1>
                         <div class="article-meta">
-                            ${category} ${chapter ? `&bull; ${chapter}` : ''} &bull; 5 min read
+                            ${category} ${chapter ? `&bull; ${chapter}` : ''}
                         </div>
                     </header>
                     <div class="article-body">

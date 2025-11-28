@@ -83,3 +83,65 @@
 .ql-snow .ql-picker.ql-margin-bottom {
     width: 80px;
 }
+
+/* Font Families */
+.ql-font-mirza {
+    font-family: 'Mirza', cursive;
+}
+
+.ql-font-roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.ql-font-arial {
+    font-family: 'Arial', sans-serif;
+}
+
+.ql-font-times-new-roman {
+    font-family: 'Times New Roman', serif;
+}
+
+.ql-font-verdana {
+    font-family: 'Verdana', sans-serif;
+}
+
+.ql-font-courier-new {
+    font-family: 'Courier New', monospace;
+}
+
+/* Font Picker Labels */
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="mirza"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="mirza"]::before {
+    content: 'Mirza';
+    font-family: 'Mirza', cursive;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="roboto"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="roboto"]::before {
+    content: 'Roboto';
+    font-family: 'Roboto', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="arial"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before {
+    content: 'Arial';
+    font-family: 'Arial', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="times-new-roman"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="times-new-roman"]::before {
+    content: 'Times New Roman';
+    font-family: 'Times New Roman', serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="verdana"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="verdana"]::before {
+    content: 'Verdana';
+    font-family: 'Verdana', sans-serif;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="courier-new"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier-new"]::before {
+    content: 'Courier New';
+    font-family: 'Courier New', monospace;
+}
