@@ -302,10 +302,11 @@ const initApp = async () => {
     const classSearchBtn = document.querySelector('.class-search-btn');
 
     if (classSearchInput) {
-        const filterCards = () => {
+        const filterPageContent = () => {
             const query = classSearchInput.value.trim().toLowerCase();
-            const cards = document.querySelectorAll('.card.note-card');
 
+            // Filter Cards
+            const cards = document.querySelectorAll('.card.note-card');
             cards.forEach(card => {
                 const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
                 const text = card.querySelector('.card-text')?.textContent.toLowerCase() || '';
@@ -316,14 +317,26 @@ const initApp = async () => {
                     card.style.display = 'none';
                 }
             });
+
+            // Filter Table Rows (for Class/Chapter lists)
+            const tableRows = document.querySelectorAll('.chapter-table tbody tr');
+            tableRows.forEach(row => {
+                // Check all cells, or specifically the second one (Topic Name)
+                const text = row.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         };
 
-        classSearchInput.oninput = filterCards;
+        classSearchInput.oninput = filterPageContent;
 
         if (classSearchBtn) {
             classSearchBtn.onclick = (e) => {
                 e.preventDefault();
-                filterCards();
+                filterPageContent();
             };
         }
 
@@ -331,7 +344,7 @@ const initApp = async () => {
         classSearchInput.onkeypress = (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                filterCards();
+                filterPageContent();
             }
         };
     }
