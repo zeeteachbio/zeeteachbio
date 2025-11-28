@@ -20,392 +20,239 @@
             background: white;
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg);
-    }
-
-    .login-screen,
-    .dashboard-screen,
-    .editor-screen {
-        display: none;
-    }
-
-    .active-screen {
-        display: block;
-    }
-
-    .file-list-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1.5rem;
-        list-style: none;
-        padding: 0;
-        margin-top: 1rem;
-    }
-
-    .file-column {
-        background: #f8fafc;
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--color-border);
-    }
-
-    .file-column h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        color: var(--color-primary);
-        border-bottom: 2px solid var(--color-border);
-        padding-bottom: 0.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .file-list {
-        list-style: none;
-        padding: 0;
-        margin-top: 1rem;
-    }
-
-    .file-item {
-        padding: 0.75rem;
-        border-bottom: 1px solid var(--color-border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        transition: background 0.2s;
-        font-size: 0.9rem;
-    }
-
-    .file-item:hover {
-        background: var(--color-bg);
-    }
-
-    .btn-primary {
-        background: var(--color-primary);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        font-weight: 600;
-    }
-
-    .btn-secondary {
-        background: var(--color-bg-alt);
-        color: var(--color-text);
-        border: 1px solid var(--color-border);
-        padding: 0.5rem 1rem;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-    }
-
-    .editor-toolbar {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--color-border);
-    }
-
-    .status-msg {
-        margin-top: 1rem;
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        display: none;
-    }
-
-    .status-success {
-        background: #dcfce7;
-        color: #166534;
-        display: block;
-    }
-
-    .status-error {
-        background: #fee2e2;
-        color: #991b1b;
-        display: block;
-    }
-
-    /* Quill overrides */
-    .ql-container {
-        border-bottom-left-radius: var(--radius-md);
-        border-bottom-right-radius: var(--radius-md);
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-    }
-
-    .ql-toolbar {
-        border-top-left-radius: var(--radius-md);
-        border-top-right-radius: var(--radius-md);
-        background: #f8fafc;
-    }
-
-    .ql-editor {
-        min-height: 400px;
-    }
-
-    @media (max-width: 1024px) {
-        .file-list-grid {
-            grid-template-columns: repeat(2, 1fr);
         }
-    }
 
-    < !DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard - Zee Teach</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="/src/style.css">< !-- Quill CSS --><link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"><style>.admin-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background: white;
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .login-screen,
-    .dashboard-screen,
-    .editor-screen {
-        display: none;
-    }
-
-    .active-screen {
-        display: block;
-    }
-
-    .file-list-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1.5rem;
-        list-style: none;
-        padding: 0;
-        margin-top: 1rem;
-    }
-
-    .file-column {
-        background: #f8fafc;
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        border: 1px solid var(--color-border);
-    }
-
-    .file-column h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        font-size: 1.1rem;
-        color: var(--color-primary);
-        border-bottom: 2px solid var(--color-border);
-        padding-bottom: 0.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .file-list {
-        list-style: none;
-        padding: 0;
-        margin-top: 1rem;
-    }
-
-    .file-item {
-        padding: 0.75rem;
-        border-bottom: 1px solid var(--color-border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-        transition: background 0.2s;
-        font-size: 0.9rem;
-    }
-
-    .file-item:hover {
-        background: var(--color-bg);
-    }
-
-    .btn-primary {
-        background: var(--color-primary);
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        font-weight: 600;
-    }
-
-    .btn-secondary {
-        background: var(--color-bg-alt);
-        color: var(--color-text);
-        border: 1px solid var(--color-border);
-        padding: 0.5rem 1rem;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-    }
-
-    .editor-toolbar {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--color-border);
-    }
-
-    .status-msg {
-        margin-top: 1rem;
-        padding: 1rem;
-        border-radius: var(--radius-md);
-        display: none;
-    }
-
-    .status-success {
-        background: #dcfce7;
-        color: #166534;
-        display: block;
-    }
-
-    .status-error {
-        background: #fee2e2;
-        color: #991b1b;
-        display: block;
-    }
-
-    /* Quill overrides */
-    .ql-container {
-        border-bottom-left-radius: var(--radius-md);
-        border-bottom-right-radius: var(--radius-md);
-        font-family: 'Inter', sans-serif;
-        font-size: 1rem;
-    }
-
-    .ql-toolbar {
-        border-top-left-radius: var(--radius-md);
-        border-top-right-radius: var(--radius-md);
-        background: #f8fafc;
-    }
-
-    .ql-editor {
-        min-height: 400px;
-    }
-
-    @media (max-width: 1024px) {
-        .file-list-grid {
-            grid-template-columns: repeat(2, 1fr);
+        .login-screen,
+        .dashboard-screen,
+        .editor-screen {
+            display: none;
         }
-    }
-</style>
+
+        .active-screen {
+            display: block;
+        }
+
+        .file-list-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .file-column {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+        }
+
+        .file-column h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-border);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        .file-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .file-item:hover {
+            background: var(--color-bg);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            background: var(--color-bg-alt);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .status-msg {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: none;
+        }
+
+        .status-success {
+            background: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+
+        /* Quill overrides */
+        .ql-container {
+            border-bottom-left-radius: var(--radius-md);
+            border-bottom-right-radius: var(--radius-md);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .ql-toolbar {
+            border-top-left-radius: var(--radius-md);
+            border-top-right-radius: var(--radius-md);
+            background: #f8fafc;
+        }
+
+        .ql-editor {
+            min-height: 400px;
+        }
+
+        @media (max-width: 1024px) {
+            .file-list-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 
 <body>
     <header
         style="background: white; padding: 1rem 2rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
-        <a href="/" class="logo">Zee Teach Admin</a>
-    </header>
+        <a href="/" class="logo">Zee Teach Admin</a></header>
     <main class="admin-container">
-        <!-- Login Screen -->
-        <div id="login-screen" class="login-screen active-screen">
-            <h2>Admin Login</h2>
-            <p>Please enter your GitHub Personal Access Token to continue.</p>
-            <div style="margin: 1.5rem 0;">
-                <input type="password" id="github-token" placeholder="ghp_..."
-                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        < !-- Login Screen -->
+            <div id="login-screen" class="login-screen active-screen">
+                <h2>Admin Login</h2>
+                <p>Please enter your GitHub Personal Access Token to continue.</p>
+                <div style="margin: 1.5rem 0;"><input type="password" id="github-token" placeholder="ghp_..."
+                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                </div><button id="login-btn" class="btn-primary">Login</button>
+                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">Don't have a token? <a
+                        href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Generate one
+                        here</a>(Select 'repo' scope). </p>
+                <pre id="debug-log"
+                    style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none;"></pre>
             </div>
-            <button id="login-btn" class="btn-primary">Login</button>
-            <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">Don't have a token? <a
-                    href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Generate one here</a>
-                (Select 'repo' scope). </p>
-            <pre id="debug-log"
-                style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none;"></pre>
-        </div>
-
-        <!-- Dashboard Screen -->
-        <div id="dashboard-screen" class="dashboard-screen">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Your Articles</h2>
-                <div>
-                    <button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+New Article</button>
-                    <button id="refresh-btn" class="btn-secondary">Refresh</button>
+            < !-- Dashboard Screen -->
+                <div id="dashboard-screen" class="dashboard-screen">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>Your Articles</h2>
+                        <div><button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+New
+                                Article</button><button id="refresh-btn" class="btn-secondary">Refresh</button></div>
+                    </div>
+                    <div id="file-grid" class="file-list-grid">
+                        < !-- Files will be loaded here in columns -->
+                    </div>
+                    <ul id="file-list" class="file-list" style="display: none;">
+                        < !-- Fallback/Legacy list -->
+                    </ul>
                 </div>
-            </div>
-            <div id="file-grid" class="file-list-grid">
-                <!-- Files will be loaded here in columns -->
-            </div>
-            <ul id="file-list" class="file-list" style="display: none;">
-                <!-- Fallback/Legacy list -->
-            </ul>
-        </div>
-
-        <!-- Editor Screen -->
-        <div id="editor-screen" class="editor-screen">
-            <div class="editor-toolbar">
-                <button id="back-btn" class="btn-secondary">← Back</button>
-                <div>
-                    <span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span>
-                    <button id="editor-delete-btn" class="btn-secondary"
-                        style="color: #ef4444; border-color: #ef4444; margin-right: 0.5rem;">Delete</button>
-                    <button id="save-btn" class="btn-primary">Publish Changes</button>
-                </div>
-            </div>
-            <div style="margin-bottom: 1rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page Title</label>
-                <input type="text" id="page-title"
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-            </div>
-            <div id="content-editor"></div>
-            <div id="status-msg" class="status-msg"></div>
-        </div>
+                < !-- Editor Screen -->
+                    <div id="editor-screen" class="editor-screen">
+                        <div class="editor-toolbar"><button id="back-btn" class="btn-secondary">← Back</button>
+                            <div><span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span><button
+                                    id="editor-delete-btn" class="btn-secondary"
+                                    style="color: #ef4444; border-color: #ef4444; margin-right: 0.5rem;">Delete</button><button
+                                    id="save-btn" class="btn-primary">Publish Changes</button></div>
+                        </div>
+                        <div style="margin-bottom: 1rem;"><label
+                                style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page
+                                Title</label><input type="text" id="page-title"
+                                style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                        </div>
+                        <div id="content-editor"></div>
+                        <div id="status-msg" class="status-msg"></div>
+                    </div>
     </main>
-
-    <!-- New Article Modal (Hidden by default) -->
-    <div id="new-article-modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
-        <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); width: 400px; max-width: 90%;">
-            <h3>Create New Article</h3>
-            <div style="margin: 1rem 0;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filename (e.g.,
-                    my-article)</label>
-                <input type="text" id="new-filename"
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-            </div>
-            <div style="margin: 1rem 0;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label>
-                <input type="text" id="new-title"
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-            </div>
-            <div style="margin: 1rem 0;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Category</label>
-                <select id="new-category"
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                    <option value="General">General</option>
-                    <option value="STB Class 9">STB Class 9</option>
-                    <option value="STB Class 10">STB Class 10</option>
-                    <option value="STB Class 11">STB Class 11</option>
-                    <option value="STB Class 12">STB Class 12</option>
-                    <option value="AKUEB Class 9">AKUEB Class 9</option>
-                    <option value="AKUEB Class 10">AKUEB Class 10</option>
-                    <option value="AKUEB Class 11">AKUEB Class 11</option>
-                    <option value="AKUEB Class 12">AKUEB Class 12</option>
-                </select>
-            </div>
-            <div id="chapter-container" style="margin: 1rem 0; display: none;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter</label>
-                <select id="new-chapter"
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                    <option value="">Select Chapter</option>
-                </select>
-            </div>
-            <div style="margin: 1rem 0;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL (Optional)</label>
-                <input type="text" id="new-thumbnail" placeholder="https://..."
-                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">Leave empty to
-                    auto-extract from content images. </p>
-            </div>
-            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-                <button id="cancel-new-btn" class="btn-secondary">Cancel</button>
-                <button id="create-new-btn" class="btn-primary">Create</button>
+    < !-- New Article Modal (Hidden by default) -->
+        <div id="new-article-modal"
+            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+            <div
+                style="background: white; padding: 2rem; border-radius: var(--radius-lg); width: 400px; max-width: 90%;">
+                <h3>Create New Article</h3>
+                <div style="margin: 1rem 0;"><label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filename (e.g.,
+                        my-article)</label><input type="text" id="new-filename"
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                </div>
+                <div style="margin: 1rem 0;"><label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label><input type="text"
+                        id="new-title"
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                </div>
+                <div style="margin: 1rem 0;"><label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Category</label><select
+                        id="new-category"
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                        <option value="General">General</option>
+                        <option value="STB Class 9">STB Class 9</option>
+                        <option value="STB Class 10">STB Class 10</option>
+                        <option value="STB Class 11">STB Class 11</option>
+                        <option value="STB Class 12">STB Class 12</option>
+                        <option value="AKUEB Class 9">AKUEB Class 9</option>
+                        <option value="AKUEB Class 10">AKUEB Class 10</option>
+                        <option value="AKUEB Class 11">AKUEB Class 11</option>
+                        <option value="AKUEB Class 12">AKUEB Class 12</option>
+                    </select></div>
+                <div id="chapter-container" style="margin: 1rem 0; display: none;"><label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter</label><select
+                        id="new-chapter"
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                        <option value="">Select Chapter</option>
+                    </select></div>
+                <div style="margin: 1rem 0;"><label
+                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
+                        (Optional)</label><input type="text" id="new-thumbnail" placeholder="https://..."
+                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                    <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">Leave empty to
+                        auto-extract from content images. </p>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;"><button
+                        id="cancel-new-btn" class="btn-secondary">Cancel</button><button id="create-new-btn"
+                        class="btn-primary">Create</button></div>
             </div>
         </div>
-    </div>
-
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <script type="module" src="/src/admin.js"></script>
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script src="https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+        <script type="module" src="/src/admin.js"></script>
 </body>
 
 </html>
