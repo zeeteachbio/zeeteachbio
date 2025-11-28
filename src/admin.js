@@ -3,7 +3,7 @@ import { Octokit } from "octokit";
 // State
 let octokit = null;
 let owner = 'zeeteachbio';
-let repo = 'zeeteach';
+let repo = 'zeeteachbio';
 let currentUser = null;
 let currentFileSha = null;
 let currentFilePath = null;

@@ -12,7 +12,7 @@ export const searchIndex = [
     },
     {
         "title": "Introduction",
-        "url": "/article-introduciton.html",
+        "url": "/article-introduction.html",
         "excerpt": "Introduction - STB Class 9 (1. Introduction to Biology) notes.",
         "category": "STB Class 9",
         "chapter": "1. Introduction to Biology",
