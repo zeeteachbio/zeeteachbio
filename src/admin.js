@@ -115,6 +115,7 @@ const quill = new Quill('#content-editor', {
         },
         toolbar: [
             [{ 'header': [1, 2, 3, false] }],
+            [{ 'font': [] }],
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
@@ -562,7 +563,11 @@ saveBtn.addEventListener('click', async () => {
 
     } catch (error) {
         console.error(error);
-        statusMsg.innerText = `Error publishing: ${error.message}`;
+        let errorMsg = `Error publishing: ${error.message}`;
+        if (error.status === 401) {
+            errorMsg = 'Error 401: Unauthorized. Your token may be invalid, expired, or missing the "repo" scope. Please log out and try again with a valid token.';
+        }
+        statusMsg.innerText = errorMsg;
         statusMsg.classList.add('status-error');
         statusMsg.style.display = 'block';
     } finally {
