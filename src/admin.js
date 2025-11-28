@@ -555,11 +555,11 @@ async function updateSearchIndex(newIndex, message) {
         console.error("Error updating searchData.js", e);
     }
 
-    // 2. Update articles.json (JSON Data)
+    // 2. Update articles.json (JSON Data in public/)
     try {
         let sha = null;
         try {
-            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/articles.json`);
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/public/articles.json`);
             sha = data.sha;
         } catch (e) {
             // File might not exist yet
@@ -568,7 +568,7 @@ async function updateSearchIndex(newIndex, message) {
         const newJsonContent = JSON.stringify(newIndex, null, 4);
         const newJsonBase64 = btoa(unescape(encodeURIComponent(newJsonContent)));
 
-        await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/articles.json`, {
+        await octokit.request(`PUT /repos/${owner}/${repo}/contents/public/articles.json`, {
             message: message,
             content: newJsonBase64,
             sha: sha

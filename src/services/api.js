@@ -125,7 +125,8 @@ export const api = {
         if (USE_MOCK) {
             // Try to fetch dynamic JSON first
             try {
-                const response = await fetch('/src/articles.json?t=' + Date.now());
+                // Fetch from root (public dir)
+                const response = await fetch('/articles.json?t=' + Date.now());
                 if (response.ok) {
                     const articles = await response.json();
                     const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
