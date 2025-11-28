@@ -260,42 +260,49 @@ const initApp = async () => {
     };
 
     // Header Search
-    const headerSearchInput = document.querySelector('.search-input');
-    const headerSearchBtn = document.querySelector('.search-btn');
+    const headerSearchInput = document.querySelector('.search-input'); // Selects the first one (header)
+    const headerSearchBtn = document.querySelector('.search-btn'); // Selects the first one (header)
     const headerSearchContainer = document.querySelector('.search-container');
 
-    if (headerSearchInput && headerSearchBtn) {
-        setupSearchSuggestions(headerSearchInput, headerSearchContainer);
+    // Hero Search (Homepage)
+    const heroSearchInput = document.getElementById('hero-search-input');
+    const heroSearchBtn = document.getElementById('hero-search-btn');
+    const heroSearchContainer = document.querySelector('.hero-search');
 
-        // Remove old listeners if possible (not easy without named functions), 
-        // but since we run once, it's okay. 
-        // To prevent duplicates on re-run (if HMR), we could check a flag, but standard reload is fine.
+    const setupSearch = (input, btn, container) => {
+        if (!input || !btn) return;
 
-        headerSearchBtn.onclick = (e) => {
-            // Check if on mobile (input hidden or container not active)
+        setupSearchSuggestions(input, container || input.parentElement);
+
+        btn.onclick = (e) => {
+            // Check if on mobile (input hidden or container not active) - Only for header search
             const isMobile = window.innerWidth <= 768;
-            if (isMobile && !headerSearchContainer.classList.contains('active')) {
+            if (container && container.classList.contains('search-container') && !container.classList.contains('hero-search') && isMobile && !container.classList.contains('active')) {
                 e.preventDefault();
-                headerSearchContainer.classList.add('active');
-                headerSearchInput.focus();
+                container.classList.add('active');
+                input.focus();
             } else {
-                handleSearch(headerSearchInput);
+                handleSearch(input);
             }
         };
 
-        headerSearchInput.onkeypress = (e) => {
-            if (e.key === 'Enter') handleSearch(headerSearchInput);
+        input.onkeypress = (e) => {
+            if (e.key === 'Enter') handleSearch(input);
         };
+    };
 
-        // Close search on click outside (mobile)
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 &&
-                headerSearchContainer.classList.contains('active') &&
-                !headerSearchContainer.contains(e.target)) {
-                headerSearchContainer.classList.remove('active');
-            }
-        });
-    }
+    setupSearch(headerSearchInput, headerSearchBtn, headerSearchContainer);
+    setupSearch(heroSearchInput, heroSearchBtn, heroSearchContainer);
+
+    // Close search on click outside (mobile header search)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 &&
+            headerSearchContainer &&
+            headerSearchContainer.classList.contains('active') &&
+            !headerSearchContainer.contains(e.target)) {
+            headerSearchContainer.classList.remove('active');
+        }
+    });
 
     // Native Class Search (Page Filter)
     const classSearchInput = document.querySelector('.class-search-input');
