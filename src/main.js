@@ -554,9 +554,7 @@ const initApp = async () => {
     }
 
     // 5. Per-Page Search for Class Pages
-    const classSearchInput = document.querySelector('.class-search-input');
-    const classSearchBtn = document.querySelector('.class-search-btn');
-
+    // Variables classSearchInput and classSearchBtn are already declared above (around line 308)
     if (classSearchInput) {
         // Function to filter chapters
         const filterChapters = () => {
