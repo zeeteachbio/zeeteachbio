@@ -106,10 +106,15 @@ if (window.Quill) {
     window.Quill.register(LineHeightStyle, true);
     window.Quill.register(MarginBottomStyle, true);
 
-    // Register Fonts
-    const Font = window.Quill.import('formats/font');
+    // Register Fonts (Use Inline Styles)
+    const Font = window.Quill.import('attributors/style/font');
     Font.whitelist = ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new'];
     window.Quill.register(Font, true);
+
+    // Register Size (Use Inline Styles)
+    const Size = window.Quill.import('attributors/style/size');
+    Size.whitelist = ['small', 'large', 'huge'];
+    window.Quill.register(Size, true);
 }
 
 const quill = new Quill('#content-editor', {
