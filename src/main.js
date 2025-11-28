@@ -259,10 +259,10 @@ const initApp = async () => {
         });
     };
 
-    // Header Search
-    const headerSearchInput = document.querySelector('.search-input'); // Selects the first one (header)
-    const headerSearchBtn = document.querySelector('.search-btn'); // Selects the first one (header)
-    const headerSearchContainer = document.querySelector('.search-container');
+    // Header Search (in the header element)
+    const headerSearchInput = document.querySelector('.header .search-input');
+    const headerSearchBtn = document.querySelector('.header .search-btn');
+    const headerSearchContainer = document.querySelector('.header .search-container');
 
     // Hero Search (Homepage)
     const heroSearchInput = document.getElementById('hero-search-input');
