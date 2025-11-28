@@ -108,7 +108,7 @@ if (window.Quill) {
 
     // Register Fonts (Use Inline Styles)
     const Font = window.Quill.import('attributors/style/font');
-    Font.whitelist = ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new'];
+    Font.whitelist = ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'];
     window.Quill.register(Font, true);
 
     // Register Size (Use Inline Styles)
@@ -125,7 +125,7 @@ const quill = new Quill('#content-editor', {
         },
         toolbar: [
             [{ 'header': [1, 2, 3, false] }],
-            [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new'] }],
+            [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'] }],
             [{ 'size': ['small', false, 'large', 'huge'] }],
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],

@@ -109,6 +109,14 @@
     font-family: 'Courier New', monospace;
 }
 
+.ql-font-katibeh {
+    font-family: 'Katibeh', cursive;
+}
+
+.ql-font-lateef {
+    font-family: 'Lateef', cursive;
+}
+
 /* Font Picker Labels */
 .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="mirza"]::before,
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="mirza"]::before {
@@ -144,4 +152,16 @@
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="courier-new"]::before {
     content: 'Courier New';
     font-family: 'Courier New', monospace;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="katibeh"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="katibeh"]::before {
+    content: 'Katibeh';
+    font-family: 'Katibeh', cursive;
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="lateef"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="lateef"]::before {
+    content: 'Lateef';
+    font-family: 'Lateef', cursive;
 }
