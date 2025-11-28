@@ -182,24 +182,6 @@
                     style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none;"></pre>
             </div>
 
-            <!-- Dashboard Screen -->
-            <div id="dashboard-screen" class="dashboard-screen">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h2>Your Articles</h2>
-                    <div>
-                        <button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+ New
-                            Article</button>
-                        <button id="refresh-btn" class="btn-secondary">Refresh</button>
-                    </div>
-                </div>
-                <div id="file-grid" class="file-list-grid">
-                    <!-- Files will be loaded here in columns -->
-                </div>
-                <ul id="file-list" class="file-list" style="display: none;">
-                    <!-- Fallback/Legacy list -->
-                </ul>
-            </div>
-
             <!-- Editor Screen -->
             <div id="editor-screen" class="editor-screen">
                 <div class="editor-toolbar">
@@ -235,44 +217,24 @@
                 </div>
                 <div style="margin: 1rem 0;">
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label>
-                    <input type="text" id="new-title"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                </div>
-                <div style="margin: 1rem 0;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Category</label>
-                    <select id="new-category"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                        <option value="General">General</option>
-                        <option value="Class 9">Class 9</option>
-                        <option value="Class 10">Class 10</option>
-                        <option value="Class 11">Class 11</option>
-                        <option value="Class 12">Class 12</option>
-                    </select>
-                </div>
-                <div style="margin: 1rem 0;" id="chapter-container" style="display: none;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter</label>
-                    <select id="new-chapter"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                        <option value="">Select Chapter...</option>
-                    </select>
-                </div>
-                <div style="margin: 1rem 0;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
-                        (Optional)</label>
-                    <input type="text" id="new-thumbnail" placeholder="https://..."
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                    <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">
-                        Leave empty to auto-extract from content images.
-                    </p>
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-                    <button id="cancel-new-btn" class="btn-secondary">Cancel</button>
-                    <button id="create-new-btn" class="btn-primary">Create</button>
+                    <input type="text" id="new-title" </div>
+                    <div style="margin: 1rem 0;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
+                            (Optional)</label>
+                        <input type="text" id="new-thumbnail" placeholder="https://..."
+                            style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                        <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">
+                            Leave empty to auto-extract from content images.
+                        </p>
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                        <button id="cancel-new-btn" class="btn-secondary">Cancel</button>
+                        <button id="create-new-btn" class="btn-primary">Create</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script type="module" src="/src/admin.js"></script>
+        <script type="module" src="/src/admin.js"></script>
 </body>
 
 </html>

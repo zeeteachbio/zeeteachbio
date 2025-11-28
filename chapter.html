@@ -16,25 +16,22 @@
     <div id="app">
         <header class="header">
             <div class="container header-content">
-                <a href="/" class="logo">
-                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
-                    Zee Teach
-                </a>
-                <nav class="nav">
-                    <a href="/" class="nav-link">Home</a>
-                    <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">Courses &#9662;</a>
-                        <div class="dropdown-menu">
-                            <a href="/class9.html" class="dropdown-item">Class 9</a>
-                            <a href="/class10.html" class="dropdown-item">Class 10</a>
-                            <a href="/class11.html" class="dropdown-item">Class 11</a>
-                            <a href="/class12.html" class="dropdown-item">Class 12</a>
-                        </div>
-                    </div>
-                </nav>
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Search topics...">
-                    <button class="search-btn">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                </button>
+            </div>
+    </div>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 4rem 0;">
+            <div class="container hero-content">
+                <h1 id="chapter-title" class="hero-title" style="font-size: 2.5rem;">Loading Chapter...</h1>
+                <div class="class-search-container">
+                    <input type="text" id="chapter-search-input" class="class-search-input"
+                        placeholder="Search in this chapter...">
+                    <button class="class-search-btn">
                         <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -42,49 +39,31 @@
                     </button>
                 </div>
             </div>
-        </header>
+        </section>
 
-        <main>
-            <section class="hero" style="padding: 4rem 0;">
-                <div class="container hero-content">
-                    <h1 id="chapter-title" class="hero-title" style="font-size: 2.5rem;">Loading Chapter...</h1>
-                    <div class="class-search-container">
-                        <input type="text" id="chapter-search-input" class="class-search-input"
-                            placeholder="Search in this chapter...">
-                        <button class="class-search-btn">
-                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                        </button>
+        <section class="section">
+            <div class="container">
+                <div id="chapter-articles-grid" class="grid notes-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <!-- Articles will be loaded here -->
+                    <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                        Loading articles...
                     </div>
-                </div>
-            </section>
-
-            <section class="section">
-                <div class="container">
-                    <div id="chapter-articles-grid" class="grid notes-grid"
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                        <!-- Articles will be loaded here -->
-                        <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
-                            Loading articles...
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <div class="container footer-content">
-                <p>&copy; 2025 Zeeteach. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">Twitter</a>
-                    <a href="#" class="social-link">YouTube</a>
-                    <a href="#" class="social-link">Instagram</a>
                 </div>
             </div>
-        </footer>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Zeeteach. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">Twitter</a>
+                <a href="#" class="social-link">YouTube</a>
+                <a href="#" class="social-link">Instagram</a>
+            </div>
+        </div>
+    </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
 </body>

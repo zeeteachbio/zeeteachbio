@@ -33,7 +33,11 @@ const chapters = {
         "21. Cell Cycle", "22. Variation and Genetics", "23. Biotechnology",
         "24. Evolution", "25. Ecosystem", "26. Some Major Ecosystems",
         "27. Man and His Environment"
-    ]
+    ],
+    'AKUEB Class 9': [],
+    'AKUEB Class 10': [],
+    'AKUEB Class 11': [],
+    'AKUEB Class 12': []
 };
 
 // DOM Elements
@@ -228,7 +232,11 @@ async function loadFiles() {
             'Class 9': { files: [], chapters: {} },
             'Class 10': { files: [], chapters: {} },
             'Class 11': { files: [], chapters: {} },
-            'Class 12': { files: [], chapters: {} }
+            'Class 12': { files: [], chapters: {} },
+            'AKUEB Class 9': { files: [], chapters: {} },
+            'AKUEB Class 10': { files: [], chapters: {} },
+            'AKUEB Class 11': { files: [], chapters: {} },
+            'AKUEB Class 12': { files: [], chapters: {} }
         };
         const otherFiles = [];
 
@@ -269,6 +277,10 @@ async function loadFiles() {
                 else if (/class-?10/.test(name)) groups['Class 10'].files.push(file);
                 else if (/class-?11/.test(name)) groups['Class 11'].files.push(file);
                 else if (/class-?12/.test(name)) groups['Class 12'].files.push(file);
+                else if (/akueb-class-?9/.test(name)) groups['AKUEB Class 9'].files.push(file);
+                else if (/akueb-class-?10/.test(name)) groups['AKUEB Class 10'].files.push(file);
+                else if (/akueb-class-?11/.test(name)) groups['AKUEB Class 11'].files.push(file);
+                else if (/akueb-class-?12/.test(name)) groups['AKUEB Class 12'].files.push(file);
                 else otherFiles.push(file);
             }
         });
