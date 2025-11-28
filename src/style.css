@@ -143,8 +143,7 @@ main {
   }
 }
 
-}
-}
+
 
 /* Global Search Styles */
 .search-container {
@@ -215,6 +214,12 @@ a {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
 }
 
 /* Header */
@@ -1009,13 +1014,16 @@ a {
     order: 1;
     z-index: 2;
     margin-right: auto;
+    white-space: nowrap;
+    /* Prevent wrapping */
+    flex-shrink: 0;
   }
 
   .logo-icon {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    /* Slightly smaller icon */
+    height: 2rem;
     border-radius: 50%;
-    /* Make white background circular */
   }
 
   .nav {
@@ -1084,7 +1092,9 @@ a {
 
   .article-image {
     width: 100%;
-    height: 200px;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
   }
 
   .article-content {
