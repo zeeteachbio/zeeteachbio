@@ -20,5 +20,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.1 Divisions and Branches of Biology",
+        "url": "/divisions-and-branches.html",
+        "excerpt": "1.1 Divisions and Branches of Biology - STB Class 9 (1. Introduction to Biology) notes.",
+        "category": "STB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-11-28T14:59:41.167Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
