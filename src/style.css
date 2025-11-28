@@ -143,6 +143,57 @@ main {
   }
 }
 
+}
+}
+
+/* Global Search Styles */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 0.5rem 1rem;
+  padding-right: 2.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  width: 250px;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  width: 300px;
+}
+
+.search-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+}
+
+.search-btn:hover {
+  color: var(--color-primary);
+}
+
+.search-icon-svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
 html {
   scroll-behavior: smooth;
 }
