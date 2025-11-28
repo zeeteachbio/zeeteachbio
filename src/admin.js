@@ -10,24 +10,24 @@ let currentFilePath = null;
 
 // Chapter Data
 const chapters = {
-    'Class 9': [
+    'STB Class 9': [
         "1. Introduction to Biology", "2. Solving a Biological Problem", "3. Biodiversity",
         "4. Cells and Tissues", "5. Cell Cycle", "6. Enzymes",
         "7. Bioenergetics", "8. Nutrition", "9. Transport"
     ],
-    'Class 10': [
+    'STB Class 10': [
         "1. Gaseous Exchange", "2. Homeostasis", "3. Coordination and Control",
         "4. Support and Movement", "5. Reproduction", "6. Inheritance",
         "7. Man and His Environment", "8. Biotechnology", "9. Pharmacology"
     ],
-    'Class 11': [
+    'STB Class 11': [
         "1. Biological Molecules", "2. Enzymes", "3. Cell Structure and Function",
         "4. Bioenergetics", "5. Acellular Life", "6. Prokaryotes",
         "7. Protoctists and Fungi", "8. Diversity Among Plants", "9. Diversity Among Animals",
         "10. Forms and Functions in Plant", "11. Holozoic Nutrition", "12. Circulation",
         "13. Immunity", "14. Gaseous Exchange"
     ],
-    'Class 12': [
+    'STB Class 12': [
         "15. Homeostasis", "16. Support and Movement", "17. Coordination and Control",
         "18. Reproduction", "19. Growth and Development", "20. Chromosomes and DNA",
         "21. Cell Cycle", "22. Variation and Genetics", "23. Biotechnology",
@@ -239,10 +239,10 @@ async function loadFiles() {
 
         // Grouping Logic
         const groups = {
-            'Class 9': { files: [], chapters: {} },
-            'Class 10': { files: [], chapters: {} },
-            'Class 11': { files: [], chapters: {} },
-            'Class 12': { files: [], chapters: {} },
+            'STB Class 9': { files: [], chapters: {} },
+            'STB Class 10': { files: [], chapters: {} },
+            'STB Class 11': { files: [], chapters: {} },
+            'STB Class 12': { files: [], chapters: {} },
             'AKUEB Class 9': { files: [], chapters: {} },
             'AKUEB Class 10': { files: [], chapters: {} },
             'AKUEB Class 11': { files: [], chapters: {} },
@@ -268,7 +268,13 @@ async function loadFiles() {
             let assigned = false;
 
             if (metadata) {
-                const category = metadata.category;
+                let category = metadata.category;
+                // Map old categories
+                if (category === 'Class 9') category = 'STB Class 9';
+                if (category === 'Class 10') category = 'STB Class 10';
+                if (category === 'Class 11') category = 'STB Class 11';
+                if (category === 'Class 12') category = 'STB Class 12';
+
                 const chapter = metadata.chapter;
 
                 if (groups[category]) {
@@ -283,10 +289,10 @@ async function loadFiles() {
 
             // 2. Fallback to filename matching if not assigned via metadata
             if (!assigned) {
-                if (/class-?9/.test(name)) groups['Class 9'].files.push(file);
-                else if (/class-?10/.test(name)) groups['Class 10'].files.push(file);
-                else if (/class-?11/.test(name)) groups['Class 11'].files.push(file);
-                else if (/class-?12/.test(name)) groups['Class 12'].files.push(file);
+                if (/class-?9/.test(name)) groups['STB Class 9'].files.push(file);
+                else if (/class-?10/.test(name)) groups['STB Class 10'].files.push(file);
+                else if (/class-?11/.test(name)) groups['STB Class 11'].files.push(file);
+                else if (/class-?12/.test(name)) groups['STB Class 12'].files.push(file);
                 else if (/akueb-class-?9/.test(name)) groups['AKUEB Class 9'].files.push(file);
                 else if (/akueb-class-?10/.test(name)) groups['AKUEB Class 10'].files.push(file);
                 else if (/akueb-class-?11/.test(name)) groups['AKUEB Class 11'].files.push(file);
