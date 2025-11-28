@@ -42,5 +42,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.1.2 Careers in Biology",
+        "url": "/careers-in-biology.html",
+        "excerpt": "1.1.2 Careers in Biology - STB Class 9 (1. Introduction to Biology) notes.",
+        "category": "STB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-11-28T16:44:28.533Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
