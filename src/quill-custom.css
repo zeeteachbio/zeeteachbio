@@ -1,0 +1,85 @@
+/* Quill Toolbar Custom Styles */
+.ql-snow .ql-picker.ql-line-height .ql-picker-label::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item::before {
+    content: 'Line Height';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item::before {
+    content: 'Paragraph Spacing';
+}
+
+/* Custom Icons/Labels for specific values if needed, or just generic label */
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="1.0"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="1.0"]::before {
+    content: '1.0';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="1.2"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="1.2"]::before {
+    content: '1.2';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="1.5"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="1.5"]::before {
+    content: '1.5';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="1.8"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="1.8"]::before {
+    content: '1.8';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="2.0"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="2.0"]::before {
+    content: '2.0';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="2.5"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="2.5"]::before {
+    content: '2.5';
+}
+
+.ql-snow .ql-picker.ql-line-height .ql-picker-label[data-value="3.0"]::before,
+.ql-snow .ql-picker.ql-line-height .ql-picker-item[data-value="3.0"]::before {
+    content: '3.0';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="0px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="0px"]::before {
+    content: '0px';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="10px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="10px"]::before {
+    content: '10px';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="20px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="20px"]::before {
+    content: '20px';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="30px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="30px"]::before {
+    content: '30px';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="40px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="40px"]::before {
+    content: '40px';
+}
+
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-label[data-value="50px"]::before,
+.ql-snow .ql-picker.ql-margin-bottom .ql-picker-item[data-value="50px"]::before {
+    content: '50px';
+}
+
+/* Adjust width for custom pickers */
+.ql-snow .ql-picker.ql-line-height {
+    width: 60px;
+}
+
+.ql-snow .ql-picker.ql-margin-bottom {
+    width: 80px;
+}

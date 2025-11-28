@@ -81,9 +81,29 @@ const chapterContainer = document.getElementById('chapter-container');
 console.log('Admin script loaded');
 
 // Initialize Quill
+// Register Image Resize Module
+if (window.Quill) {
+    window.Quill.register('modules/imageResize', window.ImageResize);
+
+    // Register Custom Attributors for Spacing
+    const Parchment = window.Quill.import('parchment');
+    const LineHeightStyle = new Parchment.Attributor.Style('line-height', 'line-height', {
+        scope: Parchment.Scope.INLINE
+    });
+    const MarginBottomStyle = new Parchment.Attributor.Style('margin-bottom', 'margin-bottom', {
+        scope: Parchment.Scope.BLOCK
+    });
+
+    window.Quill.register(LineHeightStyle, true);
+    window.Quill.register(MarginBottomStyle, true);
+}
+
 const quill = new Quill('#content-editor', {
     theme: 'snow',
     modules: {
+        imageResize: {
+            displaySize: true
+        },
         toolbar: [
             [{ 'header': [1, 2, 3, false] }],
             ['bold', 'italic', 'underline', 'strike'],
@@ -91,7 +111,10 @@ const quill = new Quill('#content-editor', {
             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             [{ 'script': 'sub' }, { 'script': 'super' }],
             [{ 'color': [] }, { 'background': [] }],
+            [{ 'align': [] }],
             ['link', 'image', 'video'],
+            [{ 'line-height': ['1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'] }],
+            [{ 'margin-bottom': ['0px', '10px', '20px', '30px', '40px', '50px'] }],
             ['clean']
         ]
     }
