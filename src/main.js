@@ -552,6 +552,64 @@ const initApp = async () => {
             new CommentSystem('comments-section');
         }
     }
+
+    // 5. Per-Page Search for Class Pages
+    const classSearchInput = document.querySelector('.class-search-input');
+    const classSearchBtn = document.querySelector('.class-search-btn');
+
+    if (classSearchInput) {
+        // Function to filter chapters
+        const filterChapters = () => {
+            const query = classSearchInput.value.toLowerCase().trim();
+            const tableRows = document.querySelectorAll('.chapter-table tbody tr');
+
+            if (!tableRows.length) return;
+
+            let visibleCount = 0;
+            tableRows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const matches = text.includes(query);
+                row.style.display = matches ? '' : 'none';
+                if (matches) visibleCount++;
+            });
+
+            // Show message if no results
+            const table = document.querySelector('.chapter-table');
+            let noResultsMsg = document.querySelector('.no-results-message');
+
+            if (visibleCount === 0 && query) {
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('p');
+                    noResultsMsg.className = 'no-results-message';
+                    noResultsMsg.style.textAlign = 'center';
+                    noResultsMsg.style.padding = '2rem';
+                    noResultsMsg.style.color = '#64748b';
+                    noResultsMsg.textContent = 'No chapters found matching your search.';
+                    table.parentElement.appendChild(noResultsMsg);
+                }
+                noResultsMsg.style.display = 'block';
+            } else if (noResultsMsg) {
+                noResultsMsg.style.display = 'none';
+            }
+        };
+
+        // Add event listeners
+        classSearchInput.addEventListener('input', filterChapters);
+
+        if (classSearchBtn) {
+            classSearchBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                filterChapters();
+            });
+        }
+
+        classSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                filterChapters();
+            }
+        });
+    }
 };
 
 // Robust initialization
