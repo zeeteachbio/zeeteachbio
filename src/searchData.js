@@ -31,5 +31,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.1.1 Relationship of Biology with Other Sciences",
+        "url": "/relationship-of-biology-with-other-sciences.html",
+        "excerpt": "1.1.1 Relationship of Biology with Other Sciences - STB Class 9 (1. Introduction to Biology) notes.",
+        "category": "STB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-11-28T15:29:09.476Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
