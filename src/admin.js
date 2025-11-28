@@ -165,6 +165,200 @@ async function loadFiles() {
                     console.log(`Repo ${o}/${r} not found.`);
                 }
             }
+        }
+
+        if (!found) {
+            throw new Error("Could not find repository 'zeeteach' or 'zeeteachbio'");
+        }
+
+        // Fetch src/searchData.js to get metadata
+        let searchDataFile = null;
+        let searchIndex = [];
+        try {
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+            searchDataFile = data;
+
+            // Parse search index
+            const content = decodeURIComponent(escape(atob(data.content)));
+            const arrayString = content.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
+            try {
+                searchIndex = new Function('return ' + arrayString)();
+            } catch (e) {
+                console.error("Failed to parse searchData.js content", e);
+            }
+        } catch (e) {
+            console.log("searchData.js not found in src/", e);
+        }
+
+        fileGrid.innerHTML = '';
+        fileList.innerHTML = '';
+
+        // Helper to create file item
+        const createFileItem = (file, label = null) => {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            div.innerHTML = `
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 0.5rem;" title="${label || file.name}">${label || file.name}</span>
+                <div style="display: flex; gap: 0.25rem;">
+                    <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
+                    <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444; padding: 0.25rem 0.5rem; font-size: 0.8rem;">Del</button>
+                </div>
+            `;
+
+            const buttons = div.querySelectorAll('button');
+            const editBtn = buttons[0];
+            const deleteBtn = buttons[1];
+
+            editBtn.addEventListener('click', () => loadFileContent(file.path));
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent file item click if any
+                if (confirm(`Are you sure you want to delete ${file.name}?`)) {
+                    deleteFile(file.path, file.sha);
+                }
+            });
+
+            return div;
+        };
+
+        const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'admin.html');
+
+        // Grouping Logic
+        const groups = {
+            'Class 9': { files: [], chapters: {} },
+            'Class 10': { files: [], chapters: {} },
+            'Class 11': { files: [], chapters: {} },
+            'Class 12': { files: [], chapters: {} }
+        };
+        const otherFiles = [];
+
+        // Initialize chapter buckets
+        Object.keys(groups).forEach(cls => {
+            if (chapters[cls]) {
+                chapters[cls].forEach(chap => {
+                    groups[cls].chapters[chap] = [];
+                });
+            }
+        });
+
+        htmlFiles.forEach(file => {
+            const name = file.name.toLowerCase();
+
+            // 1. Try to find metadata in searchIndex
+            const metadata = searchIndex.find(item => item.url === `/${file.name}` || item.url === file.name);
+
+            let assigned = false;
+
+            if (metadata) {
+                const category = metadata.category;
+                const chapter = metadata.chapter;
+
+                if (groups[category]) {
+                    if (chapter && groups[category].chapters[chapter]) {
+                        groups[category].chapters[chapter].push(file);
+                    } else {
+                        groups[category].files.push(file); // No chapter or unknown chapter
+                    }
+                    assigned = true;
+                }
+            }
+
+            // 2. Fallback to filename matching if not assigned via metadata
+            if (!assigned) {
+                if (/class-?9/.test(name)) groups['Class 9'].files.push(file);
+                else if (/class-?10/.test(name)) groups['Class 10'].files.push(file);
+                else if (/class-?11/.test(name)) groups['Class 11'].files.push(file);
+                else if (/class-?12/.test(name)) groups['Class 12'].files.push(file);
+                else otherFiles.push(file);
+            }
+        });
+
+        // Render 4 Columns for Classes
+        Object.entries(groups).forEach(([groupName, groupData]) => {
+            const col = document.createElement('div');
+            col.className = 'file-column';
+
+            const header = document.createElement('h3');
+            header.innerHTML = `
+                ${groupName}
+                <button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">+ New</button>
+            `;
+
+            // Add New Article Button Logic
+            header.querySelector('button').onclick = () => {
+                newCategorySelect.value = groupName;
+                updateChapterDropdown(groupName);
+                newArticleModal.style.display = 'flex';
+            };
+
+            col.appendChild(header);
+
+            let hasFiles = false;
+
+            // Render Chapters
+            if (chapters[groupName]) {
+                chapters[groupName].forEach(chapterName => {
+                    const chapterFiles = groupData.chapters[chapterName];
+
+                    const chapterHeader = document.createElement('div');
+                    chapterHeader.style.fontSize = '0.85rem';
+                    chapterHeader.style.fontWeight = '600';
+                    chapterHeader.style.color = '#64748b';
+                    chapterHeader.style.marginTop = '0.75rem';
+                    chapterHeader.style.marginBottom = '0.25rem';
+                    chapterHeader.style.paddingBottom = '0.25rem';
+                    chapterHeader.style.borderBottom = '1px dashed #e2e8f0';
+                    chapterHeader.innerText = chapterName;
+                    col.appendChild(chapterHeader);
+
+                    if (chapterFiles && chapterFiles.length > 0) {
+                        chapterFiles.forEach(file => {
+                            col.appendChild(createFileItem(file));
+                        });
+                        hasFiles = true;
+                    } else {
+                        const emptyMsg = document.createElement('div');
+                        emptyMsg.style.fontSize = '0.75rem';
+                        emptyMsg.style.color = '#cbd5e1';
+                        emptyMsg.style.fontStyle = 'italic';
+                        emptyMsg.style.paddingLeft = '0.5rem';
+                        emptyMsg.innerText = 'No articles';
+                        col.appendChild(emptyMsg);
+                    }
+                });
+            }
+
+            // Render Uncategorized Files for this Class
+            if (groupData.files.length > 0) {
+                const otherHeader = document.createElement('div');
+                otherHeader.style.fontSize = '0.85rem';
+                otherHeader.style.fontWeight = '600';
+                otherHeader.style.color = '#64748b';
+                otherHeader.style.marginTop = '1rem';
+                otherHeader.innerText = 'Uncategorized / General';
+                col.appendChild(otherHeader);
+
+                groupData.files.forEach(file => {
+                    col.appendChild(createFileItem(file));
+                });
+                hasFiles = true;
+            }
+
+            fileGrid.appendChild(col);
+        });
+
+        // Render Other Files below
+        if (otherFiles.length > 0 || searchDataFile) {
+            const otherSection = document.createElement('div');
+            otherSection.style.gridColumn = "1 / -1";
+            otherSection.style.marginTop = "2rem";
+            otherSection.innerHTML = '<h3 style="border-bottom: 2px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 1rem;">Other Files & Pages</h3>';
+
+            const list = document.createElement('div');
+            list.style.display = 'grid';
+            list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
+            list.style.gap = '1rem';
+
             if (searchDataFile) {
                 const item = createFileItem(searchDataFile, 'src/searchData.js');
                 item.style.borderLeft = "4px solid #f59e0b";
