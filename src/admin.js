@@ -34,7 +34,11 @@ const chapters = {
         "24. Evolution", "25. Ecosystem", "26. Some Major Ecosystems",
         "27. Man and His Environment"
     ],
-    'AKUEB Class 9': [],
+    'AKUEB Class 9': [
+        "1. Introduction to Biology", "2. Solving a Biological Problem", "3. Biodiversity",
+        "4. Cells and Tissues", "5. Gaseous Exchange", "6. Enzymes",
+        "7. Bioenergetics", "8. Nutrition and Digestion", "9. Transport"
+    ],
     'AKUEB Class 10': [],
     'AKUEB Class 11': [
         "1. Biological Molecules", "2. Enzymes", "3. The Cell",
@@ -165,7 +169,7 @@ async function loadFiles() {
             for (const r of repoNames) {
                 try {
                     console.log(`Trying repo: ${o}/${r}`);
-                    const { data } = await octokit.request(`GET /repos/${o}/${r}/contents/`);
+                    const { data } = await octokit.request(`GET /repos/${o}/${r}/contents/?t=${Date.now()}`);
                     owner = o;
                     repo = r;
                     files = data;
@@ -185,7 +189,7 @@ async function loadFiles() {
         let searchDataFile = null;
         let searchIndex = [];
         try {
-            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js?t=${Date.now()}`);
             searchDataFile = data;
 
             // Parse search index
@@ -696,6 +700,7 @@ createNewBtn.addEventListener('click', async () => {
 
         alert("Article created and added to search!");
         newArticleModal.style.display = 'none';
+        await loadFiles();
         await loadFiles();
 
     } catch (error) {
