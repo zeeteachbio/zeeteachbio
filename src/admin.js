@@ -507,21 +507,75 @@ async function loadFileContent(path) {
             .replace(/Ã¢Â€Â/g, '”')
             .replace(/Â/g, ''); // Remove stray non-breaking space artifacts often appearing as Â
 
-        pageTitleInput.value = title.replace(' - Zee Teach', '');
-        pageTitleInput.disabled = false;
+        // Check for extremely large content
+        if (bodyContent.length > 1000000) { // 1MB warning
+            if (!confirm(`Warning: This file is very large (${Math.round(bodyContent.length / 1024)}KB). It may contain large embedded images which can slow down or crash the editor. Do you want to try loading it anyway?`)) {
+                showScreen('dashboard');
+                return;
+            }
+        }
 
         console.log('Body Content Length:', bodyContent.length);
         quill.setContents([]);
-        const delta = quill.clipboard.convert(bodyContent);
-        console.log('Converted Delta:', delta);
-        quill.setContents(delta, 'silent');
+        try {
+            const delta = quill.clipboard.convert(bodyContent);
+            console.log('Converted Delta:', delta);
+            quill.setContents(delta, 'silent');
+        } catch (e) {
+            console.error("Quill conversion error:", e);
+            alert("Failed to load content into editor. The file might be too complex or contain invalid HTML.");
+            showScreen('dashboard');
+            return;
+        }
 
         document.getElementById('current-file').innerText = path;
 
         showScreen('editor');
     } catch (error) {
         console.error(error);
-        alert('Error loading file content');
+        alert('Error loading file content: ' + error.message);
+    }
+}
+
+// Helper to update both searchData.js and articles.json
+async function updateSearchIndex(newIndex, message) {
+    // 1. Update searchData.js (JS Module)
+    try {
+        const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+        const newSearchContent = `export const searchIndex = ${JSON.stringify(newIndex, null, 4)};`;
+        const newSearchBase64 = btoa(unescape(encodeURIComponent(newSearchContent)));
+
+        await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
+            message: message,
+            content: newSearchBase64,
+            sha: searchData.sha
+        });
+        console.log("Updated searchData.js");
+    } catch (e) {
+        console.error("Error updating searchData.js", e);
+    }
+
+    // 2. Update articles.json (JSON Data)
+    try {
+        let sha = null;
+        try {
+            const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/articles.json`);
+            sha = data.sha;
+        } catch (e) {
+            // File might not exist yet
+        }
+
+        const newJsonContent = JSON.stringify(newIndex, null, 4);
+        const newJsonBase64 = btoa(unescape(encodeURIComponent(newJsonContent)));
+
+        await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/articles.json`, {
+            message: message,
+            content: newJsonBase64,
+            sha: sha
+        });
+        console.log("Updated articles.json");
+    } catch (e) {
+        console.error("Error updating articles.json", e);
     }
 }
 
@@ -756,19 +810,10 @@ createNewBtn.addEventListener('click', async () => {
             // Add to index
             currentSearchIndex.push(newEntry);
 
-            // Serialize back to string
-            const newSearchContent = `export const searchIndex = ${JSON.stringify(currentSearchIndex, null, 4)};`;
-            const newSearchBase64 = btoa(unescape(encodeURIComponent(newSearchContent)));
-
-            await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
-                message: `Add ${title} to search index`,
-                content: newSearchBase64,
-                sha: searchData.sha
-            });
-            console.log("Updated searchData.js");
+            await updateSearchIndex(currentSearchIndex, `Add ${title} to search index`);
 
         } catch (e) {
-            console.error("Error updating searchData.js", e);
+            console.error("Error updating search index", e);
             alert("Article created, but failed to update search index automatically. Please update it manually.");
         }
 
@@ -818,20 +863,11 @@ async function deleteFile(path, sha) {
                 const newSearchIndex = currentSearchIndex.filter(item => item.url !== urlToDelete);
 
                 if (newSearchIndex.length !== currentSearchIndex.length) {
-                    // Serialize back to string
-                    const newContent = `export const searchIndex = ${JSON.stringify(newSearchIndex, null, 4)};`;
-                    const newContentBase64 = btoa(unescape(encodeURIComponent(newContent)));
-
-                    await octokit.request(`PUT /repos/${owner}/${repo}/contents/src/searchData.js`, {
-                        message: `Remove ${path} from search index`,
-                        content: newContentBase64,
-                        sha: searchData.sha
-                    });
-                    console.log("Updated searchData.js");
+                    await updateSearchIndex(newSearchIndex, `Remove ${path} from search index`);
                 }
 
             } catch (e) {
-                console.error("Error updating searchData.js during delete", e);
+                console.error("Error updating search index during delete", e);
                 alert("File deleted, but failed to update search index. Please check manually.");
             }
         }

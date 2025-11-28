@@ -123,6 +123,22 @@ const mockApi = {
 export const api = {
     async getArticles() {
         if (USE_MOCK) {
+            // Try to fetch dynamic JSON first
+            try {
+                const response = await fetch('/src/articles.json?t=' + Date.now());
+                if (response.ok) {
+                    const articles = await response.json();
+                    const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
+                    return articles.map(article => ({
+                        ...article,
+                        views: (localStats[article.url]?.views || 0) + (article.views || 0),
+                        comments: (localStats[article.url]?.comments || 0) + (article.comments || 0)
+                    })).sort((a, b) => new Date(b.date) - new Date(a.date));
+                }
+            } catch (e) {
+                console.warn("Failed to fetch articles.json, falling back to bundled data", e);
+            }
+
             const articles = await mockApi.getArticles();
             // Merge with local storage for views/comments
             const localStats = JSON.parse(localStorage.getItem('articleStats')) || {};
