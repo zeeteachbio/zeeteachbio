@@ -182,6 +182,24 @@
                     style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none;"></pre>
             </div>
 
+            <!-- Dashboard Screen -->
+            <div id="dashboard-screen" class="dashboard-screen">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Your Articles</h2>
+                    <div>
+                        <button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+ New
+                            Article</button>
+                        <button id="refresh-btn" class="btn-secondary">Refresh</button>
+                    </div>
+                </div>
+                <div id="file-grid" class="file-list-grid">
+                    <!-- Files will be loaded here in columns -->
+                </div>
+                <ul id="file-list" class="file-list" style="display: none;">
+                    <!-- Fallback/Legacy list -->
+                </ul>
+            </div>
+
             <!-- Editor Screen -->
             <div id="editor-screen" class="editor-screen">
                 <div class="editor-toolbar">

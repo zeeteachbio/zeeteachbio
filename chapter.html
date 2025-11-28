@@ -8,50 +8,29 @@
     <title>Chapter Notes - Zee Teach</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/src/style.css">
-</head>
-
-<body>
-    <div id="app">
-        <header class="header">
-            <div class="container header-content">
+    <div class="class-search-container">
+        <input type="text" id="chapter-search-input" class="class-search-input" placeholder="Search in this chapter...">
+        <button class="class-search-btn">
+            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                </button>
-            </div>
+            </svg>
+        </button>
     </div>
-    </header>
+    </div>
+    </section>
 
-    <main>
-        <section class="hero" style="padding: 4rem 0;">
-            <div class="container hero-content">
-                <h1 id="chapter-title" class="hero-title" style="font-size: 2.5rem;">Loading Chapter...</h1>
-                <div class="class-search-container">
-                    <input type="text" id="chapter-search-input" class="class-search-input"
-                        placeholder="Search in this chapter...">
-                    <button class="class-search-btn">
-                        <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
+    <section class="section">
+        <div class="container">
+            <div id="chapter-articles-grid" class="grid notes-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <!-- Articles will be loaded here -->
+                <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                    Loading articles...
                 </div>
             </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <div id="chapter-articles-grid" class="grid notes-grid"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                    <!-- Articles will be loaded here -->
-                    <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
-                        Loading articles...
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
     </main>
 
     <footer class="footer">
@@ -66,6 +45,6 @@
     </footer>
     </div>
     <script type="module" src="/src/main.js"></script>
-</body>
+    </body>
 
 </html>
