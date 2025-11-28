@@ -83,7 +83,16 @@ console.log('Admin script loaded');
 // Initialize Quill
 // Register Image Resize Module
 if (window.Quill) {
-    window.Quill.register('modules/imageResize', window.ImageResize);
+    let ImageResizeModule = window.ImageResize;
+    if (ImageResizeModule && typeof ImageResizeModule !== 'function' && ImageResizeModule.default) {
+        ImageResizeModule = ImageResizeModule.default;
+    }
+
+    if (typeof ImageResizeModule === 'function') {
+        window.Quill.register('modules/imageResize', ImageResizeModule);
+    } else {
+        console.error('ImageResize module not found or not a constructor', window.ImageResize);
+    }
 
     // Register Custom Attributors for Spacing
     const Parchment = window.Quill.import('parchment');
