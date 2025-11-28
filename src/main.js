@@ -439,6 +439,60 @@ const initApp = async () => {
         }
     }
 
+    // 3. Handle Chapter Page
+    if (window.location.pathname.includes('chapter.html')) {
+        const params = new URLSearchParams(window.location.search);
+        const className = params.get('class');
+        const chapterName = params.get('chapter');
+        const titleEl = document.getElementById('chapter-title');
+        const grid = document.getElementById('chapter-articles-grid');
+        const searchInput = document.getElementById('chapter-search-input');
+
+        if (className && chapterName && titleEl && grid) {
+            titleEl.textContent = `${chapterName} (${className})`;
+            document.title = `${chapterName} - ${className} - Zee Teach`;
+
+            // Filter articles by class and chapter
+            // Note: api.getArticles returns newest first. User wants oldest first.
+            const chapterArticles = articles.filter(article =>
+                article.category === className && article.chapter === chapterName
+            ).sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort oldest to newest
+
+            const renderArticles = (list) => {
+                if (list.length > 0) {
+                    grid.innerHTML = list.map(article => `
+                        <div class="card note-card">
+                            <div class="card-body">
+                                <h3 class="card-title">${article.title}</h3>
+                                <p class="card-text">${article.excerpt}</p>
+                                <a href="${article.url}" class="read-more">Read Notes &rarr;</a>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #64748b;">No articles found for this chapter yet.</p>`;
+                }
+            };
+
+            renderArticles(chapterArticles);
+
+            // Chapter Search Logic
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value.trim().toLowerCase();
+                    const filtered = chapterArticles.filter(article =>
+                        article.title.toLowerCase().includes(query) ||
+                        article.excerpt.toLowerCase().includes(query)
+                    );
+                    renderArticles(filtered);
+                });
+            }
+        } else if (titleEl) {
+            titleEl.textContent = "Chapter Not Found";
+            grid.innerHTML = `<p style="text-align: center;">Invalid parameters.</p>`;
+        }
+    }
+
 
     // --- Comment System Injection ---
     // Inject on any page with an article body

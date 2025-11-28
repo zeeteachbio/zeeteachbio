@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Class 11 Biology - Zee Teach</title>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Notes - Zee Teach</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script type="module" src="/src/main.js"></script>
     <link rel="stylesheet" href="/src/style.css">
 </head>
 
@@ -44,12 +43,14 @@
                 </div>
             </div>
         </header>
+
         <main>
-            <section class="hero-section">
-                <div class="container">
-                    <h1 class="section-title">Class 11 Biology</h1>
+            <section class="hero" style="padding: 4rem 0;">
+                <div class="container hero-content">
+                    <h1 id="chapter-title" class="hero-title" style="font-size: 2.5rem;">Loading Chapter...</h1>
                     <div class="class-search-container">
-                        <input type="text" class="class-search-input" placeholder="Search in Class 11...">
+                        <input type="text" id="chapter-search-input" class="class-search-input"
+                            placeholder="Search in this chapter...">
                         <button class="class-search-btn">
                             <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -63,19 +64,14 @@
 
             <section class="section">
                 <div class="container">
-                    <h2 class="section-title-left">Chapters</h2>
-                    <div class="chapter-table-container">
-                        <table class="chapter-table">
-                            <thead>
-                                <div class="container">
-                                    <!-- Dynamic Articles Container -->
-                                    <div id="class-articles-container" class="grid notes-grid"
-                                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-                                        <div class="loading-spinner"
-                                            style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
-                                            Loading articles...</div>
-                                    </div>
-                                </div>
+                    <div id="chapter-articles-grid" class="grid notes-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                        <!-- Articles will be loaded here -->
+                        <div class="loading-spinner" style="text-align: center; padding: 2rem; grid-column: 1 / -1;">
+                            Loading articles...
+                        </div>
+                    </div>
+                </div>
             </section>
         </main>
 
