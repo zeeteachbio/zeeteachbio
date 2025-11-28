@@ -78,7 +78,7 @@ const newCategorySelect = document.getElementById('new-category');
 const newChapterSelect = document.getElementById('new-chapter');
 const chapterContainer = document.getElementById('chapter-container');
 
-console.log('Admin script loaded');
+console.log('Admin script loaded v2');
 
 // Initialize Quill
 // Register Image Resize Module
