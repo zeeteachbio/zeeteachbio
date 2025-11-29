@@ -1816,3 +1816,31 @@ a {
     stroke: currentColor;  
   }  
 } 
+  
+/* CRITICAL FIX: Make search icon LARGE and visible on mobile */  
+@media (max-width: 768px) {  
+  .header .search-btn {  
+    width: 48px !important;  
+    height: 48px !important;  
+    padding: 8px !important;  
+  }  
+  .header .search-icon-svg {  
+    width: 32px !important;  
+    height: 32px !important;  
+    stroke: currentColor !important;  
+    fill: none !important;  
+  }  
+  /* Fix dropdown overflow - CRITICAL */  
+  .nav .dropdown {  
+    width: 100%% !important;  
+    max-width: 100%% !important;  
+  }  
+  .nav .dropdown-menu {  
+    position: relative !important;  
+    left: 0 !important;  
+    right: 0 !important;  
+    width: 100%% !important;  
+    max-width: 100%% !important;  
+    transform: none !important;  
+  }  
+} 
