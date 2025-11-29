@@ -2165,3 +2165,33 @@ a {
     background-color: rgba(0, 0, 0, 0.2);  
   }  
 } 
+  
+/* Smooth dropdown slide-down animation */  
+@media (max-width: 768px) {  
+  .nav .dropdown-menu {  
+    max-height: 0;  
+    opacity: 0;  
+    overflow: hidden;  
+    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease !important;  
+    padding: 0 !important;  
+  }  
+  .nav .dropdown.active .dropdown-menu {  
+    max-height: 500px;  
+    opacity: 1;  
+    padding: 0.5rem 0 !important;  
+  }  
+  /* Animate each item sliding in */  
+  .nav .dropdown-item {  
+    animation: slideInFromLeft 0.3s ease forwards;  
+  }  
+  @keyframes slideInFromLeft {  
+    from {  
+      opacity: 0;  
+      transform: translateX(-20px);  
+    }  
+    to {  
+      opacity: 1;  
+      transform: translateX(0);  
+    }  
+  }  
+} 
