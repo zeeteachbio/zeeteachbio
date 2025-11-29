@@ -104,14 +104,13 @@ const initApp = async () => {
                 : '';
 
             return `
-            <article class="article-card">
-                <div class="article-image" style="${bgStyle}"></div>
+            <a href="${article.url}" class="article-card">
                 <div class="article-content">
                     <h3 class="article-title">${article.title}</h3>
                     <p class="article-excerpt">${article.excerpt}</p>
-                    <a href="${article.url}" class="read-more">Read More</a>
+                    <span class="read-more">Read More</span>
                 </div>
-            </article>
+            </a>
         `}).join('');
     }
 
@@ -401,14 +400,14 @@ const initApp = async () => {
 
             if (results.length > 0) {
                 grid.innerHTML = results.map(item => `
-                    <div class="card article-card" style="flex-direction: column;">
+                    <a href="${item.url}" class="card article-card" style="flex-direction: column;">
                         <div class="article-content">
                             <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600; text-transform: uppercase;">${item.category}</span>
                             <h3 class="article-title" style="font-size: 1.25rem; margin-top: 0.5rem;">${item.title}</h3>
                             <p class="article-excerpt">${item.excerpt}</p>
-                            <a href="${item.url}" class="read-more">Read More</a>
+                            <span class="read-more">Read More</span>
                         </div>
-                    </div>
+                    </a>
                 `).join('');
                 if (noResults) noResults.style.display = 'none';
             } else {

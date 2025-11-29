@@ -30,16 +30,16 @@ export function renderArticles(containerId, filterFn, limit = null, mode = 'list
     } else {
         // List mode (default)
         container.innerHTML = articles.map(article => `
-            <div class="article-card" style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--color-border);">
-                <h3 style="margin-bottom: 0.5rem;">
-                    <a href="${article.url}" style="text-decoration: none; color: var(--color-text);">${article.title}</a>
-                </h3>
-                <div style="font-size: 0.875rem; color: var(--color-primary); margin-bottom: 0.5rem; font-weight: 600;">
-                    ${article.category}
+            <a href="${article.url}" class="article-card">
+                <div class="article-content">
+                    <h3 class="article-title">${article.title}</h3>
+                    <div style="font-size: 0.875rem; color: var(--color-primary); margin-bottom: 0.5rem; font-weight: 600;">
+                        ${article.category}
+                    </div>
+                    <p class="article-excerpt">${article.excerpt}</p>
+                    <span class="read-more">Read Notes &rarr;</span>
                 </div>
-                <p style="color: var(--color-text-light); margin-bottom: 0.5rem;">${article.excerpt}</p>
-                <a href="${article.url}" class="read-more" style="color: var(--color-primary); font-weight: 500; text-decoration: none;">Read Notes &rarr;</a>
-            </div>
+            </a>
         `).join('');
     }
 }

@@ -2,19 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Katibeh&family=Lateef:wght@200;300;400;500;600;700;800&family=Mirza:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
 
 :root {
-  --color-primary: #10b981;
-  /* Emerald 500 */
-  --color-primary-dark: #059669;
-  /* Emerald 600 */
-  --color-secondary: #3b82f6;
-  /* Blue 500 */
-  --color-bg: #f8fafc;
-  /* Slate 50 */
-  --color-bg-alt: #ffffff;
-  /* White */
-  --color-text: #1e293b;
-  /* Slate 800 */
-  --color-text-light: #64748b;
   /* Slate 500 */
   --color-border: #e2e8f0;
   /* Slate 200 */
@@ -441,67 +428,6 @@ a {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background-color: var(--color-primary);
-  border-radius: 2px;
-}
-
-/* Latest Articles (List Style) */
-.article-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.article-card {
-  display: flex;
-  flex-direction: row;
-  /* Horizontal layout: Image Left, Text Right */
-  background-color: white;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  transition: all 0.3s ease;
-  min-height: 180px;
-  /* Ensure sufficient height */
-}
-
-.article-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-primary);
-}
-
-.article-image {
-  width: 240px;
-  /* Fixed width for image */
-  min-height: 100%;
-  background-color: #e2e8f0;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.article-content {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.article-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  line-height: 1.3;
-}
-
-.article-excerpt {
-  color: var(--color-text-light);
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
   flex-grow: 1;
   /* Push button to bottom */
 }
@@ -766,29 +692,6 @@ a {
   width: 1.2rem;
   height: 1.2rem;
   stroke: currentColor;
-  stroke-width: 2;
-  fill: none;
-}
-
-/* Hero Search Box Specific Styles */
-.hero-search {
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border: 2px solid var(--color-border);
-  border-radius: 50px;
-  padding: 0.75rem 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.hero-search:focus-within {
-  border-color: var(--color-primary);
-  box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.2);
-}
-
-.hero-search .search-input {
-  flex: 1;
   border: none;
   background: transparent;
   padding: 0.5rem;
@@ -1384,4 +1287,211 @@ a {
 .back-btn svg {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+/* Article Cards - Added for box effect */
+.article-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.article-card {
+  display: block;
+  background-color: white;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+.article-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+/* Fix for class section - restore grid layout */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.note-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.note-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
+}/* Color variable fix */
+:root {
+    --color-primary: #10b981;
+    --color-primary-dark: #059669;
+    --color-secondary: #3b82f6;
+    --color-bg: #f0ede5;
+    --color-bg-alt: #ffffff;
+    --color-text: #1e293b;
+    --color-text-light: #64748b;
+    --color-border: #e2e8f0;
+}
+/* Enhanced class section styling */
+.note-card {
+    background-color: white;
+    padding: 2rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.note-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+    background-color: rgba(16, 185, 129, 0.05);
+}
+
+/* Add spacing to separate class section from footer */
+.section#notes,
+.section-alt {
+    margin-bottom: 3rem;
+}
+/* Increase spacing between class cards */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+}
+/* Remove white background from class section, keep it only on cards */
+.section-alt {
+    background-color: var(--color-bg);
+}
+
+.grid {
+    background-color: transparent;
+}
+/* Box effect for section titles and descriptions */
+.section-title {
+    background-color: white;
+    padding: 1.5rem 2rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-desc {
+    background-color: white;
+    padding: 1rem 2rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+/* Combined box for section title and description */
+.section-title {
+    background-color: white;
+    padding: 1.5rem 2rem 0.5rem 2rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.section-desc {
+    background-color: white;
+    padding: 0.5rem 2rem 1.5rem 2rem;
+    border: 2px solid var(--color-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+}
+/* Section header box - combines title and description */
+.section-header-box {
+    background-color: white;
+    padding: 2rem;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem auto;
+}
+
+.section-header-box .section-title {
+    margin-bottom: 0.75rem;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    display: block;
+}
+
+.section-header-box .section-desc {
+    margin-bottom: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+/* Reduce section padding for better spacing */
+.section-alt {
+    padding: 3rem 0;
+}
+
+/* Reduce grid margin */
+.notes-grid {
+    margin-bottom: 0;
+}
+
+/* Reduce header box bottom margin */
+.section-header-box {
+    margin-bottom: 2rem;
 }
