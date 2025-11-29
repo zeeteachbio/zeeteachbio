@@ -2116,3 +2116,28 @@ a {
     background: rgba(30, 41, 59, 0.95) !important;  
   }  
 } 
+  
+/* Remove white - use dark modern background */  
+@media (max-width: 768px) {  
+  .nav {  
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;  
+    backdrop-filter: blur(20px) !important;  
+  }  
+  /* Update dropdown items for dark background */  
+  .nav .dropdown-item {  
+    background-color: rgba(51, 65, 85, 0.8) !important;  
+    color: white !important;  
+    border-left: 3px solid #10b981 !important;  
+  }  
+  .nav .dropdown-item:hover {  
+    background-color: rgba(71, 85, 105, 0.9) !important;  
+  }  
+  /* Close button for dark bg */  
+  .nav::before {  
+    background-color: rgba(255, 255, 255, 0.1);  
+    color: white;  
+  }  
+  .nav::before:hover {  
+    background-color: rgba(255, 255, 255, 0.2);  
+  }  
+} 
