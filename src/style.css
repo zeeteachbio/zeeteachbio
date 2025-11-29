@@ -1495,3 +1495,100 @@ a {
 .section-header-box {
     margin-bottom: 2rem;
 }
+/* Hero section styling */
+.hero {
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+
+    /* Move search outside hamburger menu */
+    .header-content {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .logo {
+        grid-column: 1;
+    }
+
+    .search-container {
+        grid-column: 3;
+        order: 3;
+    }
+
+    .search-input {
+        width: 140px !important;
+        padding: 0.4rem 2rem 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .search-input:focus {
+        width: 180px !important;
+    }
+
+    /* Hamburger menu in center */
+    .nav {
+        grid-column: 2;
+        justify-self: center;
+        flex-direction: column;
+        position: fixed;
+        top: 4rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 1rem;
+        max-width: 90%;
+        width: 320px;
+        max-height: 70vh;
+        overflow-y: auto;
+        z-index: 100;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    /* Compact dropdown styling */
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        margin-top: 0.5rem;
+        box-shadow: none;
+        border: 1px solid var(--color-border);
+        background-color: var(--color-bg);
+    }
+
+    .dropdown-item {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Hero responsive */
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
