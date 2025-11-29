@@ -951,12 +951,15 @@ a {
     background: none;
     z-index: 2;
     position: relative;
+    display: flex !important;
+    visibility: visible !important;
     /* Ensure relative for absolute input if needed */
   }
 
 
   .search-container .search-btn {
     padding: 0.5rem;
+    display: block !important;
     /* Add some touch target size */
     color: var(--color-text);
   }
@@ -1772,13 +1775,14 @@ a {
     display: block;
   }
 }
+
 /* Mobile Header Search Box - Force Visibility */
 @media (max-width: 768px) {
   .header .search-container {
     display: flex !important;
     visibility: visible !important;
   }
-  
+
   .header .search-btn {
     display: block !important;
   }
@@ -1794,7 +1798,7 @@ a {
     margin-left: 0 !important;
     margin-right: 0 !important;
   }
-  
+
   .nav .dropdown-item {
     white-space: normal;
     word-wrap: break-word;
