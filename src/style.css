@@ -2252,3 +2252,43 @@ a {
     z-index: -1;  
   }  
 } 
+  
+/* Beautiful aesthetic hamburger menu - clean design */  
+@media (max-width: 768px) {  
+  /* Clean white background with subtle shadow */  
+  .nav {  
+    background: white !important;  
+    backdrop-filter: none !important;  
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1) !important;  
+  }  
+  .nav::after {  
+    display: none !important;  
+  }  
+  /* Minimal elegant close button */  
+  .nav::before {  
+    content: 'x' !important;  
+    background: transparent !important;  
+    color: #64748b !important;  
+    font-size: 2.5rem !important;  
+    font-weight: 300 !important;  
+    box-shadow: none !important;  
+    border-radius: 0 !important;  
+    width: 50px;  
+    height: 50px;  
+  }  
+  .nav::before:hover {  
+    background: rgba(100, 116, 139, 0.1) !important;  
+    color: #1e293b !important;  
+    transform: none !important;  
+    border-radius: 8px;  
+  }  
+  /* Spacing and padding */  
+  .nav {  
+    padding: 1.5rem !important;  
+    gap: 0.75rem !important;  
+  }  
+  /* Dark mode */  
+  body.dark-mode .nav {  
+    background: #1e293b !important;  
+  }  
+} 
