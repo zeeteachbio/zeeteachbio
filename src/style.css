@@ -2021,4 +2021,66 @@ a {
     body.dark-mode .nav .dropdown-item {
         background-color: var(--color-bg) !important;
     }
-}
+}  
+/* Enhanced Styling for Full-Screen Mobile Menu */  
+@media (max-width: 768px) {  
+  /* Gradient background for menu */  
+  .nav {  
+    background: linear-gradient(135deg, #ffffff 0%%, #f8fafc 100%%) !important;  
+  }  
+  /* Styled close button */  
+  .nav::before {  
+    background-color: #f1f5f9;  
+    border-radius: 50%%;  
+    transition: all 0.2s ease;  
+    font-weight: 300;  
+    line-height: 1;  
+  }  
+  .nav::before:hover {  
+    background-color: #e2e8f0;  
+    transform: rotate(90deg);  
+  }  
+  /* Enhanced dropdown toggles */  
+  .nav .dropdown-toggle {  
+    background: linear-gradient(135deg, #10b981 0%%, #059669 100%%) !important;  
+    color: white !important;  
+    border: none !important;  
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;  
+    transition: all 0.2s ease !important;  
+  }  
+  .nav .dropdown-toggle:hover {  
+    transform: translateY(-2px);  
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;  
+  }  
+  /* Enhanced dropdown items */  
+  .nav .dropdown-item {  
+    background-color: #ffffff !important;  
+    border-left: 3px solid #10b981 !important;  
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;  
+    transition: all 0.2s ease !important;  
+  }  
+  .nav .dropdown-item:hover {  
+    border-left-color: #059669 !important;  
+    transform: translateX(4px);  
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;  
+  }  
+  /* Nav links styling */  
+  .nav .nav-link:not(.dropdown-toggle) {  
+    background: linear-gradient(135deg, #10b981 0%%, #059669 100%%) !important;  
+    color: white !important;  
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;  
+    transition: all 0.2s ease !important;  
+  }  
+  .nav .nav-link:not(.dropdown-toggle):hover {  
+    transform: translateY(-2px);  
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;  
+  }  
+  /* Dark mode enhancements */  
+  body.dark-mode .nav {  
+    background: linear-gradient(135deg, #1e293b 0%%, #0f172a 100%%) !important;  
+  }  
+  body.dark-mode .nav .dropdown-item {  
+    background-color: #334155 !important;  
+    color: #f1f5f9 !important;  
+  }  
+} 
