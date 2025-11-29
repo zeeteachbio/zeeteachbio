@@ -1803,4 +1803,16 @@ a {
     white-space: normal;
     word-wrap: break-word;
   }
-}
+}  
+/* FIX: Make search icon properly visible on mobile */  
+@media (max-width: 768px) {  
+  .header .search-btn {  
+    width: 40px !important;  
+    height: 40px !important;  
+  }  
+  .header .search-icon-svg {  
+    width: 24px;  
+    height: 24px;  
+    stroke: currentColor;  
+  }  
+} 
