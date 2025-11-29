@@ -2234,3 +2234,21 @@ a {
     content: 'x' !important;  
   }  
 } 
+  
+/* Hide blurred header area - solid top background */  
+@media (max-width: 768px) {  
+  .nav {  
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.98) 0%, rgba(15, 23, 42, 0.98) 80px, transparent 80px) !important;  
+  }  
+  /* Alternative: Add solid overlay at top */  
+  .nav::after {  
+    content: '';  
+    position: absolute;  
+    top: 0;  
+    left: 0;  
+    right: 0;  
+    height: 80px;  
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);  
+    z-index: -1;  
+  }  
+} 
