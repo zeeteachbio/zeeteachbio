@@ -811,6 +811,7 @@ createNewBtn.addEventListener('click', async () => {
                         </div>
                     </div>
 
+                    <a href="https://mcqsbuilder.vercel.app/test.html" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Take a Test</a>
                     <div class="search-container">
                         <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
                         <button class="search-btn">
