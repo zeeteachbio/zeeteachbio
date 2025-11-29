@@ -21,84 +21,6 @@
 
   --font-sans: 'Inter', sans-serif;
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
-  --color-surface: #ffffff;
-  /* Added for search dropdown */
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-}
-
-body.dark-mode {
-  --color-bg: #0f172a;
-  /* Slate 900 */
-  --color-bg-alt: #1e293b;
-  /* Slate 800 */
-  --color-text: #f1f5f9;
-  /* Slate 100 */
-  --color-text-light: #94a3b8;
-  /* Slate 400 */
-  --color-border: #334155;
-  /* Slate 700 */
-  --color-surface: #1e293b;
-  /* Slate 800 */
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
-}
-
-/* Dark mode specific adjustments */
-body.dark-mode .header {
-  background-color: rgba(15, 23, 42, 0.8);
-}
-
-body.dark-mode .article-card,
-body.dark-mode .card,
-body.dark-mode .sidebar-widget,
-body.dark-mode .dropdown-menu,
-body.dark-mode .footer {
-  background-color: var(--color-bg-alt);
-}
-
-body.dark-mode .nav-link:hover,
-body.dark-mode .dropdown.active .nav-link {
-  background-color: rgba(16, 185, 129, 0.2);
-}
-
-body.dark-mode .class-search-input {
-  background-color: var(--color-bg-alt);
-  color: var(--color-text);
-}
-
-body.dark-mode .search-container {
-  background-color: var(--color-bg-alt);
-}
-
-body.dark-mode .search-input {
-  color: var(--color-text);
-}
-
-body.dark-mode .dropdown-item:hover {
-  background-color: var(--color-bg);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-main {
-  animation: fadeIn 0.4s ease-out forwards;
 }
 
 * {
@@ -675,28 +597,6 @@ a {
   color: var(--color-text-light);
   margin-bottom: 3rem;
   font-size: 1.125rem;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-/* Cards (Existing) */
-.card {
-  background-color: white;
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
   border-color: var(--color-primary);
 }
 
@@ -1120,25 +1020,6 @@ a {
     /* Ensure relative for absolute input if needed */
   }
 
-  .search-input {
-    display: none;
-    /* Default hidden on mobile */
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 200px;
-    background: white;
-    border: 1px solid var(--color-border);
-    padding: 0.5rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-lg);
-    margin-top: 0.5rem;
-  }
-
-  .search-container.active .search-input {
-    display: block;
-    /* Show when active */
-  }
 
   .search-container .search-btn {
     padding: 0.5rem;
@@ -1229,22 +1110,181 @@ a {
   transition: background-color 0.2s;
 }
 
-.btn-sm:hover {
-  background-color: var(--color-primary-dark);
+.ql-font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.ql-font-arial {
+  font-family: 'Arial', sans-serif;
+}
+
+.ql-font-times-new-roman {
+  font-family: 'Times New Roman', serif;
+}
+
+.ql-font-verdana {
+  font-family: 'Verdana', sans-serif;
+}
+
+.ql-font-courier-new {
+  font-family: 'Courier New', monospace;
+}
+
+/* Quill Size Classes for Public View */
+.ql-size-small {
+  font-size: 0.75em;
+}
+
+.ql-size-large {
+  font-size: 1.5em;
+}
+
+.ql-size-huge {
+  font-size: 2.5em;
 }
 
 /* Article Body Content Fixes */
-.article-body img {
-  max-width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-  display: block;
-  margin: 1rem auto;
+.article-body {
+  max-width: 800px;
+
+  /* Mobile Submenu */
+  .dropdown-submenu .submenu {
+    position: static;
+    box-shadow: none;
+    border: none;
+    padding-left: 1rem;
+    opacity: 1;
+    visibility: visible;
+    display: none;
+    width: 100%;
+    margin: 0;
+  }
+
+  .dropdown-submenu.active .submenu {
+    display: block;
+  }
+
+  /* Restore Article Card Mobile Styles */
+  .article-card {
+    flex-direction: column;
+  }
+
+  .article-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  .article-content {
+    padding: 1.5rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .search-container {
+    order: 3;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    z-index: 2;
+    position: relative;
+    /* Ensure relative for absolute input if needed */
+  }
+
+
+  .search-container .search-btn {
+    padding: 0.5rem;
+    /* Add some touch target size */
+    color: var(--color-text);
+  }
 }
 
-/* Quill Font Classes for Public View */
-.ql-font-mirza {
-  font-family: 'Mirza', cursive;
+/* Search Suggestions Refinements */
+.suggestion-item {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  /* User requested clicking cursor */
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  /* User requested separation line */
+  transition: background-color 0.2s;
+}
+
+.suggestion-item:last-child {
+  border-bottom: none;
+}
+
+.suggestion-item:hover {
+  background-color: var(--color-bg);
+  color: var(--color-primary);
+}
+
+/* Comment Section Styles */
+/* Giscus handles its own styling, so we just need a container style if any */
+#comments-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Badge Styles */
+.badge-new {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+
+/* Chapter Table Styles */
+.chapter-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  text-align: left;
+}
+
+.chapter-table th,
+.chapter-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.chapter-table th {
+  background-color: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-heading);
+}
+
+.chapter-table tr:last-child td {
+  border-bottom: none;
+}
+
+.chapter-table tr:hover {
+  background-color: var(--color-bg);
+}
+
+.btn-sm {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--color-primary);
+  color: white;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .ql-font-roboto {
@@ -1278,4 +1318,46 @@ a {
 
 .ql-size-huge {
   font-size: 2.5em;
+}
+
+/* Article Body Content Fixes */
+.article-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-text);
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  display: block;
+  margin: 2rem auto;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+.back-btn:hover {
+  color: var(--color-primary);
+}
+
+.back-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }

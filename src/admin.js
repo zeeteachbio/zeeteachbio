@@ -518,10 +518,13 @@ async function loadFileContent(path) {
         const title = doc.querySelector('title') ? doc.querySelector('title').innerText : path;
 
         let bodyContent = '';
+        const articleContent = doc.querySelector('#article-content');
         const articleBody = doc.querySelector('.article-body');
         const main = doc.querySelector('main');
 
-        if (articleBody) {
+        if (articleContent) {
+            bodyContent = articleContent.innerHTML;
+        } else if (articleBody) {
             bodyContent = articleBody.innerHTML;
         } else if (main) {
             // If falling back to main, try to exclude header/meta if they exist
@@ -658,10 +661,15 @@ saveBtn.addEventListener('click', async () => {
             }
 
             const newBodyHtml = quill.root.innerHTML;
+            const articleContent = doc.querySelector('#article-content');
             const articleBody = doc.querySelector('.article-body');
             const main = doc.querySelector('main');
 
-            if (articleBody) {
+            if (articleContent) {
+                articleContent.innerHTML = newBodyHtml;
+            } else if (articleBody) {
+                // Fallback for old articles, but try to preserve if possible or just overwrite
+                // Ideally we should wrap it, but for now just overwrite to avoid breaking
                 articleBody.innerHTML = newBodyHtml;
             } else if (main) {
                 main.innerHTML = newBodyHtml;
@@ -784,22 +792,65 @@ createNewBtn.addEventListener('click', async () => {
                 </a>
                 <nav class="nav">
                     <a href="/" class="nav-link">Home</a>
+                    <div class="dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="/class9.html" class="dropdown-item">Class 9</a>
+                            <a href="/class10.html" class="dropdown-item">Class 10</a>
+                            <a href="/class11.html" class="dropdown-item">Class 11</a>
+                            <a href="/class12.html" class="dropdown-item">Class 12</a>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes &#9662;</a>
+                        <div class="dropdown-menu">
+                            <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
+                            <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
+                            <a href="/akueb-class11.html" class="dropdown-item">Class 11</a>
+                            <a href="/akueb-class12.html" class="dropdown-item">Class 12</a>
+                        </div>
+                    </div>
+
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
+                        <button class="search-btn">
+                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </button>
+                    </div>
                 </nav>
             </div>
         </header>
         <main>
             <article class="article">
                 <div class="container article-container">
-                    <header class="article-header">
-                        <h1 class="article-title">${title}</h1>
-                        <div class="article-meta">
-                            ${category} ${chapter ? `&bull; ${chapter}` : ''}
-                        </div>
-                    </header>
                     <div class="article-body">
-                        <p>Write your content here...</p>
+                        <a href="/" class="back-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            </svg>
+                            Back to Home
+                        </a>
+                        <div class="article-meta" style="margin-bottom: 1.5rem; color: var(--color-text-light); font-size: 0.9rem; font-weight: 500;">
+                            ${chapter ? chapter : 'General'}
+                        </div>
+
+                        <div id="article-content">
+                            <h1 style="margin-bottom: 20px;"><strong style="line-height: 1.5; font-size: large;">${title}</strong></h1>
+                            <p><br></p>
+                        </div>
+
+                        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                            <a href="/" class="back-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                                </svg>
+                                Back to Home
+                            </a>
+                        </div>
                     </div>
-                </div>
             </article>
         </main>
         <footer class="footer">

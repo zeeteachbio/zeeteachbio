@@ -135,14 +135,15 @@
             font-size: 1rem;
         }
 
-        .ql-toolbar {
-            border-top-left-radius: var(--radius-md);
-            border-top-right-radius: var(--radius-md);
-            background: #f8fafc;
-        }
-
         .ql-editor {
             min-height: 400px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem !important;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            background-color: white;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
         @media (max-width: 1024px) {
@@ -166,6 +167,7 @@
             <h2>Admin Login</h2>
             <p>Please enter your GitHub Personal Access Token to continue.</p>
             <div style="margin: 1.5rem 0;"><input type="password" id="github-token" placeholder="ghp_..."
+                    autocomplete="current-password"
                     style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div><button id="login-btn" class="btn-primary">Login</button>
             <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">Don't have a token? <a
@@ -182,10 +184,10 @@
                         Article</button><button id="refresh-btn" class="btn-secondary">Refresh</button></div>
             </div>
             <div id="file-grid" class="file-list-grid">
-                < !-- Files will be loaded here in columns -->
+                <!-- Files will be loaded here in columns -->
             </div>
             <ul id="file-list" class="file-list" style="display: none;">
-                < !-- Fallback/Legacy list -->
+                <!-- Fallback/Legacy list -->
             </ul>
         </div>
         <!-- Editor Screen -->
@@ -198,7 +200,7 @@
             </div>
             <div style="margin-bottom: 1rem;"><label
                     style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page
-                    Title</label><input type="text" id="page-title"
+                    Title</label><input type="text" id="page-title" autocomplete="off"
                     style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div>
             <div id="content-editor"></div>
@@ -212,12 +214,12 @@
             <h3>Create New Article</h3>
             <div style="margin: 1rem 0;"><label
                     style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filename (e.g.,
-                    my-article)</label><input type="text" id="new-filename"
+                    my-article)</label><input type="text" id="new-filename" autocomplete="off"
                     style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div>
             <div style="margin: 1rem 0;"><label
                     style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label><input type="text"
-                    id="new-title"
+                    id="new-title" autocomplete="off"
                     style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div>
             <div style="margin: 1rem 0;"><label
@@ -242,7 +244,7 @@
                 </select></div>
             <div style="margin: 1rem 0;"><label
                     style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
-                    (Optional)</label><input type="text" id="new-thumbnail" placeholder="https://..."
+                    (Optional)</label><input type="text" id="new-thumbnail" placeholder="https://..." autocomplete="off"
                     style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
                 <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">Leave empty to
                     auto-extract from content images. </p>

@@ -10,48 +10,7 @@ const initApp = async () => {
     const headerContent = document.querySelector('.header-content');
     const nav = document.querySelector('.nav');
 
-    // --- Dark Mode Logic ---
-    const initDarkMode = () => {
-        const toggleBtn = document.createElement('button');
-        toggleBtn.className = 'theme-toggle';
-        toggleBtn.setAttribute('aria-label', 'Toggle Dark Mode');
-        toggleBtn.style.background = 'none';
-        toggleBtn.style.border = 'none';
-        toggleBtn.style.cursor = 'pointer';
-        toggleBtn.style.fontSize = '1.2rem';
-        toggleBtn.style.padding = '0.5rem';
-        toggleBtn.style.marginLeft = '0.5rem';
-        toggleBtn.style.color = 'var(--color-text)';
 
-        // Check preference
-        const savedTheme = localStorage.getItem('theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-            document.body.classList.add('dark-mode');
-            toggleBtn.innerHTML = '☀️'; // Sun icon for dark mode
-        } else {
-            toggleBtn.innerHTML = '🌙'; // Moon icon for light mode
-        }
-
-        toggleBtn.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            toggleBtn.innerHTML = isDark ? '☀️' : '🌙';
-        });
-
-        // Insert into header
-        if (headerContent) {
-            const searchContainer = headerContent.querySelector('.search-container');
-            if (searchContainer) {
-                searchContainer.after(toggleBtn);
-            } else {
-                headerContent.appendChild(toggleBtn);
-            }
-        }
-    };
-    initDarkMode();
 
     if (headerContent && nav) {
         // Inject Hamburger Menu if not present
