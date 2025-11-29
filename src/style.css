@@ -2227,3 +2227,10 @@ a {
     animation: slideInFromTop 0.3s ease forwards !important;  
   }  
 } 
+  
+/* Fix close button: use proper X symbol */  
+@media (max-width: 768px) {  
+  .nav::before {  
+    content: 'x' !important;  
+  }  
+} 
