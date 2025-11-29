@@ -1592,3 +1592,131 @@ a {
         font-size: 1rem;
     }
 }
+/* Fixed mobile navigation layout */
+@media (max-width: 768px) {
+
+    /* Header layout: Logo | Hamburger (center) | Search */
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+    }
+
+    .logo {
+        flex: 0 0 auto;
+        font-size: 1.2rem;
+    }
+
+    .logo-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    /* Hamburger menu button - centered */
+    .mobile-menu-toggle {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        order: 2;
+    }
+
+    /* Search container - right side */
+    .search-container {
+        flex: 0 0 auto;
+        order: 3;
+        position: relative;
+    }
+
+    .search-input {
+        width: 35px !important;
+        padding: 0.5rem 2rem 0.5rem 0.5rem;
+        font-size: 0;
+        border-radius: 50%;
+        transition: all 0.3s;
+    }
+
+    .search-input::placeholder {
+        font-size: 0;
+    }
+
+    .search-input:focus {
+        width: 150px !important;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .search-input:focus::placeholder {
+        font-size: 0.85rem;
+    }
+
+    .search-btn {
+        right: 5px;
+    }
+
+    /* Navigation menu - hidden by default */
+    .nav {
+        display: none;
+        position: fixed;
+        top: 4rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        border: 2px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        padding: 1.5rem;
+        width: 90%;
+        max-width: 320px;
+        max-height: 70vh;
+        overflow-y: auto;
+        z-index: 100;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    /* Remove search from nav on mobile */
+    .nav .search-container {
+        display: none !important;
+    }
+
+    /* Dropdown menus in mobile */
+    .dropdown {
+        width: 100%;
+    }
+
+    .dropdown-toggle {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1rem;
+        background-color: var(--color-bg);
+        border-radius: var(--radius-md);
+    }
+
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        margin-top: 0.5rem;
+        box-shadow: none;
+        border: 1px solid var(--color-border);
+        background-color: white;
+        width: 100%;
+    }
+
+    .dropdown.active .dropdown-menu {
+        display: block;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+        background-color: var(--color-bg);
+        border-radius: var(--radius-md);
+        width: 100%;
+        text-align: left;
+        display: block;
+    }
+}
