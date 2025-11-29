@@ -2195,3 +2195,35 @@ a {
     }  
   }  
 } 
+  
+/* Fix: Top-to-bottom dropdown animation + Better close button */  
+@media (max-width: 768px) {  
+  /* Beautiful close button */  
+  .nav::before {  
+    content: '?';  
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9)) !important;  
+    color: white !important;  
+    font-size: 1.5rem;  
+    font-weight: 600;  
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);  
+  }  
+  .nav::before:hover {  
+    background: linear-gradient(135deg, rgba(220, 38, 38, 1), rgba(185, 28, 28, 1)) !important;  
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);  
+    transform: rotate(90deg) scale(1.1);  
+  }  
+  /* Dropdown items: slide from TOP not left */  
+  @keyframes slideInFromTop {  
+    from {  
+      opacity: 0;  
+      transform: translateY(-10px);  
+    }  
+    to {  
+      opacity: 1;  
+      transform: translateY(0);  
+    }  
+  }  
+  .nav .dropdown-item {  
+    animation: slideInFromTop 0.3s ease forwards !important;  
+  }  
+} 
