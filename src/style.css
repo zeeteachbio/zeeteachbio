@@ -2084,3 +2084,35 @@ a {
     color: #f1f5f9 !important;  
   }  
 } 
+  
+/* Tap animations and background update */  
+@media (max-width: 768px) {  
+  /* Remove white background - use blur overlay */  
+  .nav {  
+    background: rgba(248, 250, 252, 0.95) !important;  
+    backdrop-filter: blur(10px) !important;  
+  }  
+  /* Tap animation for all buttons */  
+  .nav .dropdown-toggle:active,  
+  .nav .nav-link:active,  
+  .nav .dropdown-item:active {  
+    transform: scale(0.95) !important;  
+    transition: transform 0.1s ease !important;  
+  }  
+  /* Smooth dropdown toggle animation */  
+  .nav .dropdown-toggle {  
+    transform-origin: center;  
+  }  
+  .nav .dropdown-toggle:active {  
+    transform: scale(0.95) !important;  
+  }  
+  /* Ripple effect on tap */  
+  .nav .dropdown-item {  
+    position: relative;  
+    overflow: hidden;  
+  }  
+  /* Dark mode - semi-transparent */  
+  body.dark-mode .nav {  
+    background: rgba(30, 41, 59, 0.95) !important;  
+  }  
+} 
