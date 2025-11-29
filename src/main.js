@@ -34,6 +34,20 @@ const initApp = async () => {
                 menuToggle.innerHTML = nav.classList.contains('active') ? '✕' : '☰';
             });
 
+            // Close menu when clicking the close button (top-right area of nav)
+            nav.addEventListener('click', (e) => {
+                // Check if click is in top-right area (close button zone)
+                const rect = nav.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const clickY = e.clientY - rect.top;
+
+                // Close button is at top: 1rem, right: 1.5rem, size: 40px
+                if (clickX > rect.width - 80 && clickY < 80) {
+                    nav.classList.remove('active');
+                    menuToggle.innerHTML = '☰';
+                }
+            });
+
             // Close menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (!nav.contains(e.target) && !menuToggle.contains(e.target) && nav.classList.contains('active')) {
