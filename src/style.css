@@ -1857,3 +1857,26 @@ a {
     height: 2rem !important;  
   }  
 } 
+  
+/* FORCE dropdown menus to stay within bounds - CRITICAL FIX */  
+@media (max-width: 768px) {  
+  .nav .dropdown-menu,  
+  nav .dropdown-menu,  
+  .nav .dropdown .dropdown-menu {  
+    position: static !important;  
+    left: auto !important;  
+    right: auto !important;  
+    top: auto !important;  
+    transform: none !important;  
+    width: 100%% !important;  
+    max-width: 100%% !important;  
+    margin: 0 !important;  
+    padding-left: 1rem !important;  
+    box-sizing: border-box !important;  
+  }  
+  .nav .dropdown,  
+  nav .dropdown {  
+    width: 100%% !important;  
+    overflow: hidden !important;  
+  }  
+} 
