@@ -2141,3 +2141,27 @@ a {
     background-color: rgba(255, 255, 255, 0.2);  
   }  
 } 
+  
+/* Fully transparent background - no colors */  
+@media (max-width: 768px) {  
+  .nav {  
+    background: transparent !important;  
+    backdrop-filter: blur(15px) !important;  
+  }  
+  /* Keep dropdown items visible with slight transparency */  
+  .nav .dropdown-item {  
+    background-color: rgba(255, 255, 255, 0.95) !important;  
+    color: #000 !important;  
+  }  
+  .nav .dropdown-item:hover {  
+    background-color: rgba(255, 255, 255, 1) !important;  
+  }  
+  /* Close button */  
+  .nav::before {  
+    background-color: rgba(0, 0, 0, 0.1);  
+    color: #000;  
+  }  
+  .nav::before:hover {  
+    background-color: rgba(0, 0, 0, 0.2);  
+  }  
+} 
