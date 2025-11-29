@@ -161,49 +161,49 @@
             Debug Log</button>
     </header>
     <main class="admin-container">
-        < !-- Login Screen -->
-            <div id="login-screen" class="login-screen active-screen">
-                <h2>Admin Login</h2>
-                <p>Please enter your GitHub Personal Access Token to continue.</p>
-                <div style="margin: 1.5rem 0;"><input type="password" id="github-token" placeholder="ghp_..."
-                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                </div><button id="login-btn" class="btn-primary">Login</button>
-                <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">Don't have a token? <a
-                        href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Generate one
-                        here</a>(Select 'repo' scope). </p>
-                <pre id="debug-log"
-                    style="margin-top: 1rem; padding: 1rem; background: #1e293b; color: #f8fafc; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none; max-height: 300px; overflow-y: auto; font-family: monospace;"></pre>
+        <!-- Login Screen -->
+        <div id="login-screen" class="login-screen active-screen">
+            <h2>Admin Login</h2>
+            <p>Please enter your GitHub Personal Access Token to continue.</p>
+            <div style="margin: 1.5rem 0;"><input type="password" id="github-token" placeholder="ghp_..."
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+            </div><button id="login-btn" class="btn-primary">Login</button>
+            <p style="margin-top: 1rem; font-size: 0.875rem; color: var(--color-text-light);">Don't have a token? <a
+                    href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Generate one
+                    here</a>(Select 'repo' scope). </p>
+            <pre id="debug-log"
+                style="margin-top: 1rem; padding: 1rem; background: #1e293b; color: #f8fafc; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none; max-height: 300px; overflow-y: auto; font-family: monospace;"></pre>
+        </div>
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="dashboard-screen">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Your Articles</h2>
+                <div><button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+New
+                        Article</button><button id="refresh-btn" class="btn-secondary">Refresh</button></div>
             </div>
-            < !-- Dashboard Screen -->
-                <div id="dashboard-screen" class="dashboard-screen">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h2>Your Articles</h2>
-                        <div><button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+New
-                                Article</button><button id="refresh-btn" class="btn-secondary">Refresh</button></div>
-                    </div>
-                    <div id="file-grid" class="file-list-grid">
-                        < !-- Files will be loaded here in columns -->
-                    </div>
-                    <ul id="file-list" class="file-list" style="display: none;">
-                        < !-- Fallback/Legacy list -->
-                    </ul>
-                </div>
-                < !-- Editor Screen -->
-                    <div id="editor-screen" class="editor-screen">
-                        <div class="editor-toolbar"><button id="back-btn" class="btn-secondary">← Back</button>
-                            <div><span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span><button
-                                    id="editor-delete-btn" class="btn-secondary"
-                                    style="color: #ef4444; border-color: #ef4444; margin-right: 0.5rem;">Delete</button><button
-                                    id="save-btn" class="btn-primary">Publish Changes</button></div>
-                        </div>
-                        <div style="margin-bottom: 1rem;"><label
-                                style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page
-                                Title</label><input type="text" id="page-title"
-                                style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                        </div>
-                        <div id="content-editor"></div>
-                        <div id="status-msg" class="status-msg"></div>
-                    </div>
+            <div id="file-grid" class="file-list-grid">
+                < !-- Files will be loaded here in columns -->
+            </div>
+            <ul id="file-list" class="file-list" style="display: none;">
+                < !-- Fallback/Legacy list -->
+            </ul>
+        </div>
+        <!-- Editor Screen -->
+        <div id="editor-screen" class="editor-screen">
+            <div class="editor-toolbar"><button id="back-btn" class="btn-secondary">← Back</button>
+                <div><span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span><button
+                        id="editor-delete-btn" class="btn-secondary"
+                        style="color: #ef4444; border-color: #ef4444; margin-right: 0.5rem;">Delete</button><button
+                        id="save-btn" class="btn-primary">Publish Changes</button></div>
+            </div>
+            <div style="margin-bottom: 1rem;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page
+                    Title</label><input type="text" id="page-title"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+            </div>
+            <div id="content-editor"></div>
+            <div id="status-msg" class="status-msg"></div>
+        </div>
     </main>
     <!-- New Article Modal (Hidden by default) -->
     <div id="new-article-modal"
