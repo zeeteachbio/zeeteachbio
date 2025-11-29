@@ -157,11 +157,40 @@ function showScreen(screenName) {
 function log(msg, type = 'info') {
     const logEl = document.getElementById('debug-log');
     if (logEl) {
-        logEl.style.display = 'block';
+        if (type === 'error') {
+            logEl.style.display = 'block'; // Auto-show on error
+        }
         const timestamp = new Date().toLocaleTimeString();
         logEl.innerText += `[${timestamp}] [${type}] ${msg}\n`;
+        // Auto-scroll to bottom
+        logEl.scrollTop = logEl.scrollHeight;
         console.log(`[${type}] ${msg}`);
     }
+}
+
+// Global Error Handling
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+    log(`Global Error: ${msg} at ${url}:${lineNo}:${columnNo}`, 'error');
+    return false;
+};
+
+window.onunhandledrejection = function (event) {
+    log(`Unhandled Promise Rejection: ${event.reason}`, 'error');
+};
+
+// Toggle Debug Log
+const toggleDebugBtn = document.getElementById('toggle-debug-btn');
+if (toggleDebugBtn) {
+    toggleDebugBtn.addEventListener('click', () => {
+        const logEl = document.getElementById('debug-log');
+        if (logEl.style.display === 'none') {
+            logEl.style.display = 'block';
+            toggleDebugBtn.innerText = 'Hide Debug Log';
+        } else {
+            logEl.style.display = 'none';
+            toggleDebugBtn.innerText = 'Show Debug Log';
+        }
+    });
 }
 
 // Login
@@ -239,6 +268,7 @@ async function loadFiles() {
         let searchDataFile = null;
         let searchIndex = [];
         try {
+            log('Fetching searchData.js...', 'info');
             const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js?t=${Date.now()}`);
             searchDataFile = data;
 
@@ -247,11 +277,15 @@ async function loadFiles() {
             const arrayString = content.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
             try {
                 searchIndex = new Function('return ' + arrayString)();
+                log(`Parsed search index with ${searchIndex.length} items`, 'success');
             } catch (e) {
                 console.error("Failed to parse searchData.js content", e);
+                log(`Failed to parse searchData.js: ${e.message}`, 'error');
+                alert("Warning: Failed to parse searchData.js. Some file categorization might be incorrect.");
             }
         } catch (e) {
             console.log("searchData.js not found in src/", e);
+            log('searchData.js not found, proceeding without metadata', 'warning');
         }
 
         fileGrid.innerHTML = '';
@@ -840,15 +874,18 @@ createNewBtn.addEventListener('click', async () => {
 // Delete File Function (Robust)
 async function deleteFile(path, sha) {
     try {
+        log(`Deleting file: ${path}`, 'info');
         // 1. Delete the file
         await octokit.request(`DELETE /repos/${owner}/${repo}/contents/${path}`, {
             message: `Delete ${path} via Admin Dashboard`,
             sha: sha
         });
+        log(`File deleted from GitHub: ${path}`, 'success');
 
         // 2. Update searchData.js if it's an article
         if (path.endsWith('.html') && !path.includes('admin') && !path.includes('index')) {
             try {
+                log('Updating search index...', 'info');
                 const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
                 const currentContent = decodeURIComponent(escape(atob(searchData.content)));
 
@@ -870,10 +907,14 @@ async function deleteFile(path, sha) {
 
                 if (newSearchIndex.length !== currentSearchIndex.length) {
                     await updateSearchIndex(newSearchIndex, `Remove ${path} from search index`);
+                    log('Search index updated', 'success');
+                } else {
+                    log('Article not found in search index, skipping update', 'warning');
                 }
 
             } catch (e) {
                 console.error("Error updating search index during delete", e);
+                log(`Error updating search index: ${e.message}`, 'error');
                 alert("File deleted, but failed to update search index. Please check manually.");
             }
         }
@@ -883,6 +924,7 @@ async function deleteFile(path, sha) {
         await loadFiles(); // Refresh list
     } catch (error) {
         console.error(error);
+        log(`Error deleting file: ${error.message}`, 'error');
         alert(`Error deleting file: ${error.message}`);
     }
 }

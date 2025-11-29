@@ -156,7 +156,10 @@
 <body>
     <header
         style="background: white; padding: 1rem 2rem; border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
-        <a href="/" class="logo">Zee Teach Admin</a></header>
+        <a href="/" class="logo">Zee Teach Admin</a>
+        <button id="toggle-debug-btn" class="btn-secondary" style="font-size: 0.8rem; padding: 0.25rem 0.5rem;">Show
+            Debug Log</button>
+    </header>
     <main class="admin-container">
         < !-- Login Screen -->
             <div id="login-screen" class="login-screen active-screen">
@@ -169,7 +172,7 @@
                         href="https://github.com/settings/tokens/new?scopes=repo" target="_blank">Generate one
                         here</a>(Select 'repo' scope). </p>
                 <pre id="debug-log"
-                    style="margin-top: 1rem; padding: 1rem; background: #f1f5f9; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none;"></pre>
+                    style="margin-top: 1rem; padding: 1rem; background: #1e293b; color: #f8fafc; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none; max-height: 300px; overflow-y: auto; font-family: monospace;"></pre>
             </div>
             < !-- Dashboard Screen -->
                 <div id="dashboard-screen" class="dashboard-screen">
@@ -202,57 +205,56 @@
                         <div id="status-msg" class="status-msg"></div>
                     </div>
     </main>
-    < !-- New Article Modal (Hidden by default) -->
-        <div id="new-article-modal"
-            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
-            <div
-                style="background: white; padding: 2rem; border-radius: var(--radius-lg); width: 400px; max-width: 90%;">
-                <h3>Create New Article</h3>
-                <div style="margin: 1rem 0;"><label
-                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filename (e.g.,
-                        my-article)</label><input type="text" id="new-filename"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                </div>
-                <div style="margin: 1rem 0;"><label
-                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label><input type="text"
-                        id="new-title"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                </div>
-                <div style="margin: 1rem 0;"><label
-                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Category</label><select
-                        id="new-category"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                        <option value="General">General</option>
-                        <option value="STB Class 9">STB Class 9</option>
-                        <option value="STB Class 10">STB Class 10</option>
-                        <option value="STB Class 11">STB Class 11</option>
-                        <option value="STB Class 12">STB Class 12</option>
-                        <option value="AKUEB Class 9">AKUEB Class 9</option>
-                        <option value="AKUEB Class 10">AKUEB Class 10</option>
-                        <option value="AKUEB Class 11">AKUEB Class 11</option>
-                        <option value="AKUEB Class 12">AKUEB Class 12</option>
-                    </select></div>
-                <div id="chapter-container" style="margin: 1rem 0; display: none;"><label
-                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter</label><select
-                        id="new-chapter"
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                        <option value="">Select Chapter</option>
-                    </select></div>
-                <div style="margin: 1rem 0;"><label
-                        style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
-                        (Optional)</label><input type="text" id="new-thumbnail" placeholder="https://..."
-                        style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
-                    <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">Leave empty to
-                        auto-extract from content images. </p>
-                </div>
-                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;"><button
-                        id="cancel-new-btn" class="btn-secondary">Cancel</button><button id="create-new-btn"
-                        class="btn-primary">Create</button></div>
+    <!-- New Article Modal (Hidden by default) -->
+    <div id="new-article-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: var(--radius-lg); width: 400px; max-width: 90%;">
+            <h3>Create New Article</h3>
+            <div style="margin: 1rem 0;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Filename (e.g.,
+                    my-article)</label><input type="text" id="new-filename"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
             </div>
+            <div style="margin: 1rem 0;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Title</label><input type="text"
+                    id="new-title"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+            </div>
+            <div style="margin: 1rem 0;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Category</label><select
+                    id="new-category"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                    <option value="General">General</option>
+                    <option value="STB Class 9">STB Class 9</option>
+                    <option value="STB Class 10">STB Class 10</option>
+                    <option value="STB Class 11">STB Class 11</option>
+                    <option value="STB Class 12">STB Class 12</option>
+                    <option value="AKUEB Class 9">AKUEB Class 9</option>
+                    <option value="AKUEB Class 10">AKUEB Class 10</option>
+                    <option value="AKUEB Class 11">AKUEB Class 11</option>
+                    <option value="AKUEB Class 12">AKUEB Class 12</option>
+                </select></div>
+            <div id="chapter-container" style="margin: 1rem 0; display: none;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Chapter</label><select
+                    id="new-chapter"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                    <option value="">Select Chapter</option>
+                </select></div>
+            <div style="margin: 1rem 0;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Thumbnail URL
+                    (Optional)</label><input type="text" id="new-thumbnail" placeholder="https://..."
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                <p style="font-size: 0.8rem; color: var(--color-text-light); margin-top: 0.25rem;">Leave empty to
+                    auto-extract from content images. </p>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;"><button
+                    id="cancel-new-btn" class="btn-secondary">Cancel</button><button id="create-new-btn"
+                    class="btn-primary">Create</button></div>
         </div>
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script src="https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-        <script type="module" src="/src/admin.js"></script>
+    </div>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://unpkg.com/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+    <script type="module" src="/src/admin.js"></script>
 </body>
 
 </html>
