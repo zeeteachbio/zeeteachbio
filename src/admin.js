@@ -516,6 +516,7 @@ async function loadFileContent(path) {
         const doc = parser.parseFromString(content, 'text/html');
 
         const title = doc.querySelector('title') ? doc.querySelector('title').innerText : path;
+        pageTitleInput.value = title;
 
         let bodyContent = '';
         const articleContent = doc.querySelector('#article-content');
