@@ -86,5 +86,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.3.1 relate biology to other branches of science",
+        "url": "/relate-biology-to-other-branches-of-science.html",
+        "excerpt": "1.3.1 relate biology to other branches of science - AKUEB Class 9 (1. Introduction to Biology) notes.",
+        "category": "AKUEB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-12-01T15:17:31.614Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
