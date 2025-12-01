@@ -130,16 +130,5 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
-    },
-    {
-        "title": "1.6.1 describe bioelements as the most basic level of biological organisation;",
-        "url": "/describe-bioelements-as-the-most-basic-level-of-biological-organisation.html",
-        "excerpt": "1.6.1 describe bioelements as the most basic level of biological organisation; - AKUEB Class 9 (1. Introduction to Biology) notes.",
-        "category": "AKUEB Class 9",
-        "chapter": "1. Introduction to Biology",
-        "date": "2025-12-01T15:41:48.680Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
     }
 ];
