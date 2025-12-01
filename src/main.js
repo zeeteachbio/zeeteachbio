@@ -2,8 +2,55 @@ import './style.css';
 import { CommentSystem } from './comments.js';
 import { api } from './services/api.js';
 
+const generateTableOfContents = () => {
+    const content = document.getElementById('article-content');
+    if (!content) return;
+
+    const headings = content.querySelectorAll('h1, h2, h3, h4, h5');
+    if (headings.length === 0) return;
+
+    const tocContainer = document.createElement('div');
+    tocContainer.className = 'toc-container';
+
+    const tocTitle = document.createElement('h3');
+    tocTitle.className = 'toc-title';
+    tocTitle.textContent = 'Table of Contents';
+    tocContainer.appendChild(tocTitle);
+
+    const tocList = document.createElement('ul');
+    tocList.className = 'toc-list';
+
+    headings.forEach((heading, index) => {
+        if (!heading.id) {
+            heading.id = `heading-${index}`;
+        }
+
+        const listItem = document.createElement('li');
+        listItem.className = `toc-item toc-${heading.tagName.toLowerCase()}`;
+
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent;
+        link.className = 'toc-link';
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById(heading.id).scrollIntoView({ behavior: 'smooth' });
+        });
+
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
+    });
+
+    tocContainer.appendChild(tocList);
+    content.parentElement.insertBefore(tocContainer, content);
+};
+
 const initApp = async () => {
     console.log("Initializing App...");
+
+    // Generate TOC
+    generateTableOfContents();
 
     // --- Mobile Menu & Header Logic ---
     const header = document.querySelector('.header');

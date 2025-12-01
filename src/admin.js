@@ -62,6 +62,25 @@ document.title = "Admin Dashboard v2.1 - Zee Teach";
 const headerTitle = document.querySelector('.header .logo');
 if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.1)</span>';
 
+// Add Logout Button to Header
+const header = document.querySelector('header');
+if (header) {
+    const logoutBtn = document.createElement('button');
+    logoutBtn.id = 'logout-btn';
+    logoutBtn.className = 'btn-secondary';
+    logoutBtn.style.cssText = 'font-size: 0.8rem; padding: 0.25rem 0.5rem; margin-left: 1rem; display: none;';
+    logoutBtn.innerText = 'Logout';
+    header.appendChild(logoutBtn);
+
+    logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('github_token');
+            window.location.reload();
+        }
+    });
+}
+
+
 
 const loginBtn = document.getElementById('login-btn');
 const tokenInput = document.getElementById('github-token');
@@ -121,31 +140,51 @@ if (window.Quill) {
     const Size = window.Quill.import('attributors/style/size');
     Size.whitelist = ['small', 'large', 'huge'];
     window.Quill.register(Size, true);
+
+    // Register Bullet Style (Class Attributor)
+    const BulletStyle = new Parchment.Attributor.Class('bullet-style', 'bullet-style', {
+        scope: Parchment.Scope.BLOCK
+    });
+    window.Quill.register(BulletStyle, true);
 }
 
-const quill = new Quill('#content-editor', {
-    theme: 'snow',
-    modules: {
-        imageResize: {
-            displaySize: true
-        },
-        toolbar: [
-            [{ 'header': [1, 2, 3, false] }],
-            [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'] }],
-            [{ 'size': ['small', false, 'large', 'huge'] }],
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote', 'code-block'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'align': [] }],
-            ['link', 'image', 'video'],
-            [{ 'line-height': ['1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'] }],
-            [{ 'margin-bottom': ['0px', '10px', '20px', '30px', '40px', '50px'] }],
-            ['clean']
-        ]
-    }
-});
+
+// Quill instance - initialized lazily
+let quill = null;
+
+function initializeQuill() {
+    if (quill || !document.getElementById('content-editor')) return quill;
+
+    quill = new Quill('#content-editor', {
+        theme: 'snow',
+        modules: {
+            imageResize: {
+                displaySize: true
+            },
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'] }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'bullet-style': ['star', 'check', 'arrow', 'diamond'] }],
+                [{ 'script': 'sub' }, { 'script': 'super' }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                ['link', 'image', 'video'],
+                [{ 'line-height': ['1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'] }],
+                [{ 'margin-bottom': ['0px', '10px', '20px', '30px', '40px', '50px'] }],
+                ['clean']
+            ]
+        }
+    });
+
+
+
+    setupFloatingToolbar();
+    return quill;
+}
 
 // Navigation
 function showScreen(screenName) {
@@ -212,6 +251,14 @@ loginBtn.addEventListener('click', async () => {
         log(`Logged in as ${user.login}`, 'success');
         currentUser = user.login;
 
+        // Save token to localStorage
+        localStorage.setItem('github_token', token);
+
+        // Show Logout Button
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
+
+
         log('Loading files...', 'info');
         await loadFiles();
 
@@ -229,6 +276,35 @@ loginBtn.addEventListener('click', async () => {
         loginBtn.innerText = 'Login';
     }
 });
+
+// Check for stored token on load
+(async function checkSession() {
+    const storedToken = localStorage.getItem('github_token');
+    if (storedToken) {
+        log('Found stored session, attempting auto-login...', 'info');
+        tokenInput.value = storedToken; // Pre-fill for convenience
+
+        try {
+            octokit = new Octokit({ auth: storedToken });
+            const { data: user } = await octokit.request('GET /user');
+
+            log(`Auto-logged in as ${user.login}`, 'success');
+            currentUser = user.login;
+
+            // Show Logout Button
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) logoutBtn.style.display = 'inline-block';
+
+            showScreen('dashboard');
+            await loadFiles();
+        } catch (error) {
+            console.error('Auto-login failed', error);
+            log('Session expired or invalid. Please log in again.', 'warning');
+            localStorage.removeItem('github_token');
+        }
+    }
+})();
+
 
 // Load Files
 async function loadFiles() {
@@ -498,6 +574,13 @@ async function loadFileContent(path) {
         currentFileSha = data.sha;
         currentFilePath = path;
 
+        // Initialize Quill editor if not already initialized
+        const editor = initializeQuill();
+        if (!editor) {
+            alert('Failed to initialize editor');
+            return;
+        }
+
         // FIX: Correctly decode UTF-8 content
         const content = decodeURIComponent(escape(atob(data.content)));
 
@@ -505,7 +588,7 @@ async function loadFileContent(path) {
             // Text editor for JS files
             pageTitleInput.value = path;
             pageTitleInput.disabled = true;
-            quill.setText(content);
+            editor.setText(content);
             document.getElementById('current-file').innerText = path;
             showScreen('editor');
             return;
@@ -516,7 +599,6 @@ async function loadFileContent(path) {
         const doc = parser.parseFromString(content, 'text/html');
 
         const title = doc.querySelector('title') ? doc.querySelector('title').innerText : path;
-        pageTitleInput.value = title;
 
         let bodyContent = '';
         const articleContent = doc.querySelector('#article-content');
@@ -560,11 +642,11 @@ async function loadFileContent(path) {
         }
 
         console.log('Body Content Length:', bodyContent.length);
-        quill.setContents([]);
+        editor.setContents([]);
         try {
-            const delta = quill.clipboard.convert(bodyContent);
+            const delta = editor.clipboard.convert(bodyContent);
             console.log('Converted Delta:', delta);
-            quill.setContents(delta, 'silent');
+            editor.setContents(delta, 'silent');
         } catch (e) {
             console.error("Quill conversion error:", e);
             alert("Failed to load content into editor. The file might be too complex or contain invalid HTML.");
@@ -794,7 +876,7 @@ createNewBtn.addEventListener('click', async () => {
                 <nav class="nav">
                     <a href="/" class="nav-link">Home</a>
                     <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 4px;"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes &#9662;</a>
                         <div class="dropdown-menu">
                             <a href="/class9.html" class="dropdown-item">Class 9</a>
                             <a href="/class10.html" class="dropdown-item">Class 10</a>
@@ -803,7 +885,7 @@ createNewBtn.addEventListener('click', async () => {
                         </div>
                     </div>
                     <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 4px;"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes &#9662;</a>
                         <div class="dropdown-menu">
                             <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
                             <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
@@ -812,7 +894,6 @@ createNewBtn.addEventListener('click', async () => {
                         </div>
                     </div>
 
-                    <a href="https://mcqsbuilder.vercel.app/test.html" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Take a Test</a>
                     <div class="search-container">
                         <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
                         <button class="search-btn">
@@ -982,6 +1063,107 @@ async function deleteFile(path, sha) {
     }
 }
 
+
 backBtn.addEventListener('click', () => {
     showScreen('dashboard');
 });
+
+function setupFloatingToolbar() {
+    const floatingToolbar = document.getElementById('floating-toolbar');
+    if (floatingToolbar && quill) {
+        quill.on('selection-change', (range) => {
+            if (range && range.length > 0) {
+                const bounds = quill.getBounds(range.index, range.length);
+
+                // Calculate position relative to the editor container
+                const containerBounds = document.querySelector('.ql-container').getBoundingClientRect();
+                // Position above the selection
+                const top = bounds.top + window.scrollY + containerBounds.top - floatingToolbar.offsetHeight - 10;
+                const left = bounds.left + window.scrollX + containerBounds.left + (bounds.width / 2) - (floatingToolbar.offsetWidth / 2);
+
+                // Ensure it doesn't go off screen
+                const adjustedLeft = Math.max(10, Math.min(left, window.innerWidth - floatingToolbar.offsetWidth - 10));
+
+                floatingToolbar.style.top = `${top}px`;
+                floatingToolbar.style.left = `${adjustedLeft}px`;
+                floatingToolbar.classList.add('visible');
+
+                // Update button states based on current formatting
+                const formats = quill.getFormat(range);
+
+                // Buttons
+                floatingToolbar.querySelectorAll('button').forEach(btn => {
+                    const format = btn.dataset.format;
+                    const value = btn.dataset.value;
+
+                    if (value) {
+                        if (formats[format] == value) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    } else {
+                        if (formats[format]) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    }
+                });
+
+                // Selects
+                floatingToolbar.querySelectorAll('select').forEach(select => {
+                    const format = select.dataset.format;
+                    if (formats[format]) {
+                        // Handle array values (like fonts sometimes) or simple strings
+                        select.value = formats[format];
+                    } else {
+                        // Reset to default if no format applied
+                        if (format === 'size') select.value = '';
+                        else if (format === 'align') select.value = '';
+                        else if (format === 'font') select.value = 'mirza'; // Default font
+                        else select.value = select.options[0].value;
+                    }
+                });
+
+            } else {
+                floatingToolbar.classList.remove('visible');
+            }
+        });
+
+        // Toolbar Button Actions
+        floatingToolbar.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // Prevent losing focus
+
+                const format = btn.dataset.format;
+                const value = btn.dataset.value;
+
+                if (value) {
+                    quill.format(format, value);
+                } else {
+                    const currentFormat = quill.getFormat();
+                    quill.format(format, !currentFormat[format]);
+                }
+            });
+        });
+
+        // Toolbar Select Actions
+        floatingToolbar.querySelectorAll('select').forEach(select => {
+            select.addEventListener('change', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const format = select.dataset.format;
+                const value = select.value;
+
+                quill.format(format, value);
+            });
+
+            select.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+    }
+}
