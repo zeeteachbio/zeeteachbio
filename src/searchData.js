@@ -130,5 +130,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.6 The Levels of Organisation",
+        "url": "/The-Levels-of-Organisation.html",
+        "excerpt": "1.6 The Levels of Organisation - AKUEB Class 9 (1. Introduction to Biology) notes.",
+        "category": "AKUEB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-12-01T15:53:11.801Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
