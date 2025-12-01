@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://zeeteach.com/sitemap.xml
+Sitemap: https://zeeteachbio.vercel.app/sitemap.xml
