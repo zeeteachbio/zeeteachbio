@@ -218,6 +218,8 @@ function attachToolbarListeners(toolbar, editor) {
     } else {
       editor.chain().focus().unsetFontSize().run();
     }
+    // Reset dropdown to prevent selection bug
+    e.target.value = '';
   });
 
   // Text formatting
