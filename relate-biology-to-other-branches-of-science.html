@@ -1,84 +1,127 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1.3.1 relate biology to other branches of science, - Zee Teach</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <script type="module" src="/src/main.js"></script>
-</head>
-<body>
-    <div id="app">
-        <header class="header">
-            <div class="container header-content">
-                <a href="/" class="logo">
-                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
-                    Zee Teach
+<div class="container header-content">
+    <a href="/" class="logo">
+        <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
+        Zee Teach
+    </a>
+    <nav class="nav">
+        <a href="/" class="nav-link">Home</a>
+        <div class="dropdown">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes ▾</a>
+            <div class="dropdown-menu">
+                <a href="/class9.html" class="dropdown-item">Class 9</a>
+                <a href="/class10.html" class="dropdown-item">Class 10</a>
+                <a href="/class11.html" class="dropdown-item">Class 11</a>
+                <a href="/class12.html" class="dropdown-item">Class 12</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes ▾</a>
+            <div class="dropdown-menu">
+                <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
+                <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
+                <a href="/akueb-class11.html" class="dropdown-item">Class 11</a>
+                <a href="/akueb-class12.html" class="dropdown-item">Class 12</a>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
+            <button class="search-btn">
+                <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+        </div>
+    </nav>
+</div>
+</header>
+<main>
+    <article class="article">
+        <div class="container article-container">
+            <div class="article-body">
+                <a href="/" class="back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18">
+                        </path>
+                    </svg>
+                    Back to Home
                 </a>
-                <nav class="nav">
-                    <a href="/" class="nav-link">Home</a>
-                    <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes ▾</a>
-                        <div class="dropdown-menu">
-                            <a href="/class9.html" class="dropdown-item">Class 9</a>
-                            <a href="/class10.html" class="dropdown-item">Class 10</a>
-                            <a href="/class11.html" class="dropdown-item">Class 11</a>
-                            <a href="/class12.html" class="dropdown-item">Class 12</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes ▾</a>
-                        <div class="dropdown-menu">
-                            <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
-                            <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
-                            <a href="/akueb-class11.html" class="dropdown-item">Class 11</a>
-                            <a href="/akueb-class12.html" class="dropdown-item">Class 12</a>
-                        </div>
-                    </div>
+                <div class="article-meta"
+                    style="margin-bottom: 1.5rem; color: var(--color-text-light); font-size: 0.9rem; font-weight: 500;">
+                    1. Introduction to Biology
+                </div>
 
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
-                        <button class="search-btn">
-                            <svg class="search-icon-svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            </svg>
-                        </button>
+                <div id="article-content">
+                    <h1>1.3 Relationship of Biology with Other Sciences</h1>
+                    <div class="custom-block info-box">
+                        <p>1.3.1 relate biology to other branches of science, i.e., biophysics, biochemistry,
+                            biostatistics, biomathematics (biometry), biogeography, bio-economics, computational biology
+                            and biotechnology;</p>
                     </div>
-                </nav>
+                    <h2><strong>Biophysics</strong></h2>
+                    <p><strong>Definition:</strong> Biophysics applies the principles of physics to study biological
+                        structures and processes.<br><strong>Relation to Biology:</strong> It helps explain movement,
+                        muscle contraction, vision, nerve impulses, and energy flow in living organisms.</p>
+                    <hr>
+                    <h2><strong>Biochemistry</strong></h2>
+                    <p><strong>Definition:</strong> Biochemistry studies the chemical substances and reactions occurring
+                        inside living organisms.<br><strong>Relation to Biology:</strong> It explains metabolism,
+                        enzymes, hormones, DNA, and how chemical changes control life processes.</p>
+                    <hr>
+                    <h2><strong>Biostatistics</strong></h2>
+                    <p><strong>Definition:</strong> Biostatistics deals with the application of statistical methods to
+                        biological data.<br><strong>Relation to Biology:</strong> It helps analyze experimental results,
+                        population studies, disease patterns, and scientific research data.</p>
+                    <hr>
+                    <h2><strong>Biomathematics (Biometry)</strong></h2>
+                    <p><strong>Definition:</strong> Biomathematics uses mathematical models to understand biological
+                        systems.<br><strong>Relation to Biology:</strong> It helps in predicting population growth,
+                        spread of diseases, genetics ratios, and ecosystem changes.</p>
+                    <hr>
+                    <h2><strong>Biogeography</strong></h2>
+                    <p><strong>Definition:</strong> Biogeography studies the distribution of organisms across different
+                        regions of the world.<br><strong>Relation to Biology:</strong> It explains why certain plants
+                        and animals live in specific habitats and how environment affects biodiversity.</p>
+                    <hr>
+                    <h2><strong>Bio-economics</strong></h2>
+                    <p><strong>Definition:</strong> Bio-economics applies economic principles to the management of
+                        biological resources.<br><strong>Relation to Biology:</strong> It helps in sustainable use of
+                        forests, fisheries, agriculture, livestock, and conservation of natural resources.</p>
+                    <hr>
+                    <h2><strong>Computational Biology</strong></h2>
+                    <p><strong>Definition:</strong> Computational biology uses computer technology, algorithms, and
+                        software to study biological data.<br><strong>Relation to Biology:</strong> It helps analyze DNA
+                        sequences, predict protein structure, track epidemics, and aid in modern research.</p>
+                    <hr>
+                    <h2><strong>Biotechnology</strong></h2>
+                    <p><strong>Definition:</strong> Biotechnology uses living organisms or their products to make useful
+                        materials.<br><strong>Relation to Biology:</strong> It supports medicine (vaccines, insulin),
+                        agriculture (GM crops), industry (enzymes), and environmental cleanup.</p>
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
+                    <a href="/" class="back-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
+                        </svg>
+                        Back to Home
+                    </a>
+                </div>
             </div>
-        </header>
-        <main>
-            <article class="article">
-                <div class="container article-container">
-                    <div class="article-body">
-                        <a href="/" class="back-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
-                            </svg>
-                            Back to Home
-                        </a>
-                        <div class="article-meta" style="margin-bottom: 1.5rem; color: var(--color-text-light); font-size: 0.9rem; font-weight: 500;">
-                            1. Introduction to Biology
-                        </div>
-
-                        <div id="article-content"><h1>1.3 Relationship of Biology with Other Sciences</h1><div class="custom-block info-box"><p>1.3.1 relate biology to other branches of science, i.e., biophysics, biochemistry, biostatistics, biomathematics (biometry), biogeography, bio-economics, computational biology and biotechnology;</p></div><h2><strong>Biophysics</strong></h2><p><strong>Definition:</strong> Biophysics applies the principles of physics to study biological structures and processes.<br><strong>Relation to Biology:</strong> It helps explain movement, muscle contraction, vision, nerve impulses, and energy flow in living organisms.</p><hr><h2><strong>Biochemistry</strong></h2><p><strong>Definition:</strong> Biochemistry studies the chemical substances and reactions occurring inside living organisms.<br><strong>Relation to Biology:</strong> It explains metabolism, enzymes, hormones, DNA, and how chemical changes control life processes.</p><hr><h2><strong>Biostatistics</strong></h2><p><strong>Definition:</strong> Biostatistics deals with the application of statistical methods to biological data.<br><strong>Relation to Biology:</strong> It helps analyze experimental results, population studies, disease patterns, and scientific research data.</p><hr><h2><strong>Biomathematics (Biometry)</strong></h2><p><strong>Definition:</strong> Biomathematics uses mathematical models to understand biological systems.<br><strong>Relation to Biology:</strong> It helps in predicting population growth, spread of diseases, genetics ratios, and ecosystem changes.</p><hr><h2><strong>Biogeography</strong></h2><p><strong>Definition:</strong> Biogeography studies the distribution of organisms across different regions of the world.<br><strong>Relation to Biology:</strong> It explains why certain plants and animals live in specific habitats and how environment affects biodiversity.</p><hr><h2><strong>Bio-economics</strong></h2><p><strong>Definition:</strong> Bio-economics applies economic principles to the management of biological resources.<br><strong>Relation to Biology:</strong> It helps in sustainable use of forests, fisheries, agriculture, livestock, and conservation of natural resources.</p><hr><h2><strong>Computational Biology</strong></h2><p><strong>Definition:</strong> Computational biology uses computer technology, algorithms, and software to study biological data.<br><strong>Relation to Biology:</strong> It helps analyze DNA sequences, predict protein structure, track epidemics, and aid in modern research.</p><hr><h2><strong>Biotechnology</strong></h2><p><strong>Definition:</strong> Biotechnology uses living organisms or their products to make useful materials.<br><strong>Relation to Biology:</strong> It supports medicine (vaccines, insulin), agriculture (GM crops), industry (enzymes), and environmental cleanup.</p></div>
-
-                        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
-                            <a href="/" class="back-btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"></path>
-                                </svg>
-                                Back to Home
-                            </a>
-                        </div>
-                    </div>
-            </div></article>
-        </main>
-        <footer class="footer">
-            <div class="container footer-content">
-                <p>© 2025 Zeeteach. All rights reserved.</p>
-            </div>
-        </footer>
+        </div>
+    </article>
+</main>
+<footer class="footer">
+    <div class="container footer-content">
+        <p>© 2025 Zeeteach. All rights reserved.</p>
     </div>
+</footer>
+</div>
 
-</body></html>
+</body>
+
+</html>
