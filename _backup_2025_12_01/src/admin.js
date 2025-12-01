@@ -1,5 +1,4 @@
 import { Octokit } from "octokit";
-import './editorCompat.js';
 
 // State
 let octokit = null;
@@ -106,17 +105,84 @@ const chapterContainer = document.getElementById('chapter-container');
 
 console.log('Admin script loaded v2');
 
-// Initialize Tiptap editor
+// Initialize Quill
+// Register Image Resize Module
+if (window.Quill) {
+    let ImageResizeModule = window.ImageResize;
+    if (ImageResizeModule && typeof ImageResizeModule !== 'function' && ImageResizeModule.default) {
+        ImageResizeModule = ImageResizeModule.default;
+    }
+
+    if (typeof ImageResizeModule === 'function') {
+        window.Quill.register('modules/imageResize', ImageResizeModule);
+    } else {
+        console.error('ImageResize module not found or not a constructor', window.ImageResize);
+    }
+
+    // Register Custom Attributors for Spacing
+    const Parchment = window.Quill.import('parchment');
+    const LineHeightStyle = new Parchment.Attributor.Style('line-height', 'line-height', {
+        scope: Parchment.Scope.INLINE
+    });
+    const MarginBottomStyle = new Parchment.Attributor.Style('margin-bottom', 'margin-bottom', {
+        scope: Parchment.Scope.BLOCK
+    });
+
+    window.Quill.register(LineHeightStyle, true);
+    window.Quill.register(MarginBottomStyle, true);
+
+    // Register Fonts (Use Inline Styles)
+    const Font = window.Quill.import('attributors/style/font');
+    Font.whitelist = ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'];
+    window.Quill.register(Font, true);
+
+    // Register Size (Use Inline Styles)
+    const Size = window.Quill.import('attributors/style/size');
+    Size.whitelist = ['small', 'large', 'huge'];
+    window.Quill.register(Size, true);
+
+    // Register Bullet Style (Class Attributor)
+    const BulletStyle = new Parchment.Attributor.Class('bullet-style', 'bullet-style', {
+        scope: Parchment.Scope.BLOCK
+    });
+    window.Quill.register(BulletStyle, true);
+}
+
+
+// Quill instance - initialized lazily
 let quill = null;
 
 function initializeQuill() {
     if (quill || !document.getElementById('content-editor')) return quill;
 
-    console.log('Initializing Tiptap instead of Quill...');
-    quill = window.editorAPI.initialize();
+    quill = new Quill('#content-editor', {
+        theme: 'snow',
+        modules: {
+            imageResize: {
+                displaySize: true
+            },
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                [{ 'font': ['mirza', 'roboto', 'arial', 'times-new-roman', 'verdana', 'courier-new', 'katibeh', 'lateef'] }],
+                [{ 'size': ['small', false, 'large', 'huge'] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                [{ 'bullet-style': ['star', 'check', 'arrow', 'diamond'] }],
+                [{ 'script': 'sub' }, { 'script': 'super' }],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                ['link', 'image', 'video'],
+                [{ 'line-height': ['1.0', '1.2', '1.5', '1.8', '2.0', '2.5', '3.0'] }],
+                [{ 'margin-bottom': ['0px', '10px', '20px', '30px', '40px', '50px'] }],
+                ['clean']
+            ]
+        }
+    });
 
-    // Remove floating toolbar setup since Tiptap has built-in menus
-    // setupFloatingToolbar();
+
+
+    setupFloatingToolbar();
     return quill;
 }
 
@@ -522,7 +588,7 @@ async function loadFileContent(path) {
             // Text editor for JS files
             pageTitleInput.value = path;
             pageTitleInput.disabled = true;
-            window.editorAPI.setHTML(`<pre>${content}</pre>`);
+            editor.setText(content);
             document.getElementById('current-file').innerText = path;
             showScreen('editor');
             return;
@@ -576,8 +642,17 @@ async function loadFileContent(path) {
         }
 
         console.log('Body Content Length:', bodyContent.length);
-        // Load HTML content into Tiptap
-        window.editorAPI.setHTML(bodyContent);
+        editor.setContents([]);
+        try {
+            const delta = editor.clipboard.convert(bodyContent);
+            console.log('Converted Delta:', delta);
+            editor.setContents(delta, 'silent');
+        } catch (e) {
+            console.error("Quill conversion error:", e);
+            alert("Failed to load content into editor. The file might be too complex or contain invalid HTML.");
+            showScreen('dashboard');
+            return;
+        }
 
         document.getElementById('current-file').innerText = path;
 
@@ -654,7 +729,7 @@ saveBtn.addEventListener('click', async () => {
 
         if (currentFilePath.endsWith('.js')) {
             // Save JS file (plain text)
-            const newText = window.editorAPI.getHTML().replace(/<[^>]*>/g, ''); // Strip HTML tags
+            const newText = quill.getText();
             newContentBase64 = btoa(unescape(encodeURIComponent(newText)));
         } else {
             // Save HTML file
@@ -668,7 +743,7 @@ saveBtn.addEventListener('click', async () => {
                 doc.querySelector('title').innerText = `${pageTitleInput.value} - Zee Teach`;
             }
 
-            const newBodyHtml = window.editorAPI.getHTML();
+            const newBodyHtml = quill.root.innerHTML;
             const articleContent = doc.querySelector('#article-content');
             const articleBody = doc.querySelector('.article-body');
             const main = doc.querySelector('main');
