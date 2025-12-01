@@ -75,5 +75,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.2.1 explain the significance of given branches of biology",
+        "url": "/Divisions-and-Branches-of-Biology.html",
+        "excerpt": "1.2.1 explain the significance of given branches of biology - AKUEB Class 9 (1. Introduction to Biology) notes.",
+        "category": "AKUEB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-12-01T15:01:53.912Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
