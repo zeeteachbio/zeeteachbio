@@ -2,9 +2,10 @@
 .tiptap-editor {
     min-height: 400px;
     padding: 1.5rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #334155;
     border-radius: 8px;
-    background: #ffffff;
+    background: #1e293b;
+    color: #f8fafc;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
     line-height: 1.6;
@@ -22,8 +23,8 @@
     flex-wrap: wrap;
     gap: 8px;
     padding: 12px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
+    background: #0f172a;
+    border: 1px solid #334155;
     border-radius: 8px 8px 0 0;
     border-bottom: none;
     align-items: center;
@@ -38,14 +39,15 @@
 .toolbar-separator {
     width: 1px;
     height: 24px;
-    background: #cbd5e1;
+    background: #334155;
     margin: 0 4px;
 }
 
 .toolbar-btn {
     padding: 6px 10px;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #f8fafc;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
@@ -59,12 +61,12 @@
 }
 
 .toolbar-btn:hover {
-    background: #eff6ff;
-    border-color: #3b82f6;
+    background: #334155;
+    border-color: #60a5fa;
 }
 
 .toolbar-btn:active {
-    background: #dbeafe;
+    background: #475569;
 }
 
 .toolbar-btn.is-active {
@@ -75,8 +77,9 @@
 
 .toolbar-select {
     padding: 6px 10px;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
+    border: 1px solid #334155;
+    background: #1e293b;
+    color: #f8fafc;
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
@@ -85,15 +88,16 @@
 }
 
 .toolbar-select:hover {
-    border-color: #3b82f6;
+    border-color: #60a5fa;
 }
 
 .toolbar-color {
     width: 32px;
     height: 32px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #334155;
     border-radius: 4px;
     cursor: pointer;
+    background: #1e293b;
 }
 
 /* ===== Bubble Menu ===== */
@@ -140,10 +144,10 @@
 .table-menu {
     position: fixed;
     z-index: 1000;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: #1e293b;
+    border: 1px solid #334155;
     border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     padding: 12px;
     min-width: 250px;
 }
@@ -151,10 +155,10 @@
 .table-menu-header {
     font-weight: 600;
     font-size: 14px;
-    color: #1e293b;
+    color: #f8fafc;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #334155;
 }
 
 .table-menu-grid {
@@ -165,8 +169,9 @@
 
 .table-menu-btn {
     padding: 8px 12px;
-    border: 1px solid #e2e8f0;
-    background: #ffffff;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #f8fafc;
     border-radius: 4px;
     cursor: pointer;
     font-size: 13px;
@@ -175,8 +180,8 @@
 }
 
 .table-menu-btn:hover {
-    background: #eff6ff;
-    border-color: #3b82f6;
+    background: #334155;
+    border-color: #60a5fa;
 }
 
 .table-menu-danger {
@@ -256,7 +261,8 @@
 }
 
 .tiptap-editor code {
-    background: #f1f5f9;
+    background: #334155;
+    color: #f8fafc;
     padding: 2px 6px;
     border-radius: 3px;
     font-family: 'Courier New', monospace;
@@ -352,9 +358,9 @@
     padding: 8px 12px;
     text-align: right;
     font-size: 13px;
-    color: #64748b;
-    border-top: 1px solid #e2e8f0;
-    background: #f8fafc;
+    color: #94a3b8;
+    border-top: 1px solid #334155;
+    background: #0f172a;
 }
 
 /* ===== Focus States ===== */
@@ -364,25 +370,27 @@
 
 .tiptap-editor *::selection {
     background: #bfdbfe;
-}.tiptap-editor ul[data-type="taskList"] input[type="checkbox"] {
+}
+
+.tiptap-editor ul[data-type="taskList"] input[type="checkbox"] {
     margin-top: 0.25rem;
     cursor: pointer;
 }
 
 .tiptap-editor hr {
     border: none;
-    border-top: 2px solid #e2e8f0;
+    border-top: 2px solid #334155;
     margin: 2rem 0;
 }
 
 .tiptap-editor a {
-    color: #3b82f6;
+    color: #60a5fa;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .tiptap-editor a:hover {
-    color: #2563eb;
+    color: #93c5fd;
 }
 
 .tiptap-editor img {
@@ -402,7 +410,7 @@
 
 .tiptap-editor table td,
 .tiptap-editor table th {
-    border: 1px solid #cbd5e1;
+    border: 1px solid #475569;
     padding: 0.75rem;
     position: relative;
     vertical-align: top;
@@ -410,7 +418,7 @@
 }
 
 .tiptap-editor table th {
-    background: #f1f5f9;
+    background: #334155;
     font-weight: 600;
     text-align: left;
 }
