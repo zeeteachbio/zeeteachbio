@@ -2218,12 +2218,12 @@ a {
 
   /* Keep dropdown items visible with slight transparency */
   .nav .dropdown-item {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    color: #000 !important;
+    background-color: rgba(51, 65, 85, 0.95) !important;
+    color: #f1f5f9 !important;
   }
 
   .nav .dropdown-item:hover {
-    background-color: rgba(255, 255, 255, 1) !important;
+    background-color: rgba(71, 85, 105, 1) !important;
   }
 
   /* Close button */
@@ -3044,5 +3044,64 @@ body::before {
   .bg-blob {
     width: 300px;
     height: 300px;
+  }
+}
+
+
+/* Enhanced Mobile Dropdown Animations */
+@media (max-width: 768px) {
+  .nav .dropdown-item {
+    animation: slideInFromLeft 0.3s ease forwards;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  
+  .nav .dropdown-item:nth-child(1) { animation-delay: 0.05s; }
+  .nav .dropdown-item:nth-child(2) { animation-delay: 0.1s; }
+  .nav .dropdown-item:nth-child(3) { animation-delay: 0.15s; }
+  .nav .dropdown-item:nth-child(4) { animation-delay: 0.2s; }
+  .nav .dropdown-item:nth-child(5) { animation-delay: 0.25s; }
+  
+  @keyframes slideInFromLeft {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Smooth dropdown toggle rotation */
+  .dropdown-toggle svg {
+    transition: transform 0.3s ease;
+  }
+  
+  .dropdown.active .dropdown-toggle svg {
+    transform: rotate(180deg);
+  }
+  
+  /* Add ripple effect on tap */
+  .nav .dropdown-item:active {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav .dropdown-item:active::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.3);
+    transform: translate(-50%, -50%);
+    animation: ripple 0.6s ease-out;
+  }
+  
+  @keyframes ripple {
+    to {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
   }
 }
