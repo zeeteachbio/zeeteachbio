@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>API Test</title>
+</head>
+
+<body>
+    <h1>API Test</h1>
+    <div id="output">Waiting...</div>
+    <script type="module">
+        import { api } from '/src/services/api.js';
+
+        async function test() {
+            try {
+                const articles = await api.getArticles();
+                document.getElementById('output').innerHTML = `Success! Found ${articles.length} articles. First: ${articles[0].title}`;
+            } catch (e) {
+                document.getElementById('output').innerHTML = `Error: ${e.message}`;
+            }
+        }
+
+        test();
+    </script>
+</body>
+
+</html>

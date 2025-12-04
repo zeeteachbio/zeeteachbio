@@ -132,30 +132,12 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Animated Gradient Background */
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
 body {
   font-family: var(--font-sans);
-  background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b, #0f172a);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+  background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
 }
 
 a {
@@ -177,7 +159,7 @@ a {
 
 /* Header */
 .header {
-  background-color: rgba(30, 41, 59, 0.9);
+  background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
   position: sticky;
@@ -255,7 +237,7 @@ a {
 }
 
 .toolbar button:hover {
-  background-color: var(--color-surface);
+  background-color: white;
   color: var(--color-primary);
   box-shadow: var(--shadow-sm);
 }
@@ -270,7 +252,7 @@ a {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--color-surface);
+  background-color: white;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
@@ -470,7 +452,7 @@ a {
 
 /* Sidebar */
 .sidebar-widget {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 1.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -635,7 +617,7 @@ a {
 
 /* Footer */
 .footer {
-  background-color: var(--color-bg-alt);
+  background-color: white;
   border-top: 1px solid var(--color-border);
   padding: 2rem 0;
   margin-top: auto;
@@ -1029,7 +1011,7 @@ a {
 .chapter-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: var(--color-surface);
+  background-color: white;
   text-align: left;
 }
 
@@ -1043,10 +1025,6 @@ a {
   background-color: var(--color-bg);
   font-weight: 600;
   color: var(--color-heading);
-}
-
-.chapter-table td {
-  background-color: var(--color-surface);
 }
 
 .chapter-table tr:last-child td {
@@ -1284,7 +1262,7 @@ a {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: var(--color-surface);
+  background-color: white;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   font-size: 1.1rem;
@@ -1330,7 +1308,7 @@ a {
 
 .article-card {
   display: block;
-  background-color: var(--color-surface);
+  background-color: white;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
@@ -1395,27 +1373,19 @@ a {
 
 /* Color variable fix */
 :root {
-  /* Primary Purple/Blue Accents */
-  --color-primary: #8b5cf6;
-  --color-primary-dark: #7c3aed;
+  --color-primary: #10b981;
+  --color-primary-dark: #059669;
   --color-secondary: #3b82f6;
-
-  /* Dark Backgrounds */
-  --color-bg: #0f172a;
-  --color-bg-alt: #1e293b;
-  --color-surface: #1e293b;
-
-  /* Text Colors */
-  --color-text: #f1f5f9;
-  --color-text-light: #94a3b8;
-
-  /* Borders */
-  --color-border: #334155;
+  --color-bg: #f0ede5;
+  --color-bg-alt: #ffffff;
+  --color-text: #1e293b;
+  --color-text-light: #64748b;
+  --color-border: #e2e8f0;
 }
 
 /* Enhanced class section styling */
 .note-card {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 2rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -1461,7 +1431,7 @@ a {
 
 /* Box effect for section titles and descriptions */
 .section-title {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 1.5rem 2rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -1472,7 +1442,7 @@ a {
 }
 
 .section-desc {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 1rem 2rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -1484,7 +1454,7 @@ a {
 
 /* Combined box for section title and description */
 .section-title {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 1.5rem 2rem 0.5rem 2rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
@@ -1494,7 +1464,7 @@ a {
 }
 
 .section-desc {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 0.5rem 2rem 1.5rem 2rem;
   border: 2px solid var(--color-border);
   border-top: none;
@@ -1509,7 +1479,7 @@ a {
 
 /* Section header box - combines title and description */
 .section-header-box {
-  background-color: var(--color-surface);
+  background-color: white;
   padding: 2rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
@@ -2381,7 +2351,7 @@ a {
 
 /* Table of Contents */
 .toc-container {
-  background: var(--color-surface);
+  background: #f8fafc;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 2rem;
@@ -2555,7 +2525,7 @@ a {
 
 /* Table of Contents */
 .toc-container {
-  background: var(--color-surface);
+  background: #f8fafc;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 2rem;
@@ -2576,7 +2546,7 @@ body.dark-mode .nav {
 
 /* Table of Contents */
 .toc-container {
-  background: var(--color-surface);
+  background: #f8fafc;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 2rem;
@@ -2712,7 +2682,7 @@ body.dark-mode .nav {
   width: 300px;
   margin-left: 2rem;
   margin-bottom: 1rem;
-  background: var(--color-surface);
+  background: #f8fafc;
   padding: 1.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
@@ -2777,230 +2747,4 @@ body.dark-mode .nav {
     margin-left: 0;
     margin-bottom: 2rem;
   }
-}
-
-/* ====================================
-   BIOLOGY-THEMED ANIMATED BACKGROUND
-   ==================================== */
-
-.bio-particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.bio-particle {
-  position: absolute;
-  border-radius: 50%;
-  opacity: 0.5;
-  will-change: transform, opacity;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-.bio-particle.cell {
-  background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.2), transparent);
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
-}
-
-.bio-particle.dna {
-  background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.15), transparent);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-}
-
-.bio-particle.fluid {
-  background: radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.15), transparent);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-  filter: blur(1px);
-}
-
-@keyframes floatUp1 {
-  0% {
-    transform: translateY(110vh) translateX(0) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.5;
-  }
-
-  90% {
-    opacity: 0.5;
-  }
-
-  100% {
-    transform: translateY(-10vh) translateX(50px) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes floatUp2 {
-  0% {
-    transform: translateY(110vh) translateX(0) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.6;
-  }
-
-  90% {
-    opacity: 0.6;
-  }
-
-  100% {
-    transform: translateY(-10vh) translateX(-60px) rotate(-360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes floatUp3 {
-  0% {
-    transform: translateY(110vh) translateX(0) rotate(0deg);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.4;
-  }
-
-  90% {
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: translateY(-10vh) translateX(30px) rotate(180deg);
-    opacity: 0;
-  }
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -2;
-  background: radial-gradient(ellipse at 20% 40%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 60%, rgba(59, 130, 246, 0.07) 0%, transparent 50%);
-  opacity: 0.6;
-  animation: bioGlow 25s ease-in-out infinite;
-}
-
-@keyframes bioGlow {
-
-  0%,
-  100% {
-    opacity: 0.4;
-  }
-
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@media (max-width: 768px) {
-  .bio-particle {
-    opacity: 0.3;
-  }
-
-  body::before {
-    opacity: 0.3;
-  }
-}
-
-/* --- Loader Styles --- */
-#loader-wrapper {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background-color: #0f0f13;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
-}
-
-#loader-wrapper.fade-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.logo-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-/* SVG Styles */
-.logo-svg {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
-}
-
-.logo-path {
-  fill: transparent;
-  stroke: #8b5cf6;
-  /* Violet-500 */
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* Text Styles */
-.logo-text {
-  font-family: 'Outfit', sans-serif;
-  /* Ensure font matches if imported, or fallback */
-  font-weight: 700;
-  font-size: 3.5rem;
-  color: #ffffff;
-  letter-spacing: 0.05em;
-  overflow: hidden;
-  margin: 0;
-  /* Reset default h1 margin */
-}
-
-.logo-text .letter {
-  display: inline-block;
-  line-height: 1em;
-  transform-origin: 0 100%;
-}
-
-/* Subtitle */
-.subtitle {
-  font-family: 'Outfit', sans-serif;
-  margin-top: 10px;
-  font-weight: 300;
-  font-size: 1.2rem;
-  color: #94a3b8;
-  /* Slate-400 */
-  opacity: 0;
-}
-
-/* Gradient Background Blob */
-.bg-blob {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(15, 15, 19, 0) 70%);
-  z-index: -1;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZeeTeach Animated Logo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f0f13;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* SVG Styles */
+        .logo-svg {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+
+        .logo-path {
+            fill: transparent;
+            stroke: #8b5cf6;
+            /* Violet-500 */
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Text Styles */
+        .logo-text {
+            font-weight: 700;
+            font-size: 3.5rem;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            overflow: hidden;
+            /* Hide text before it enters */
+        }
+
+        .logo-text .letter {
+            display: inline-block;
+            line-height: 1em;
+            transform-origin: 0 100%;
+        }
+
+        /* Subtitle */
+        .subtitle {
+            margin-top: 10px;
+            font-weight: 300;
+            font-size: 1.2rem;
+            color: #94a3b8;
+            /* Slate-400 */
+            opacity: 0;
+        }
+
+        /* Gradient Background Blob for ambiance */
+        .bg-blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, rgba(15, 15, 19, 0) 70%);
+            z-index: -1;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-blob"></div>
+
+    <div class="logo-container">
+        <!-- SVG Icon: A stylized Z shape inside a hexagon -->
+        <svg class="logo-svg" viewBox="0 0 100 100">
+            <!-- Hexagon Border -->
+            <path class="logo-path hexagon" d="M50 5 L93.3 25 L93.3 75 L50 95 L6.7 75 L6.7 25 Z" />
+            <!-- Inner Z Shape -->
+            <path class="logo-path z-shape" d="M35 35 L65 35 L35 65 L65 65" />
+        </svg>
+
+        <h1 class="logo-text">
+            <span class="text-wrapper">
+                <span class="letters">ZeeTeach Bio</span>
+            </span>
+        </h1>
+
+        <div class="subtitle">Biology Made Easy</div>
+    </div>
+
+    <!-- Anime.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <script>
+        // Wrap every letter in a span
+        var textWrapper = document.querySelector('.logo-text .letters');
+        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+
+        // Initialize Timeline
+        var tl = anime.timeline({
+            easing: 'easeOutExpo',
+            duration: 1000
+        });
+
+        tl
+            // 1. Draw the Hexagon Border
+            .add({
+                targets: '.logo-path.hexagon',
+                strokeDashoffset: [anime.setDashoffset, 0],
+                easing: 'easeInOutSine',
+                duration: 1500,
+                delay: 500,
+                stroke: '#8b5cf6' // Start with violet
+            })
+            // 2. Draw the Z Shape (slightly overlapping with hexagon)
+            .add({
+                targets: '.logo-path.z-shape',
+                strokeDashoffset: [anime.setDashoffset, 0],
+                easing: 'easeInOutSine',
+                duration: 1200,
+                stroke: '#ffffff' // White Z
+            }, '-=1000')
+            // 3. Fill the Hexagon slightly
+            .add({
+                targets: '.logo-path.hexagon',
+                fill: ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.1)'],
+                duration: 800,
+                easing: 'linear'
+            }, '-=800')
+            // 4. Animate Text In (Staggered Slide Up)
+            .add({
+                targets: '.logo-text .letter',
+                translateY: ["1.1em", 0],
+                translateZ: 0,
+                opacity: [0, 1],
+                duration: 750,
+                delay: (el, i) => 50 * i
+            }, '-=600')
+            // 5. Fade in Subtitle
+            .add({
+                targets: '.subtitle',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 800,
+                easing: 'easeOutQuad'
+            }, '-=400');
+
+        // 6. Continuous Breathing Animation for the Logo
+        anime({
+            targets: '.logo-svg',
+            translateY: [-5, 5],
+            duration: 3000,
+            loop: true,
+            direction: 'alternate',
+            easing: 'easeInOutSine',
+            delay: 3500 // Start after intro finishes
+        });
+
+        // 7. Subtle Glow Pulse on the Hexagon
+        anime({
+            targets: '.logo-path.hexagon',
+            stroke: ['#8b5cf6', '#a78bfa'], // Pulse between violet shades
+            duration: 2000,
+            loop: true,
+            direction: 'alternate',
+            easing: 'easeInOutSine',
+            delay: 3500
+        });
+
+    </script>
+</body>
+
+</html>

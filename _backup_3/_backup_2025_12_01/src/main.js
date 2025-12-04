@@ -1,86 +1,6 @@
 import './style.css';
 import { CommentSystem } from './comments.js';
 import { api } from './services/api.js';
-import './bioParticles.js'; // Biology-themed animated background
-
-const initLoader = () => {
-    const loader = document.getElementById('loader-wrapper');
-    if (!loader) return;
-
-    // Wait for anime to be available
-    const startAnimation = () => {
-        if (!window.anime) {
-            requestAnimationFrame(startAnimation);
-            return;
-        }
-
-        // Wrap every letter in a span
-        var textWrapper = document.querySelector('.logo-text .letters');
-        if (textWrapper) {
-            textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-        }
-
-        var tl = window.anime.timeline({
-            easing: 'easeOutExpo',
-            duration: 1000,
-            complete: () => {
-                // Fade out loader after a short delay
-                setTimeout(() => {
-                    window.anime({
-                        targets: '#loader-wrapper',
-                        opacity: 0,
-                        duration: 500,
-                        easing: 'easeInOutQuad',
-                        complete: () => {
-                            loader.classList.add('fade-out');
-                            loader.remove(); // Remove from DOM
-                        }
-                    });
-                }, 500);
-            }
-        });
-
-        tl
-            .add({
-                targets: '.logo-path.hexagon',
-                strokeDashoffset: [window.anime.setDashoffset, 0],
-                easing: 'easeInOutSine',
-                duration: 1500,
-                delay: 100, // Reduced initial delay
-                stroke: '#8b5cf6'
-            })
-            .add({
-                targets: '.logo-path.z-shape',
-                strokeDashoffset: [window.anime.setDashoffset, 0],
-                easing: 'easeInOutSine',
-                duration: 1200,
-                stroke: '#ffffff'
-            }, '-=1000')
-            .add({
-                targets: '.logo-path.hexagon',
-                fill: ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.1)'],
-                duration: 800,
-                easing: 'linear'
-            }, '-=800')
-            .add({
-                targets: '.logo-text .letter',
-                translateY: ["1.1em", 0],
-                translateZ: 0,
-                opacity: [0, 1],
-                duration: 750,
-                delay: (el, i) => 50 * i
-            }, '-=600')
-            .add({
-                targets: '.subtitle',
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800,
-                easing: 'easeOutQuad'
-            }, '-=400');
-    };
-
-    startAnimation();
-};
 
 const generateTableOfContents = () => {
     const content = document.getElementById('article-content');
@@ -128,9 +48,6 @@ const generateTableOfContents = () => {
 
 const initApp = async () => {
     console.log("Initializing App...");
-
-    // Initialize Loader
-    initLoader();
 
     // Generate TOC
     generateTableOfContents();
