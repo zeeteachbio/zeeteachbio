@@ -308,8 +308,8 @@ async function loadFiles() {
             div.innerHTML = `
                 <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 0.5rem;" title="${label || file.name}">${label || file.name}</span>
                 <div style="display: flex; gap: 0.25rem;">
-                    <button class="btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</button>
-                    <button class="btn-secondary" style="color: #ef4444; border-color: #ef4444; padding: 0.25rem 0.5rem; font-size: 0.8rem;">Del</button>
+                    <button class="btn-secondary btn-sm">Edit</button>
+                    <button class="btn-danger btn-sm">Del</button>
                 </div>
             `;
 
@@ -403,7 +403,7 @@ async function loadFiles() {
             const header = document.createElement('h3');
             header.innerHTML = `
                 ${groupName}
-                <button class="btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">+ New</button>
+                <button class="btn-primary btn-sm" style="font-size: 0.75rem;">+ New</button>
             `;
 
             // Add New Article Button Logic
