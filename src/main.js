@@ -1,6 +1,7 @@
 import './style.css';
 import { CommentSystem } from './comments.js';
 import { api } from './services/api.js';
+import './bioParticles.js'; // Biology-themed animated background
 
 const generateTableOfContents = () => {
     const content = document.getElementById('article-content');
