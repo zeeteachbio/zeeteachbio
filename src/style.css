@@ -3055,35 +3055,49 @@ body::before {
     opacity: 0;
     transform: translateX(-10px);
   }
-  
-  .nav .dropdown-item:nth-child(1) { animation-delay: 0.05s; }
-  .nav .dropdown-item:nth-child(2) { animation-delay: 0.1s; }
-  .nav .dropdown-item:nth-child(3) { animation-delay: 0.15s; }
-  .nav .dropdown-item:nth-child(4) { animation-delay: 0.2s; }
-  .nav .dropdown-item:nth-child(5) { animation-delay: 0.25s; }
-  
+
+  .nav .dropdown-item:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+
+  .nav .dropdown-item:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .nav .dropdown-item:nth-child(3) {
+    animation-delay: 0.15s;
+  }
+
+  .nav .dropdown-item:nth-child(4) {
+    animation-delay: 0.2s;
+  }
+
+  .nav .dropdown-item:nth-child(5) {
+    animation-delay: 0.25s;
+  }
+
   @keyframes slideInFromLeft {
     to {
       opacity: 1;
       transform: translateX(0);
     }
   }
-  
+
   /* Smooth dropdown toggle rotation */
   .dropdown-toggle svg {
     transition: transform 0.3s ease;
   }
-  
+
   .dropdown.active .dropdown-toggle svg {
     transform: rotate(180deg);
   }
-  
+
   /* Add ripple effect on tap */
   .nav .dropdown-item:active {
     position: relative;
     overflow: hidden;
   }
-  
+
   .nav .dropdown-item:active::after {
     content: '';
     position: absolute;
@@ -3096,12 +3110,132 @@ body::before {
     transform: translate(-50%, -50%);
     animation: ripple 0.6s ease-out;
   }
-  
+
   @keyframes ripple {
     to {
       width: 300px;
       height: 300px;
       opacity: 0;
     }
+  }
+}
+
+/* Enhanced Bio Particles Styles */
+.bio-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Energy particle type */
+.bio-particle.energy {
+  background: radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.4), rgba(167, 139, 250, 0.2), transparent);
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.6), 0 0 50px rgba(139, 92, 246, 0.3);
+  animation: energyPulse 2s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.6), 0 0 50px rgba(139, 92, 246, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.8), 0 0 70px rgba(139, 92, 246, 0.5);
+  }
+}
+
+/* Depth layer styles */
+.bio-particle.depth-1 {
+  opacity: 0.7;
+  filter: blur(0px);
+  z-index: 3;
+}
+
+.bio-particle.depth-2 {
+  opacity: 0.5;
+  filter: blur(0.5px);
+  z-index: 2;
+}
+
+.bio-particle.depth-3 {
+  opacity: 0.3;
+  filter: blur(1px);
+  z-index: 1;
+}
+
+/* Enhanced particle colors */
+.bio-particle.cell {
+  background: radial-gradient(circle at 30% 30%, rgba(139, 92, 246, 0.25), rgba(124, 58, 237, 0.15), transparent);
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.bio-particle.dna {
+  background: radial-gradient(circle at 50% 50%, rgba(167, 139, 250, 0.2), rgba(139, 92, 246, 0.1), transparent);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  box-shadow: 0 0 15px rgba(167, 139, 250, 0.35);
+}
+
+.bio-particle.fluid {
+  background: radial-gradient(circle at 40% 40%, rgba(124, 58, 237, 0.2), rgba(109, 40, 217, 0.1), transparent);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+  filter: blur(1.5px);
+}
+
+/* Fix for medium screens - prevent nav wrapping */
+@media (min-width: 769px) and (max-width: 1200px) {
+  .header-content {
+    flex-wrap: nowrap !important;
+    gap: 0.5rem;
+    height: 3.5rem;
+  }
+
+  .nav {
+    flex-wrap: nowrap !important;
+    gap: 0.4rem;
+  }
+
+  .nav-link,
+  .dropdown-toggle {
+    font-size: 0.75rem !important;
+    padding: 0.3rem 0.5rem !important;
+    white-space: nowrap;
+  }
+
+  .search-container {
+    margin-left: 0.3rem !important;
+  }
+
+  .search-input {
+    font-size: 0.75rem !important;
+    width: 80px !important;
+    padding: 0.25rem 0.4rem !important;
+    padding-right: 1.8rem !important;
+  }
+
+  .search-input:focus {
+    width: 100px !important;
+  }
+
+  .header .btn-primary {
+    padding: 0.3rem 0.5rem !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+  }
+
+  .logo {
+    font-size: 1rem;
+  }
+
+  .logo-icon {
+    width: 2rem;
+    height: 2rem;
   }
 }
