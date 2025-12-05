@@ -7,79 +7,95 @@ const initLoader = () => {
     const loader = document.getElementById('loader-wrapper');
     if (!loader) return;
 
-    // Wait for anime to be available
-    const startAnimation = () => {
-        if (!window.anime) {
-            requestAnimationFrame(startAnimation);
-            return;
-        }
+    // Check navigation type and session storage
+    const navEntry = performance.getEntriesByType("navigation")[0];
+    const navType = navEntry ? navEntry.type : 'navigate';
+    const hasVisited = sessionStorage.getItem('has_visited_home');
 
-        // Wrap every letter in a span
-        var textWrapper = document.querySelector('.logo-text .letters');
-        if (textWrapper) {
-            textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-        }
+    // Show loader only if:
+    // 1. It's the first visit in this session (!hasVisited)
+    // 2. OR it's a reload (navType === 'reload')
+    if (!hasVisited || navType === 'reload') {
+        sessionStorage.setItem('has_visited_home', 'true');
 
-        var tl = window.anime.timeline({
-            easing: 'easeOutExpo',
-            duration: 1000,
-            complete: () => {
-                // Fade out loader after a short delay
-                setTimeout(() => {
-                    window.anime({
-                        targets: '#loader-wrapper',
-                        opacity: 0,
-                        duration: 500,
-                        easing: 'easeInOutQuad',
-                        complete: () => {
-                            loader.classList.add('fade-out');
-                            loader.remove(); // Remove from DOM
-                        }
-                    });
-                }, 500);
+        // Wait for anime to be available
+        const startAnimation = () => {
+            if (!window.anime) {
+                requestAnimationFrame(startAnimation);
+                return;
             }
-        });
 
-        tl
-            .add({
-                targets: '.logo-path.hexagon',
-                strokeDashoffset: [window.anime.setDashoffset, 0],
-                easing: 'easeInOutSine',
-                duration: 1500,
-                delay: 100, // Reduced initial delay
-                stroke: '#8b5cf6'
-            })
-            .add({
-                targets: '.logo-path.z-shape',
-                strokeDashoffset: [window.anime.setDashoffset, 0],
-                easing: 'easeInOutSine',
-                duration: 1200,
-                stroke: '#ffffff'
-            }, '-=1000')
-            .add({
-                targets: '.logo-path.hexagon',
-                fill: ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.1)'],
-                duration: 800,
-                easing: 'linear'
-            }, '-=800')
-            .add({
-                targets: '.logo-text .letter',
-                translateY: ["1.1em", 0],
-                translateZ: 0,
-                opacity: [0, 1],
-                duration: 750,
-                delay: (el, i) => 50 * i
-            }, '-=600')
-            .add({
-                targets: '.subtitle',
-                opacity: [0, 1],
-                translateY: [20, 0],
-                duration: 800,
-                easing: 'easeOutQuad'
-            }, '-=400');
-    };
+            // Wrap every letter in a span
+            var textWrapper = document.querySelector('.logo-text .letters');
+            if (textWrapper) {
+                textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+            }
 
-    startAnimation();
+            var tl = window.anime.timeline({
+                easing: 'easeOutExpo',
+                duration: 1000,
+                complete: () => {
+                    // Fade out loader after a short delay
+                    setTimeout(() => {
+                        window.anime({
+                            targets: '#loader-wrapper',
+                            opacity: 0,
+                            duration: 500,
+                            easing: 'easeInOutQuad',
+                            complete: () => {
+                                loader.classList.add('fade-out');
+                                loader.remove(); // Remove from DOM
+                            }
+                        });
+                    }, 500);
+                }
+            });
+
+            tl
+                .add({
+                    targets: '.logo-path.hexagon',
+                    strokeDashoffset: [window.anime.setDashoffset, 0],
+                    easing: 'easeInOutSine',
+                    duration: 1500,
+                    delay: 100, // Reduced initial delay
+                    stroke: '#8b5cf6'
+                })
+                .add({
+                    targets: '.logo-path.z-shape',
+                    strokeDashoffset: [window.anime.setDashoffset, 0],
+                    easing: 'easeInOutSine',
+                    duration: 1200,
+                    stroke: '#ffffff'
+                }, '-=1000')
+                .add({
+                    targets: '.logo-path.hexagon',
+                    fill: ['rgba(139, 92, 246, 0)', 'rgba(139, 92, 246, 0.1)'],
+                    duration: 800,
+                    easing: 'linear'
+                }, '-=800')
+                .add({
+                    targets: '.logo-text .letter',
+                    translateY: ["1.1em", 0],
+                    translateZ: 0,
+                    opacity: [0, 1],
+                    duration: 750,
+                    delay: (el, i) => 50 * i
+                }, '-=600')
+                .add({
+                    targets: '.subtitle',
+                    opacity: [0, 1],
+                    translateY: [20, 0],
+                    duration: 800,
+                    easing: 'easeOutQuad'
+                }, '-=400');
+        };
+
+        startAnimation();
+    } else {
+        // Hide immediately if not first visit or reload
+        loader.style.display = 'none';
+        loader.remove();
+    }
 };
 
 const generateTableOfContents = () => {
