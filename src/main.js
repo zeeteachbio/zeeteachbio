@@ -174,6 +174,37 @@ const initApp = async () => {
                 headerContent.prepend(menuToggle);
             }
 
+            // Move search container outside nav for mobile
+            const navSearchContainer = nav.querySelector('.search-container');
+            if (navSearchContainer && window.innerWidth <= 768) {
+                // Clone the search container
+                const mobileSearch = navSearchContainer.cloneNode(true);
+                mobileSearch.classList.add('mobile-search');
+
+                // Insert between logo and menu toggle
+                menuToggle.before(mobileSearch);
+            }
+
+            // Handle resize to show/hide mobile search
+            let mobileSearchAdded = window.innerWidth <= 768;
+            window.addEventListener('resize', () => {
+                const existingMobileSearch = headerContent.querySelector('.mobile-search');
+
+                if (window.innerWidth <= 768 && !existingMobileSearch) {
+                    const navSearch = nav.querySelector('.search-container');
+                    if (navSearch) {
+                        const mobileSearch = navSearch.cloneNode(true);
+                        mobileSearch.classList.add('mobile-search');
+                        const toggle = headerContent.querySelector('.menu-toggle');
+                        if (toggle) {
+                            toggle.before(mobileSearch);
+                        }
+                    }
+                } else if (window.innerWidth > 768 && existingMobileSearch) {
+                    existingMobileSearch.remove();
+                }
+            });
+
             // Toggle Menu
             menuToggle.addEventListener('click', () => {
                 nav.classList.toggle('active');
