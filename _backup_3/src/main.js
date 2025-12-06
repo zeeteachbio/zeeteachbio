@@ -1,5 +1,5 @@
 import './style.css';
-import { CommentSystem } from './comments.js';
+// Disqus comments removed
 import { api } from './services/api.js';
 import './bioParticles.js'; // Biology-themed animated background
 
@@ -173,6 +173,37 @@ const initApp = async () => {
             } else {
                 headerContent.prepend(menuToggle);
             }
+
+            // Move search container outside nav for mobile
+            const navSearchContainer = nav.querySelector('.search-container');
+            if (navSearchContainer && window.innerWidth <= 768) {
+                // Clone the search container
+                const mobileSearch = navSearchContainer.cloneNode(true);
+                mobileSearch.classList.add('mobile-search');
+
+                // Insert between logo and menu toggle
+                menuToggle.before(mobileSearch);
+            }
+
+            // Handle resize to show/hide mobile search
+            let mobileSearchAdded = window.innerWidth <= 768;
+            window.addEventListener('resize', () => {
+                const existingMobileSearch = headerContent.querySelector('.mobile-search');
+
+                if (window.innerWidth <= 768 && !existingMobileSearch) {
+                    const navSearch = nav.querySelector('.search-container');
+                    if (navSearch) {
+                        const mobileSearch = navSearch.cloneNode(true);
+                        mobileSearch.classList.add('mobile-search');
+                        const toggle = headerContent.querySelector('.menu-toggle');
+                        if (toggle) {
+                            toggle.before(mobileSearch);
+                        }
+                    }
+                } else if (window.innerWidth > 768 && existingMobileSearch) {
+                    existingMobileSearch.remove();
+                }
+            });
 
             // Toggle Menu
             menuToggle.addEventListener('click', () => {
@@ -635,41 +666,8 @@ const initApp = async () => {
     }
 
 
-    // --- Comment System Injection ---
-    // Inject on any page with an article body
-    const articleBody = document.querySelector('.article-body');
-    if (articleBody || window.location.pathname.includes('article-')) {
-        console.log("Injecting comment system...");
-        const article = document.querySelector('article') || document.querySelector('main') || document.body;
-
-        // Check if already injected
-        if (!document.getElementById('comments-section')) {
-            // Create a container for the comments
-            const commentSection = document.createElement('section');
-            commentSection.id = 'comments-section';
-            commentSection.className = 'section';
-
-            const container = document.createElement('div');
-            container.className = 'container';
-            container.style.maxWidth = '800px';
-
-            commentSection.appendChild(container);
-
-            // Append to the article or main element
-            // If article tag exists, append after it. If not, append to main.
-            const articleTag = document.querySelector('article');
-            if (articleTag) {
-                articleTag.after(commentSection);
-            } else if (document.querySelector('main')) {
-                document.querySelector('main').appendChild(commentSection);
-            } else {
-                document.body.appendChild(commentSection);
-            }
-
-            // Initialize the comment system
-            new CommentSystem('comments-section');
-        }
-    }
+    // --- Comment System Removed ---
+    // Disqus comments feature has been removed
 
     // 5. Per-Page Search for Class Pages
     // Variables classSearchInput and classSearchBtn are already declared above (around line 308)

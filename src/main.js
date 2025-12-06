@@ -1,5 +1,5 @@
 import './style.css';
-import { CommentSystem } from './comments.js';
+// Disqus comments removed
 import { api } from './services/api.js';
 import './bioParticles.js'; // Biology-themed animated background
 
@@ -299,7 +299,6 @@ const initApp = async () => {
                 <div class="article-content">
                     <h3 class="article-title">${article.title}</h3>
                     <p class="article-excerpt">${article.excerpt}</p>
-                    <span class="read-more">Read More</span>
                 </div>
             </a>
         `}).join('');
@@ -339,13 +338,12 @@ const initApp = async () => {
 
             if (classArticles.length > 0) {
                 classArticlesContainer.innerHTML = classArticles.map(article => `
-                    <div class="card note-card">
+                    <a href="${article.url}" class="card note-card" style="text-decoration: none; color: inherit; display: block;">
                         <div class="card-body">
                             <h3 class="card-title">${article.title}</h3>
                             <p class="card-text">${article.excerpt}</p>
-                            <a href="${article.url}" class="read-more">Read Notes &rarr;</a>
                         </div>
-                    </div>
+                    </a>
                 `).join('');
             } else {
                 classArticlesContainer.innerHTML = `<p style="grid-column: 1 / -1; text-align: center;">No articles found for ${currentClass} yet.</p>`;
@@ -591,12 +589,11 @@ const initApp = async () => {
 
             if (results.length > 0) {
                 grid.innerHTML = results.map(item => `
-                    <a href="${item.url}" class="card article-card" style="flex-direction: column;">
+                    <a href="${item.url}" class="card article-card" style="flex-direction: column; text-decoration: none; color: inherit; display: block;">
                         <div class="article-content">
                             <span style="font-size: 0.8rem; color: var(--color-primary); font-weight: 600; text-transform: uppercase;">${item.category}</span>
                             <h3 class="article-title" style="font-size: 1.25rem; margin-top: 0.5rem;">${item.title}</h3>
                             <p class="article-excerpt">${item.excerpt}</p>
-                            <span class="read-more">Read More</span>
                         </div>
                     </a>
                 `).join('');
@@ -633,13 +630,12 @@ const initApp = async () => {
             const renderArticles = (list) => {
                 if (list.length > 0) {
                     grid.innerHTML = list.map(article => `
-                        <div class="card note-card">
+                        <a href="${article.url}" class="card note-card" style="text-decoration: none; color: inherit; display: block;">
                             <div class="card-body">
                                 <h3 class="card-title">${article.title}</h3>
                                 <p class="card-text">${article.excerpt}</p>
-                                <a href="${article.url}" class="read-more">Read Notes &rarr;</a>
                             </div>
-                        </div>
+                        </a>
                     `).join('');
                 } else {
                     grid.innerHTML = `<p style="grid-column: 1 / -1; text-align: center; color: #64748b;">No articles found for this chapter yet.</p>`;
@@ -666,41 +662,8 @@ const initApp = async () => {
     }
 
 
-    // --- Comment System Injection ---
-    // Inject on any page with an article body
-    const articleBody = document.querySelector('.article-body');
-    if (articleBody || window.location.pathname.includes('article-')) {
-        console.log("Injecting comment system...");
-        const article = document.querySelector('article') || document.querySelector('main') || document.body;
-
-        // Check if already injected
-        if (!document.getElementById('comments-section')) {
-            // Create a container for the comments
-            const commentSection = document.createElement('section');
-            commentSection.id = 'comments-section';
-            commentSection.className = 'section';
-
-            const container = document.createElement('div');
-            container.className = 'container';
-            container.style.maxWidth = '800px';
-
-            commentSection.appendChild(container);
-
-            // Append to the article or main element
-            // If article tag exists, append after it. If not, append to main.
-            const articleTag = document.querySelector('article');
-            if (articleTag) {
-                articleTag.after(commentSection);
-            } else if (document.querySelector('main')) {
-                document.querySelector('main').appendChild(commentSection);
-            } else {
-                document.body.appendChild(commentSection);
-            }
-
-            // Initialize the comment system
-            new CommentSystem('comments-section');
-        }
-    }
+    // --- Comment System Removed ---
+    // Disqus comments feature has been removed
 
     // 5. Per-Page Search for Class Pages
     // Variables classSearchInput and classSearchBtn are already declared above (around line 308)

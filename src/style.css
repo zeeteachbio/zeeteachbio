@@ -570,7 +570,7 @@ a {
 
 .card-icon {
   font-size: 2.5rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
 }
 
 .card-title {
@@ -604,7 +604,7 @@ a {
   aspect-ratio: 16/9;
   background-color: #e2e8f0;
   border-radius: var(--radius-md);
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1308,7 +1308,7 @@ a {
   gap: 0.5rem;
   color: var(--color-text-light);
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   transition: color 0.2s;
   text-decoration: none;
 }
@@ -1652,7 +1652,7 @@ a {
   /* Article cards mobile optimization */
   .article-card {
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem; margin-bottom: 1rem;
   }
 
   .article-title {
@@ -2393,7 +2393,7 @@ a {
 .toc-title {
   font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   color: var(--color-primary);
   border-bottom: 2px solid var(--color-border);
   padding-bottom: 0.5rem;
@@ -2588,7 +2588,7 @@ body.dark-mode .nav {
 .toc-title {
   font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   color: var(--color-primary);
   border-bottom: 2px solid var(--color-border);
   padding-bottom: 0.5rem;
@@ -2712,7 +2712,7 @@ body.dark-mode .nav {
   float: right;
   width: 300px;
   margin-left: 2rem;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   background: var(--color-surface);
   padding: 1.5rem;
   border-radius: var(--radius-lg);
@@ -2723,7 +2723,7 @@ body.dark-mode .nav {
 .toc-title {
   font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-top: 1rem; margin-bottom: 1rem;
   color: var(--color-primary);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: 0.5rem;
@@ -3442,5 +3442,25 @@ body::before {
   /* Hide search from within nav panel */
   .nav .search-container {
     display: none !important;
+  }
+}
+
+/* Mobile spacing between content and footer */
+@media (max-width: 768px) {
+
+  .article-body,
+  .article-content,
+  main {
+    margin-top: 1rem; margin-bottom: 1rem;
+  }
+
+  .footer {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  main {
+    padding-bottom: 2rem;
   }
 }

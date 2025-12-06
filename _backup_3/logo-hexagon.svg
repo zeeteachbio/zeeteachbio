@@ -1,0 +1,30 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes rotateHexagon {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .hexagon {
+      transform-origin: 50px 50px;
+      animation: rotateHexagon 8s linear infinite;
+    }
+  </style>
+  
+  <!-- Hexagon -->
+  <path class="hexagon"
+        d="M50 5 L93.3 25 L93.3 75 L50 95 L6.7 75 L6.7 25 Z" 
+        fill="rgba(139, 92, 246, 0.1)" 
+        stroke="#8b5cf6" 
+        stroke-width="3" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Z shape (static) -->
+  <path d="M35 35 L65 35 L35 65 L65 65" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="4" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>

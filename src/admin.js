@@ -258,14 +258,24 @@ async function loadFiles() {
             for (const r of repoNames) {
                 try {
                     console.log(`Trying repo: ${o}/${r}`);
-                    const { data } = await octokit.request(`GET /repos/${o}/${r}/contents/?t=${Date.now()}`);
+                    // Get default branch and tree recursively
+                    const { data: repoInfo } = await octokit.request(`GET /repos/${o}/${r}`);
+                    const branch = repoInfo.default_branch;
+                    const { data: treeData } = await octokit.request(`GET /repos/${o}/${r}/git/trees/${branch}?recursive=1`);
+
                     owner = o;
                     repo = r;
-                    files = data;
+                    // Filter for blobs (files) and map to expected format
+                    files = treeData.tree.filter(item => item.type === 'blob').map(item => ({
+                        ...item,
+                        name: item.path.split('/').pop(),
+                        path: item.path
+                    }));
+
                     found = true;
                     break outerLoop;
                 } catch (e) {
-                    console.log(`Repo ${o}/${r} not found.`);
+                    console.log(`Repo ${o}/${r} not found or tree fetch failed.`, e);
                 }
             }
         }
@@ -357,7 +367,8 @@ async function loadFiles() {
             const name = file.name.toLowerCase();
 
             // 1. Try to find metadata in searchIndex
-            const metadata = searchIndex.find(item => item.url === `/${file.name}` || item.url === file.name);
+            // Match against full path or name
+            const metadata = searchIndex.find(item => item.url === `/${file.path}` || item.url === file.path || item.url === `/${file.name}`);
 
             let assigned = false;
 
@@ -381,16 +392,18 @@ async function loadFiles() {
                 }
             }
 
-            // 2. Fallback to filename matching if not assigned via metadata
+            // 2. Fallback to filename/path matching if not assigned via metadata
             if (!assigned) {
-                if (/class-?9/.test(name)) groups['STB Class 9'].files.push(file);
-                else if (/class-?10/.test(name)) groups['STB Class 10'].files.push(file);
-                else if (/class-?11/.test(name)) groups['STB Class 11'].files.push(file);
-                else if (/class-?12/.test(name)) groups['STB Class 12'].files.push(file);
-                else if (/akueb-class-?9/.test(name)) groups['AKUEB Class 9'].files.push(file);
-                else if (/akueb-class-?10/.test(name)) groups['AKUEB Class 10'].files.push(file);
-                else if (/akueb-class-?11/.test(name)) groups['AKUEB Class 11'].files.push(file);
-                else if (/akueb-class-?12/.test(name)) groups['AKUEB Class 12'].files.push(file);
+                // Check path for classification
+                const pathLower = file.path.toLowerCase();
+                if (pathLower.includes('stb/class9') || /class-?9/.test(name)) groups['STB Class 9'].files.push(file);
+                else if (pathLower.includes('stb/class10') || /class-?10/.test(name)) groups['STB Class 10'].files.push(file);
+                else if (pathLower.includes('stb/class11') || /class-?11/.test(name)) groups['STB Class 11'].files.push(file);
+                else if (pathLower.includes('stb/class12') || /class-?12/.test(name)) groups['STB Class 12'].files.push(file);
+                else if (pathLower.includes('akueb/class9') || /akueb-class-?9/.test(name)) groups['AKUEB Class 9'].files.push(file);
+                else if (pathLower.includes('akueb/class10') || /akueb-class-?10/.test(name)) groups['AKUEB Class 10'].files.push(file);
+                else if (pathLower.includes('akueb/class11') || /akueb-class-?11/.test(name)) groups['AKUEB Class 11'].files.push(file);
+                else if (pathLower.includes('akueb/class12') || /akueb-class-?12/.test(name)) groups['AKUEB Class 12'].files.push(file);
                 else otherFiles.push(file);
             }
         });
@@ -759,7 +772,32 @@ createNewBtn.addEventListener('click', async () => {
     if (!filename || !title) return alert("Please fill in all fields");
     if (chapters[category] && !chapter) return alert("Please select a chapter");
 
-    const fullFilename = filename.endsWith('.html') ? filename : `${filename}.html`;
+    // Helper to construct folder path
+    const getFolderPath = (category, chapter) => {
+        let basePath = '';
+        if (category.includes('STB')) basePath = 'stb/';
+        else if (category.includes('AKUEB')) basePath = 'akueb/';
+        else return ''; // Root for General
+
+        // Extract class number
+        const classMatch = category.match(/Class\s+(\d+)/);
+        const classNum = classMatch ? classMatch[1] : '';
+        if (classNum) basePath += `class${classNum}/`;
+
+        // Slugify chapter name
+        if (chapter) {
+            const chapterSlug = 'ch' + chapter.toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            basePath += `${chapterSlug}/`;
+        }
+        return basePath;
+    };
+
+    const folderPath = getFolderPath(category, chapter);
+    // Ensure filename doesn't start with slash if folderPath is present
+    const cleanFilename = filename.replace(/^\/+/, '');
+    const fullFilePath = folderPath + (cleanFilename.endsWith('.html') ? cleanFilename : `${cleanFilename}.html`);
 
     createNewBtn.disabled = true;
     createNewBtn.innerText = "Creating...";
@@ -767,9 +805,9 @@ createNewBtn.addEventListener('click', async () => {
     try {
         // 0. Check if file already exists
         try {
-            await octokit.request(`GET /repos/${owner}/${repo}/contents/${fullFilename}`);
+            await octokit.request(`GET /repos/${owner}/${repo}/contents/${fullFilePath}`);
             // If we get here, file exists
-            alert(`File ${fullFilename} already exists! Please choose a different filename.`);
+            alert(`File ${fullFilePath} already exists! Please choose a different filename.`);
             createNewBtn.disabled = false;
             createNewBtn.innerText = "Create";
             return;
@@ -795,30 +833,29 @@ createNewBtn.addEventListener('click', async () => {
         <header class="header">
             <div class="container header-content">
                 <a href="/" class="logo">
-                    <img src="/logo.png" alt="Zeeteach Logo" class="logo-icon">
+                    <img src="/logo-hexagon.svg" alt="Zeeteach Logo" class="logo-icon">
                     Zee Teach
                 </a>
                 <nav class="nav">
                     <a href="/" class="nav-link">Home</a>
                     <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes &#9662;</a>
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes ▾</a>
                         <div class="dropdown-menu">
-                            <a href="/class9.html" class="dropdown-item">Class 9</a>
-                            <a href="/class10.html" class="dropdown-item">Class 10</a>
-                            <a href="/class11.html" class="dropdown-item">Class 11</a>
-                            <a href="/class12.html" class="dropdown-item">Class 12</a>
+                            <a href="/stb/class9/" class="dropdown-item">Class 9</a>
+                            <a href="/stb/class10/" class="dropdown-item">Class 10</a>
+                            <a href="/stb/class11/" class="dropdown-item">Class 11</a>
+                            <a href="/stb/class12/" class="dropdown-item">Class 12</a>
                         </div>
                     </div>
                     <div class="dropdown">
-                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes &#9662;</a>
+                        <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes ▾</a>
                         <div class="dropdown-menu">
-                            <a href="/akueb-class9.html" class="dropdown-item">Class 9</a>
-                            <a href="/akueb-class10.html" class="dropdown-item">Class 10</a>
-                            <a href="/akueb-class11.html" class="dropdown-item">Class 11</a>
-                            <a href="/akueb-class12.html" class="dropdown-item">Class 12</a>
+                            <a href="/akueb/class9/" class="dropdown-item">Class 9</a>
+                            <a href="/akueb/class10/" class="dropdown-item">Class 10</a>
+                            <a href="/akueb/class11/" class="dropdown-item">Class 11</a>
+                            <a href="/akueb/class12/" class="dropdown-item">Class 12</a>
                         </div>
                     </div>
-
                     <div class="search-container">
                         <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
                         <button class="search-btn">
@@ -835,30 +872,31 @@ createNewBtn.addEventListener('click', async () => {
             <article class="article">
                 <div class="container article-container">
                     <div class="article-body">
-                        <a href="/" class="back-btn">
+                        <a href="javascript:history.back()" class="back-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                             </svg>
-                            Back to Home
+                            Go Back
                         </a>
                         <div class="article-meta" style="margin-bottom: 1.5rem; color: var(--color-text-light); font-size: 0.9rem; font-weight: 500;">
-                            ${chapter ? chapter : 'General'}
+                            ${chapter}
                         </div>
-
+                        
                         <div id="article-content">
-                            <h1 style="margin-bottom: 20px;"><strong style="line-height: 1.5; font-size: large;">${title}</strong></h1>
-                            <p><br></p>
+                            <h1>${title}</h1>
+                            <p>Start writing your content here...</p>
                         </div>
 
                         <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
-                            <a href="/" class="back-btn">
+                            <a href="javascript:history.back()" class="back-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                                 </svg>
-                                Back to Home
+                                Go Back
                             </a>
                         </div>
                     </div>
+                </div>
             </article>
         </main>
         <footer class="footer">
@@ -872,8 +910,8 @@ createNewBtn.addEventListener('click', async () => {
 
         const contentBase64 = btoa(unescape(encodeURIComponent(template)));
 
-        await octokit.request(`PUT /repos/${owner}/${repo}/contents/${fullFilename}`, {
-            message: `Create ${fullFilename} via Admin Dashboard`,
+        await octokit.request(`PUT /repos/${owner}/${repo}/contents/${fullFilePath}`, {
+            message: `Create ${fullFilePath}`,
             content: contentBase64
         });
 
@@ -896,7 +934,7 @@ createNewBtn.addEventListener('click', async () => {
             // Create new entry
             const newEntry = {
                 title: title,
-                url: `/${fullFilename}`,
+                url: `/${fullFilePath}`,
                 excerpt: `${title} - ${category} ${chapter ? `(${chapter})` : ''} notes.`,
                 category: category,
                 chapter: chapter || null,

@@ -25,3 +25,8 @@ dist-ssr
 
 # Environment variables
 .env
+
+# Backups and Temporary Files
+_backup_*
+reorganize.ps1
+image.png
