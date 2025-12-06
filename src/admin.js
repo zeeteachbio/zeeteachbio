@@ -389,10 +389,23 @@ async function loadFiles() {
                 const chapter = metadata.chapter;
 
                 if (groups[category]) {
-                    if (chapter && groups[category].chapters[chapter]) {
-                        groups[category].chapters[chapter].push(file);
+                    if (chapter) {
+                        // Try exact match first
+                        if (groups[category].chapters[chapter]) {
+                            groups[category].chapters[chapter].push(file);
+                        } else {
+                            // Try case-insensitive match
+                            const targetChapter = Object.keys(groups[category].chapters).find(
+                                c => c.toLowerCase() === chapter.toLowerCase()
+                            );
+                            if (targetChapter) {
+                                groups[category].chapters[targetChapter].push(file);
+                            } else {
+                                groups[category].files.push(file); // Chapter not found in predefined list
+                            }
+                        }
                     } else {
-                        groups[category].files.push(file); // No chapter or unknown chapter
+                        groups[category].files.push(file); // No chapter in metadata
                     }
                     assigned = true;
                 }
