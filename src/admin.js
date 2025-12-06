@@ -339,7 +339,8 @@ async function loadFiles() {
             return div;
         };
 
-        const htmlFiles = files.filter(f => f.name.endsWith('.html') && f.name !== 'admin.html');
+        const EXCLUDED_FILES = ['index.html', 'admin.html', 'search.html', 'chapter.html', 'test_api.html', 'animated-logo.html', 'dna-animation.html'];
+        const htmlFiles = files.filter(f => f.name.endsWith('.html') && !EXCLUDED_FILES.includes(f.name));
 
         // Grouping Logic
         const groups = {
