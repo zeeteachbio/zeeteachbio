@@ -6,20 +6,36 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..');
 const searchDataPath = path.join(rootDir, 'src', 'searchData.js');
 
-// Files to exclude
+// Files/Dirs to exclude
+const EXCLUDED_NAMES = [
+    'node_modules', 'dist', '.git', '.github', '_backup_2', '_backup_3', '_backup_2025_12_01', 'scripts', 'public'
+];
 const EXCLUDED_FILES = [
-    'index.html',
-    'search.html',
-    'admin.html',
-    'class9.html',
-    'class10.html',
-    'class11.html',
-    'class12.html',
-    'test-test.html',
-    'test_api.html'
+    'index.html', 'search.html', 'admin.html', 'chapter.html', 'test_api.html', 'animated-logo.html', 'dna-animation.html'
 ];
 
-function extractData(content, filename) {
+function findHtmlFiles(dir, fileList = []) {
+    if (!fs.existsSync(dir)) return fileList;
+    const items = fs.readdirSync(dir, { withFileTypes: true });
+    for (const item of items) {
+        const fullPath = path.join(dir, item.name);
+        if (item.isDirectory()) {
+            if (!EXCLUDED_NAMES.includes(item.name)) {
+                findHtmlFiles(fullPath, fileList);
+            }
+        } else if (item.name.endsWith('.html') && !EXCLUDED_FILES.includes(item.name)) {
+            // Also check if it's an index.html inside a class folder (we might want to exclude those too if they are just listings)
+            // But for now, let's include them if they have content.
+            // Actually, usually index.html in subfolders are listing pages. Let's exclude 'index.html' generally.
+            if (item.name !== 'index.html') {
+                fileList.push(fullPath);
+            }
+        }
+    }
+    return fileList;
+}
+
+function extractData(content, filepath) {
     // Title
     let titleMatch = content.match(/<title>(.*?) - Zee Teach<\/title>/);
     let title = titleMatch ? titleMatch[1] : '';
@@ -29,15 +45,44 @@ function extractData(content, filename) {
     }
     if (!title) {
         titleMatch = content.match(/<h1.*?>(.*?)<\/h1>/);
-        title = titleMatch ? titleMatch[1] : filename;
+        title = titleMatch ? titleMatch[1] : path.basename(filepath, '.html');
     }
 
-    // Category
+    // Category & Chapter from Path
+    // Path format: .../stb/class9/ch1-intro.../file.html
+    const relativePath = path.relative(rootDir, filepath).replace(/\\/g, '/');
+    const parts = relativePath.split('/');
+
     let category = 'General';
-    if (filename.includes('class9')) category = 'Class 9';
-    else if (filename.includes('class10')) category = 'Class 10';
-    else if (filename.includes('class11')) category = 'Class 11';
-    else if (filename.includes('class12')) category = 'Class 12';
+    let chapter = null;
+
+    if (parts.includes('stb')) {
+        const classPart = parts.find(p => p.startsWith('class'));
+        if (classPart) category = `STB Class ${classPart.replace('class', '')}`;
+    } else if (parts.includes('akueb')) {
+        const classPart = parts.find(p => p.startsWith('class'));
+        if (classPart) category = `AKUEB Class ${classPart.replace('class', '')}`;
+    }
+
+    // Chapter is usually the parent folder of the file
+    // e.g. stb/class9/ch1-introduction/file.html -> ch1-introduction
+    if (parts.length >= 2) {
+        const parent = parts[parts.length - 2];
+        if (parent.startsWith('ch')) {
+            // Try to make it readable: ch1-introduction-to-biology -> 1. Introduction to Biology
+            // This is a guess, but better than slug.
+            // Or just keep the slug if we can't parse.
+            // Let's try to extract number.
+            const match = parent.match(/^ch(\d+)-(.*)/);
+            if (match) {
+                const num = match[1];
+                const text = match[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                chapter = `${num}. ${text}`;
+            } else {
+                chapter = parent;
+            }
+        }
+    }
 
     // Excerpt
     let excerpt = '';
@@ -55,7 +100,6 @@ function extractData(content, filename) {
     }
 
     if (!excerpt) {
-        // Try to get first paragraph of body if no article-body class
         const pMatch = content.match(/<p[^>]*>([\s\S]*?)<\/p>/);
         if (pMatch) {
             excerpt = pMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
@@ -65,7 +109,7 @@ function extractData(content, filename) {
     if (!excerpt || excerpt.length < 5) excerpt = "Click to read more.";
     if (excerpt.length > 120) excerpt = excerpt.substring(0, 120) + '...';
 
-    return { title, category, excerpt };
+    return { title, category, chapter, excerpt };
 }
 
 // 1. Read existing data
@@ -73,7 +117,6 @@ let existingData = [];
 try {
     if (fs.existsSync(searchDataPath)) {
         const fileContent = fs.readFileSync(searchDataPath, 'utf-8');
-        // Extract the array part
         const jsonMatch = fileContent.match(/export const searchIndex = (\[[\s\S]*?\]);/);
         if (jsonMatch) {
             existingData = JSON.parse(jsonMatch[1]);
@@ -87,40 +130,38 @@ try {
 const existingMap = new Map();
 existingData.forEach(item => existingMap.set(item.url, item));
 
-// 2. Scan directory
-const files = fs.readdirSync(rootDir);
+// 2. Scan directory recursively
+const allHtmlFiles = findHtmlFiles(rootDir);
 const articles = [];
 
-files.forEach(file => {
-    if (file.endsWith('.html') && !EXCLUDED_FILES.includes(file)) {
-        // Filter logic: Must start with article- OR be explicitly whitelisted?
-        // User said "upload any new article". 
-        // Let's include all HTML files that are not excluded.
+allHtmlFiles.forEach(filepath => {
+    const content = fs.readFileSync(filepath, 'utf-8');
+    const { title, category, chapter, excerpt } = extractData(content, filepath);
 
-        const content = fs.readFileSync(path.join(rootDir, file), 'utf-8');
-        const { title, category, excerpt } = extractData(content, file);
-        const url = `/${file}`;
+    // Construct URL relative to root
+    const relativePath = path.relative(rootDir, filepath).replace(/\\/g, '/');
+    const url = `/${relativePath}`;
 
-        let entry = existingMap.get(url);
-        if (entry) {
-            // Update mutable fields but keep stats/date
-            entry.title = title;
-            entry.category = category;
-            entry.excerpt = excerpt;
-        } else {
-            // New entry
-            entry = {
-                title,
-                url,
-                excerpt,
-                category,
-                date: new Date().toISOString(),
-                views: 0,
-                comments: 0
-            };
-        }
-        articles.push(entry);
+    let entry = existingMap.get(url);
+    if (entry) {
+        entry.title = title;
+        entry.category = category;
+        entry.chapter = chapter || entry.chapter; // Keep existing chapter if extraction fails
+        entry.excerpt = excerpt;
+    } else {
+        entry = {
+            title,
+            url,
+            excerpt,
+            category,
+            chapter,
+            date: new Date().toISOString(),
+            views: 0,
+            comments: 0,
+            thumbnail: null
+        };
     }
+    articles.push(entry);
 });
 
 // 3. Write back
