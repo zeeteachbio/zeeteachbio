@@ -130,5 +130,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "testing artilce",
+        "url": "/akueb/class11/ch1-biological-molecules/my-article-test1.html",
+        "excerpt": "testing artilce - AKUEB Class 11 (1. Biological Molecules) notes.",
+        "category": "AKUEB Class 11",
+        "chapter": "1. Biological Molecules",
+        "date": "2025-12-06T15:55:01.808Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
