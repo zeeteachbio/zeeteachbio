@@ -340,7 +340,12 @@ async function loadFiles() {
         };
 
         const EXCLUDED_FILES = ['index.html', 'admin.html', 'search.html', 'chapter.html', 'test_api.html', 'animated-logo.html', 'dna-animation.html'];
-        const htmlFiles = files.filter(f => f.name.endsWith('.html') && !EXCLUDED_FILES.includes(f.name));
+        const htmlFiles = files.filter(f =>
+            f.name.endsWith('.html') &&
+            !EXCLUDED_FILES.includes(f.name) &&
+            !f.path.includes('_backup') &&
+            !f.path.includes('.github')
+        );
 
         // Grouping Logic
         const groups = {
