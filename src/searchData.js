@@ -1,16 +1,5 @@
 export const searchIndex = [
     {
-        "title": "testing artilce",
-        "url": "/akueb/class11/ch1-biological-molecules/my-article-test1.html",
-        "excerpt": "Go Back 1. Biological Molecules testing artilce Start writing your content here...",
-        "category": "AKUEB Class 11",
-        "chapter": "1. Biological Molecules",
-        "date": "2025-12-06T16:15:51.148Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
         "title": "1. Introduction to Biology",
         "url": "/akueb/class9/ch1-introduction-to-biology/1-Introduction-to-Biology.html",
         "excerpt": "Go Back 1. Introduction to Biology 1. Introduction to Biology1.1.1 Define BiologyBiology is the branch of science that s...",
