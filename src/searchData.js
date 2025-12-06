@@ -108,16 +108,5 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
-    },
-    {
-        "title": "1",
-        "url": "/stb/class10/ch1-gaseous-exchange/1.html",
-        "excerpt": "1 - STB Class 10 (1. Gaseous Exchange) notes.",
-        "category": "STB Class 10",
-        "chapter": "1. Gaseous Exchange",
-        "date": "2025-12-06T18:18:11.304Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
     }
 ];
