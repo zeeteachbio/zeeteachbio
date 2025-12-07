@@ -621,10 +621,11 @@ const initApp = async () => {
             titleEl.textContent = `${chapterName} (${className})`;
             document.title = `${chapterName} - ${className} - Zee Teach`;
 
-            // Filter articles by class and chapter
+            // Filter articles by class and chapter (Case Insensitive)
             // Note: api.getArticles returns newest first. User wants oldest first.
             const chapterArticles = articles.filter(article =>
-                article.category === className && article.chapter === chapterName
+                article.category.toLowerCase() === className.toLowerCase() &&
+                article.chapter.toLowerCase() === chapterName.toLowerCase()
             ).sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort oldest to newest
 
             const renderArticles = (list) => {

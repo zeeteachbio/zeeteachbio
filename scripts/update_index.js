@@ -86,23 +86,61 @@ function extractData(content, filepath) {
 
     // Excerpt
     let excerpt = '';
-    const bodyMatch = content.match(/class="article-body"[^>]*>([\s\S]*?)<\/div>/);
-    if (bodyMatch) {
-        const pMatch = bodyMatch[1].match(/<p[^>]*>([\s\S]*?)<\/p>/);
-        if (pMatch) {
-            excerpt = pMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+
+    // Helper to clean text
+    const cleanText = (text) => {
+        return text.replace(/<[^>]+>/g, ' ') // Remove tags
+            .replace(/\s+/g, ' ')     // Normalize whitespace
+            .trim();
+    };
+
+    // Helper to check if text is metadata
+    const isMetadata = (text) => {
+        const lower = text.toLowerCase();
+        return lower.includes('go back') ||
+            lower.includes('published:') ||
+            lower.includes('updated:') ||
+            lower.includes('min read') ||
+            /^(class|stb|akueb)\s+\d+/i.test(text);
+    };
+
+    // Strategy 1: Look for id="article-content" (Most accurate)
+    // We use a greedy match for the content div, but since regex for nested tags is hard,
+    // we'll just look for paragraphs that follow the id="article-content" marker.
+    // A simple approach is to find the start of the content div and grab everything after it.
+    const contentStart = content.indexOf('id="article-content"');
+    if (contentStart !== -1) {
+        const contentAfter = content.substring(contentStart);
+        const paragraphs = contentAfter.match(/<p[^>]*>([\s\S]*?)<\/p>/g);
+        if (paragraphs) {
+            for (const p of paragraphs) {
+                const text = cleanText(p);
+                if (text.length > 20 && !isMetadata(text)) {
+                    excerpt = text;
+                    break;
+                }
+            }
         }
     }
 
+    // Strategy 2: Fallback to meta description
     if (!excerpt) {
         const metaMatch = content.match(/<meta name="description" content="(.*?)"/);
         if (metaMatch) excerpt = metaMatch[1];
     }
 
+    // Strategy 3: Fallback to any paragraph in content (excluding known metadata areas if possible)
     if (!excerpt) {
-        const pMatch = content.match(/<p[^>]*>([\s\S]*?)<\/p>/);
-        if (pMatch) {
-            excerpt = pMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+        // This is risky as it might pick up footer/header text if they use <p>
+        const paragraphs = content.match(/<p[^>]*>([\s\S]*?)<\/p>/g);
+        if (paragraphs) {
+            for (const p of paragraphs) {
+                const text = cleanText(p);
+                if (text.length > 20 && !isMetadata(text)) {
+                    excerpt = text;
+                    break;
+                }
+            }
         }
     }
 
@@ -164,8 +202,13 @@ allHtmlFiles.forEach(filepath => {
     articles.push(entry);
 });
 
-// 3. Write back
+// 3. Write back to src/searchData.js
 const outputContent = `export const searchIndex = ${JSON.stringify(articles, null, 4)};\n`;
 fs.writeFileSync(searchDataPath, outputContent);
 
+// 4. Write back to public/articles.json (for API consumption)
+const publicArticlesPath = path.join(rootDir, 'public', 'articles.json');
+fs.writeFileSync(publicArticlesPath, JSON.stringify(articles, null, 4));
+
 console.log(`Updated search index with ${articles.length} articles.`);
+console.log(`Synced public/articles.json`);

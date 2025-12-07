@@ -59,9 +59,9 @@ const screens = {
 };
 
 // Add version indicator
-document.title = "Admin Dashboard v2.1 - Zee Teach";
+document.title = "Admin Dashboard v2.2 - Zee Teach";
 const headerTitle = document.querySelector('.header .logo');
-if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.1)</span>';
+if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.2)</span>';
 
 // Add Logout Button to Header
 const header = document.querySelector('header');
@@ -104,7 +104,7 @@ const newCategorySelect = document.getElementById('new-category');
 const newChapterSelect = document.getElementById('new-chapter');
 const chapterContainer = document.getElementById('chapter-container');
 
-console.log('Admin script loaded v2');
+console.log('Admin script loaded v2.2');
 
 // Initialize Tiptap editor
 let quill = null;
@@ -1018,14 +1018,18 @@ async function deleteFile(path, sha) {
                     throw new Error("Failed to parse search index");
                 }
 
-                // Filter out the deleted article
-                const newSearchIndex = currentSearchIndex.filter(item => item.url !== urlToDelete);
+                // Filter out the deleted article (Case Insensitive)
+                const newSearchIndex = currentSearchIndex.filter(item =>
+                    item.url.toLowerCase() !== urlToDelete.toLowerCase()
+                );
 
                 if (newSearchIndex.length !== currentSearchIndex.length) {
                     await updateSearchIndex(newSearchIndex, `Remove ${path} from search index`);
                     log('Search index updated', 'success');
                 } else {
-                    log('Article not found in search index, skipping update', 'warning');
+                    log(`Article not found in search index (URL: ${urlToDelete}), skipping update`, 'warning');
+                    // Optional: Alert user that index wasn't updated
+                    alert(`Warning: File deleted, but could not find matching entry in search index to remove. Please check public/articles.json manually.`);
                 }
 
             } catch (e) {

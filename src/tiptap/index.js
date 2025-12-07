@@ -114,22 +114,44 @@ export function initializeTiptapEditor(containerId, options = {}) {
         // Show table menu if in a table
         if (editor.isActive('table')) {
             const { view } = editor;
-            const domRect = view.coordsAtPos(from);
 
-            tableMenuElement.style.display = 'block';
+            // Find the table element in the DOM
+            // view.domAtPos returns the node at the position. It might be a text node or an element.
+            const domAtPos = view.domAtPos(from);
+            const node = domAtPos.node;
+            const tableElement = node.nodeType === 1 ? node.closest('table') : node.parentElement.closest('table');
 
-            // Position menu further away from cursor to avoid interference
-            let topPos = domRect.top - 350;
-            let leftPos = domRect.left;
+            if (tableElement) {
+                const rect = tableElement.getBoundingClientRect();
 
-            // Adjust if menu would overflow viewport
-            const menuWidth = 250; // approximate menu width
-            if (leftPos + menuWidth > window.innerWidth) {
-                leftPos = window.innerWidth - menuWidth - 20;
+                tableMenuElement.style.display = 'block';
+
+                // Center horizontally relative to the table
+                // The menu has a fixed width or we can measure it
+                const menuWidth = tableMenuElement.offsetWidth || 250; // Fallback if not rendered yet
+                const menuHeight = tableMenuElement.offsetHeight || 200;
+
+                let leftPos = rect.left + (rect.width / 2) - (menuWidth / 2);
+
+                // Ensure it doesn't go off-screen left or right
+                if (leftPos < 10) leftPos = 10;
+                if (leftPos + menuWidth > window.innerWidth - 10) leftPos = window.innerWidth - menuWidth - 10;
+
+                // Default to above the table
+                let topPos = rect.top - menuHeight - 10; // 10px gap
+
+                // Check if menu would go off-screen top
+                if (topPos < 10) {
+                    // Flip to below the table
+                    topPos = rect.bottom + 10;
+                }
+
+                tableMenuElement.style.left = `${leftPos}px`;
+                tableMenuElement.style.top = `${topPos}px`;
+            } else {
+                // Fallback if table element not found (rare)
+                tableMenuElement.style.display = 'none';
             }
-
-            tableMenuElement.style.left = `${leftPos}px`;
-            tableMenuElement.style.top = `${topPos}px`;
         } else {
             tableMenuElement.style.display = 'none';
         }
