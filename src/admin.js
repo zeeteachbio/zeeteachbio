@@ -691,7 +691,7 @@ saveBtn.addEventListener('click', async () => {
         } else {
             // Save HTML file
             const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/${currentFilePath}`);
-            const originalContent = atob(data.content);
+            const originalContent = decodeURIComponent(escape(atob(data.content)));
 
             const parser = new DOMParser();
             const doc = parser.parseFromString(originalContent, 'text/html');
