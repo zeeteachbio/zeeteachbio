@@ -44,17 +44,6 @@ export const searchIndex = [
         "thumbnail": null
     },
     {
-        "title": "Careers in Biology - Biology Career Options | Zee Teach",
-        "url": "/stb/class9/ch1-introduction-to-biology/careers-in-biology.html",
-        "excerpt": "Biology is a subject that has a wide scope of careers for students. Some of the careers are:",
-        "category": "STB Class 9",
-        "chapter": "1. Introduction To Biology",
-        "date": "2025-12-06T16:15:51.151Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
         "title": "Contribution of Muslim Scientists to Biology | Zee Teach",
         "url": "/stb/class9/ch1-introduction-to-biology/contribution-of-muslims.html",
         "excerpt": "Muslim scientists played an important role in the early development of biological sciences. They started experiments and...",
