@@ -70,8 +70,43 @@ export function initializeTiptapEditor(containerId, options = {}) {
             const domRect = view.coordsAtPos(from);
 
             bubbleMenuElement.style.display = 'flex';
-            bubbleMenuElement.style.left = `${domRect.left}px`;
-            bubbleMenuElement.style.top = `${domRect.top - 50}px`;
+
+            // Use native selection to get the visual bounding box
+            const selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+
+                // Calculate positions
+                // Center horizontally
+                const leftPos = rect.left + (rect.width / 2);
+
+                // Default to above the selection
+                let topPos = rect.top - 10; // 10px gap
+                let transform = 'translate(-50%, -100%)';
+
+                // Check if menu would go off-screen top
+                // We need the menu dimensions, but it's not rendered yet if it was hidden.
+                // Since we set display:flex above, we can measure it now.
+                const menuHeight = bubbleMenuElement.offsetHeight;
+
+                if (topPos - menuHeight < 10) {
+                    // Not enough space above, flip to below
+                    topPos = rect.bottom + 10;
+                    transform = 'translate(-50%, 0)';
+                }
+
+                bubbleMenuElement.style.left = `${leftPos}px`;
+                bubbleMenuElement.style.top = `${topPos}px`;
+                bubbleMenuElement.style.transform = transform;
+            } else {
+                // Fallback to cursor pos if no range (shouldn't happen given from !== to check)
+                const { view } = editor;
+                const domRect = view.coordsAtPos(from);
+                bubbleMenuElement.style.left = `${domRect.left}px`;
+                bubbleMenuElement.style.top = `${domRect.top - 80}px`; // Increased offset fallback
+                bubbleMenuElement.style.transform = 'none';
+            }
         } else {
             bubbleMenuElement.style.display = 'none';
         }

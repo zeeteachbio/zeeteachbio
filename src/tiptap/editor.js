@@ -32,6 +32,7 @@ import { Subscript } from '@tiptap/extension-subscript';
 import { Superscript } from '@tiptap/extension-superscript';
 import { BubbleMenu } from '@tiptap/extension-bubble-menu';
 import { FontSize } from './extensions/FontSize.js';
+import { Spacing } from './extensions/Spacing.js';
 import { InfoBox, WarningBox, SuccessBox, TipBox, BiologyBox } from './extensions/CustomBlocks.js';
 
 export function createEditor(element, options = {}) {
@@ -90,6 +91,7 @@ export function createEditor(element, options = {}) {
                 types: ['textStyle'],
             }),
             FontSize,
+            Spacing,
             Subscript,
             Superscript,
             InfoBox,
