@@ -1058,54 +1058,93 @@ backBtn.addEventListener('click', () => {
 // Sync Index Button
 if (syncBtn) {
     syncBtn.addEventListener('click', async () => {
-        if (!confirm('This will scan all files and remove any "ghost" articles from the search index. Continue?')) return;
+        if (!confirm('This will scan ALL article files and regenerate the search index. This may take a while. Continue?')) return;
 
         syncBtn.disabled = true;
         syncBtn.innerText = 'Syncing...';
 
         try {
-            log('Starting index sync...', 'info');
+            log('Starting full index sync...', 'info');
 
             // 1. Get full file tree
             const { data: repoInfo } = await octokit.request(`GET /repos/${owner}/${repo}`);
             const branch = repoInfo.default_branch;
             const { data: treeData } = await octokit.request(`GET /repos/${owner}/${repo}/git/trees/${branch}?recursive=1`);
 
-            const allFiles = new Set(treeData.tree.filter(item => item.type === 'blob').map(item => item.path));
+            const articleFiles = treeData.tree.filter(item =>
+                item.type === 'blob' &&
+                item.path.endsWith('.html') &&
+                !item.path.includes('admin') &&
+                !item.path.includes('index.html') &&
+                !item.path.includes('search.html') &&
+                !item.path.includes('chapter.html') &&
+                !item.path.includes('404.html')
+            );
 
-            // 2. Get searchData.js
-            const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
-            const currentContent = decodeURIComponent(escape(atob(searchData.content)));
+            log(`Found ${articleFiles.length} articles. Processing...`, 'info');
 
-            const arrayString = currentContent.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
-            let currentSearchIndex;
-            try {
-                currentSearchIndex = new Function('return ' + arrayString)();
-            } catch (e) {
-                throw new Error("Failed to parse search index");
-            }
+            const newSearchIndex = [];
 
-            // 3. Filter ghosts
-            const initialCount = currentSearchIndex.length;
-            const newSearchIndex = currentSearchIndex.filter(item => {
-                // Remove leading slash
-                const path = item.url.startsWith('/') ? item.url.slice(1) : item.url;
-                if (allFiles.has(path)) {
-                    return true;
-                } else {
-                    log(`Found ghost entry: ${item.title} (${path})`, 'warning');
-                    return false;
+            // Process in batches to avoid overwhelming the browser/API
+            for (const file of articleFiles) {
+                try {
+                    log(`Processing ${file.path}...`, 'info');
+                    const { data } = await octokit.request(`GET /repos/${owner}/${repo}/contents/${file.path}`);
+                    const content = decodeURIComponent(escape(atob(data.content)));
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(content, 'text/html');
+
+                    // Extract Metadata
+                    const title = doc.querySelector('title')?.innerText.replace(' - Zee Teach', '').trim() || 'Untitled';
+
+                    // Excerpt Strategy: Meta Description -> First Paragraph -> Default
+                    let excerpt = doc.querySelector('meta[name="description"]')?.content;
+                    if (!excerpt) {
+                        const firstP = doc.querySelector('.article-body p') || doc.querySelector('main p');
+                        if (firstP) {
+                            excerpt = firstP.innerText.substring(0, 150) + '...';
+                        }
+                    }
+                    if (!excerpt) excerpt = title;
+
+                    // Category & Chapter from Path
+                    // Expected: stb/class9/ch1-intro/file.html
+                    const parts = file.path.split('/');
+                    let category = 'General';
+                    let chapter = 'General';
+
+                    if (parts.length >= 3) {
+                        const type = parts[0].toUpperCase(); // STB or AKUEB
+                        const cls = parts[1].replace('class', 'Class '); // class9 -> Class 9
+                        category = `${type} ${cls}`;
+
+                        const chSlug = parts[2];
+                        // Try to format chapter name from slug: ch1-introduction-to-biology -> 1. Introduction To Biology
+                        // This is a bit heuristic but better than nothing
+                        chapter = chSlug.replace(/^ch/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    }
+
+                    newSearchIndex.push({
+                        title,
+                        url: '/' + file.path,
+                        excerpt,
+                        category,
+                        chapter,
+                        date: new Date().toISOString(),
+                        views: 0,
+                        comments: 0,
+                        thumbnail: null
+                    });
+
+                } catch (e) {
+                    console.error(`Failed to process ${file.path}`, e);
+                    log(`Failed to process ${file.path}: ${e.message}`, 'error');
                 }
-            });
-
-            if (newSearchIndex.length < initialCount) {
-                log(`Removing ${initialCount - newSearchIndex.length} ghost entries...`, 'info');
-                await updateSearchIndex(newSearchIndex, 'Sync: Remove ghost articles');
-                alert(`Sync complete! Removed ${initialCount - newSearchIndex.length} ghost entries.`);
-            } else {
-                log('Index is already in sync.', 'success');
-                alert('Index is already in sync.');
             }
+
+            await updateSearchIndex(newSearchIndex, 'Full Sync: Regenerate search index');
+            log('Sync complete!', 'success');
+            alert('Sync complete! Search index regenerated.');
 
         } catch (error) {
             console.error(error);
