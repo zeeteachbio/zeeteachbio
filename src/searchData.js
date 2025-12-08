@@ -22,17 +22,6 @@ export const searchIndex = [
         "thumbnail": null
     },
     {
-        "title": "1.2.1 explain the significance of given branches of biology",
-        "url": "/akueb/class9/ch1-introduction-to-biology/Divisions-and-Branches-of-Biology.html",
-        "excerpt": "1.2.1 explain the significance of given branches of biology Morphology, Anatomy, Physiology, Embryology, Taxonomy, Cell ...",
-        "category": "AKUEB Class 9",
-        "chapter": "1. Introduction To Biology",
-        "date": "2025-12-06T16:15:51.150Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
         "title": "Biology and Other Sciences - Interdisciplinary Connections | Zee Teach",
         "url": "/akueb/class9/ch1-introduction-to-biology/relate-biology-to-other-branches-of-science.html",
         "excerpt": "1.3.1 relate biology to other branches of science, i.e., biophysics, biochemistry, biostatistics, biomathematics (biomet...",
