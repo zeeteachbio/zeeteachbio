@@ -142,6 +142,18 @@ const generateTableOfContents = () => {
     content.parentElement.insertBefore(tocContainer, content);
 };
 
+const makeTablesResponsive = () => {
+    const tables = document.querySelectorAll('.article-body table');
+    tables.forEach(table => {
+        if (!table.parentElement.classList.contains('table-wrapper')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-wrapper';
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+};
+
 const initApp = async () => {
     console.log("Initializing App...");
 
@@ -150,6 +162,9 @@ const initApp = async () => {
 
     // Generate TOC
     generateTableOfContents();
+
+    // Make tables responsive
+    makeTablesResponsive();
 
     // --- Mobile Menu & Header Logic ---
     const header = document.querySelector('.header');

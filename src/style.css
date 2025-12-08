@@ -3480,40 +3480,51 @@ body::before {
     padding-bottom: 2rem;
   }
 }
+
 /* Custom Block Styles for Articles */
 .custom-block {
-    padding: 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-primary);
-    background: rgba(30, 41, 59, 0.5);
-    color: var(--color-text);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-primary);
+  background: rgba(30, 41, 59, 0.5);
+  color: var(--color-text);
 }
 
 /* Article Table Styles */
 .article-body table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    background-color: var(--color-surface);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .article-body th,
 .article-body td {
-    padding: 1rem;
-    border: 1px solid var(--color-border);
-    text-align: left;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  text-align: left;
 }
 
 .article-body th {
-    background-color: var(--color-bg);
-    font-weight: 600;
-    color: var(--color-primary);
+  background-color: var(--color-bg);
+  font-weight: 600;
+  color: var(--color-primary);
 }
 
 .article-body tr:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Responsive Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  -webkit-overflow-scrolling: touch;
 }
