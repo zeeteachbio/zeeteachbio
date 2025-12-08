@@ -42,5 +42,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.3 Relationship of Biology with Other Sciences",
+        "url": "/akueb/class9/ch1-introduction-to-biology/1.3-Relationship-of-Biology-with-Other-Sciences.html",
+        "excerpt": "1.3 Relationship of Biology with Other Sciences - AKUEB Class 9 (1. Introduction to Biology) notes.",
+        "category": "AKUEB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-12-08T07:52:21.610Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
