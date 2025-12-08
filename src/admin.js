@@ -89,6 +89,7 @@ const fileGrid = document.getElementById('file-grid'); // New Grid Container
 const fileList = document.getElementById('file-list'); // Fallback
 const backBtn = document.getElementById('back-btn');
 const saveBtn = document.getElementById('save-btn');
+const syncBtn = document.getElementById('sync-btn'); // New Sync Button
 const pageTitleInput = document.getElementById('page-title');
 const statusMsg = document.getElementById('status-msg');
 const editorDeleteBtn = document.getElementById('editor-delete-btn');
@@ -1053,6 +1054,69 @@ async function deleteFile(path, sha) {
 backBtn.addEventListener('click', () => {
     showScreen('dashboard');
 });
+
+// Sync Index Button
+if (syncBtn) {
+    syncBtn.addEventListener('click', async () => {
+        if (!confirm('This will scan all files and remove any "ghost" articles from the search index. Continue?')) return;
+
+        syncBtn.disabled = true;
+        syncBtn.innerText = 'Syncing...';
+
+        try {
+            log('Starting index sync...', 'info');
+
+            // 1. Get full file tree
+            const { data: repoInfo } = await octokit.request(`GET /repos/${owner}/${repo}`);
+            const branch = repoInfo.default_branch;
+            const { data: treeData } = await octokit.request(`GET /repos/${owner}/${repo}/git/trees/${branch}?recursive=1`);
+
+            const allFiles = new Set(treeData.tree.filter(item => item.type === 'blob').map(item => item.path));
+
+            // 2. Get searchData.js
+            const { data: searchData } = await octokit.request(`GET /repos/${owner}/${repo}/contents/src/searchData.js`);
+            const currentContent = decodeURIComponent(escape(atob(searchData.content)));
+
+            const arrayString = currentContent.replace(/export\s+const\s+searchIndex\s*=\s*/, '').replace(/;\s*$/, '');
+            let currentSearchIndex;
+            try {
+                currentSearchIndex = new Function('return ' + arrayString)();
+            } catch (e) {
+                throw new Error("Failed to parse search index");
+            }
+
+            // 3. Filter ghosts
+            const initialCount = currentSearchIndex.length;
+            const newSearchIndex = currentSearchIndex.filter(item => {
+                // Remove leading slash
+                const path = item.url.startsWith('/') ? item.url.slice(1) : item.url;
+                if (allFiles.has(path)) {
+                    return true;
+                } else {
+                    log(`Found ghost entry: ${item.title} (${path})`, 'warning');
+                    return false;
+                }
+            });
+
+            if (newSearchIndex.length < initialCount) {
+                log(`Removing ${initialCount - newSearchIndex.length} ghost entries...`, 'info');
+                await updateSearchIndex(newSearchIndex, 'Sync: Remove ghost articles');
+                alert(`Sync complete! Removed ${initialCount - newSearchIndex.length} ghost entries.`);
+            } else {
+                log('Index is already in sync.', 'success');
+                alert('Index is already in sync.');
+            }
+
+        } catch (error) {
+            console.error(error);
+            log(`Sync failed: ${error.message}`, 'error');
+            alert(`Sync failed: ${error.message}`);
+        } finally {
+            syncBtn.disabled = false;
+            syncBtn.innerText = 'Sync Index';
+        }
+    });
+}
 
 function setupFloatingToolbar() {
     const floatingToolbar = document.getElementById('floating-toolbar');
