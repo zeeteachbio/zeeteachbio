@@ -17,16 +17,21 @@
             margin: 2rem auto;
             padding: 2rem;
             background: rgba(30, 41, 59, 0.95);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            color: #f8fafc;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.1rem;
+            color: #a78bfa;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .login-screen,
         .dashboard-screen,
         .editor-screen {
             display: none;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .active-screen {
@@ -323,50 +328,38 @@
                     here</a>(Select 'repo' scope). </p>
             <pre id="debug-log"
                 style="margin-top: 1rem; padding: 1rem; background: #1e293b; color: #f8fafc; border-radius: 4px; font-size: 12px; white-space: pre-wrap; display: none; max-height: 300px; overflow-y: auto; font-family: monospace;"></pre>
-            <option value="">Normal</option>
-            <option value="large">Large</option>
-            <option value="huge">Huge</option>
-            </select>
-            <select class="toolbar-select" data-format="align" title="Align" style="width: 70px;">
-                <option value="">Left</option>
-                <option value="center">Center</option>
-                <option value="right">Right</option>
-                <option value="justify">Justify</option>
-            </select>
-            <select class="toolbar-select" data-format="line-height" title="Line Height" style="width: 60px;">
-                <option value="1.0">1.0</option>
-                <option value="1.2">1.2</option>
-                <option value="1.5">1.5</option>
-                <option value="1.8">1.8</option>
-                <option value="2.0">2.0</option>
-            </select>
-            <select class="toolbar-select" data-format="bullet-style" title="Bullets" style="width: 80px;">
-                <option value="">&#9679;</option>
-                <option value="star">&#9733;</option>
-                <option value="check">&#10003;</option>
-                <option value="arrow">&#10148;</option>
-                <option value="diamond">&#10070;</option>
-            </select>
-            <select class="toolbar-select" data-format="margin-bottom" title="Spacing" style="width: 60px;">
-                <option value="0px">0px</option>
-                <option value="10px">10px</option>
-                <option value="20px">20px</option>
-                <option value="30px">30px</option>
-            </select>
         </div>
-        <!-- Editor Container -->
-        <div id="content-editor"
-            style="height: 600px; background: #1e293b; color: #f8fafc; font-family: 'Roboto', sans-serif; font-size: 16px;">
+        <!-- Dashboard Screen -->
+        <div id="dashboard-screen" class="dashboard-screen">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Your Articles</h2>
+                <div><button id="new-article-btn" class="btn-primary" style="margin-right: 0.5rem;">+New
+                        Article</button><button id="refresh-btn" class="btn-secondary">Refresh</button><button
+                        id="sync-btn" class="btn-secondary" style="margin-left: 0.5rem;">Sync</button></div>
+            </div>
+            <div id="file-grid" class="file-list-grid">
+                <!-- Files will be loaded here in columns -->
+            </div>
+            <ul id="file-list" class="file-list" style="display: none;">
+                <!-- Fallback/Legacy list -->
+            </ul>
         </div>
-
-        <!-- Floating Toolbar -->
-        <div id="floating-toolbar" class="floating-toolbar">
-            <div class="toolbar-row">
-                <button data-format="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
-                <button data-format="italic" title="Italic (Ctrl+I)"><em>I</em></button>
-                <button data-format="underline" title="Underline (Ctrl+U)"><u>U</u></button>
-                <button data-format="strike" title="Strikethrough">S</button>
-                <select class="toolbar-select" data-format="font" title="Font">
+        <!-- Editor Screen -->
+        <div id="editor-screen" class="editor-screen">
+            <div class="editor-toolbar"><button id="back-btn" class="btn-secondary">← Back</button>
+                <div><span id="current-file" style="margin-right: 1rem; font-weight: 600;"></span><button
+                        id="editor-delete-btn" class="btn-secondary"
+                        style="color: #ef4444; border-color: #ef4444; margin-right: 0.5rem;">Delete</button><button
+                        id="save-btn" class="btn-primary">Publish Changes</button></div>
+            </div>
+            <div style="margin-bottom: 1rem;"><label
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Page
+                    Title</label><input type="text" id="page-title" autocomplete="off"
+                    style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+            </div>
+            <div class="toolbar-row"
+                style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 0.5rem; margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                <select class="toolbar-select" data-format="font" title="Font" style="width: 80px;">
                     <option value="mirza">Mirza</option>
                     <option value="roboto">Roboto</option>
                     <option value="arial">Arial</option>
@@ -375,25 +368,79 @@
                     <option value="katibeh">Katibeh</option>
                     <option value="lateef">Lateef</option>
                 </select>
-                <select class="toolbar-select" data-format="size" title="Size">
+                <select class="toolbar-select" data-format="size" title="Size" style="width: 70px;">
                     <option value="small">Small</option>
                     <option value="">Normal</option>
                     <option value="large">Large</option>
                     <option value="huge">Huge</option>
                 </select>
-            </div>
-            <div class="toolbar-row">
-                <select class="toolbar-select" data-format="align" title="Align">
+                <select class="toolbar-select" data-format="align" title="Align" style="width: 70px;">
                     <option value="">Left</option>
                     <option value="center">Center</option>
                     <option value="right">Right</option>
                     <option value="justify">Justify</option>
                 </select>
-                <button data-format="color" data-value="#000000" title="Text Color">A</button>
-                <button data-format="background" data-value="#ffff00" title="Highlight">⬛</button>
-                <button data-format="link" title="Link">🔗</button>
+                <select class="toolbar-select" data-format="line-height" title="Line Height" style="width: 60px;">
+                    <option value="1.0">1.0</option>
+                    <option value="1.2">1.2</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1.8">1.8</option>
+                    <option value="2.0">2.0</option>
+                </select>
+                <select class="toolbar-select" data-format="bullet-style" title="Bullets" style="width: 80px;">
+                    <option value="">&#9679;</option>
+                    <option value="star">&#9733;</option>
+                    <option value="check">&#10003;</option>
+                    <option value="arrow">&#10148;</option>
+                    <option value="diamond">&#10070;</option>
+                </select>
+                <select class="toolbar-select" data-format="margin-bottom" title="Spacing" style="width: 60px;">
+                    <option value="0px">0px</option>
+                    <option value="10px">10px</option>
+                    <option value="20px">20px</option>
+                    <option value="30px">30px</option>
+                </select>
             </div>
-        </div>
+            <!-- Editor Container -->
+            <div id="content-editor"
+                style="height: 600px; background: #1e293b; color: #f8fafc; font-family: 'Roboto', sans-serif; font-size: 16px;">
+            </div>
+
+            <!-- Floating Toolbar -->
+            <div id="floating-toolbar" class="floating-toolbar">
+                <div class="toolbar-row">
+                    <button data-format="bold" title="Bold (Ctrl+B)"><strong>B</strong></button>
+                    <button data-format="italic" title="Italic (Ctrl+I)"><em>I</em></button>
+                    <button data-format="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+                    <button data-format="strike" title="Strikethrough">S</button>
+                    <select class="toolbar-select" data-format="font" title="Font">
+                        <option value="mirza">Mirza</option>
+                        <option value="roboto">Roboto</option>
+                        <option value="arial">Arial</option>
+                        <option value="times-new-roman">Times</option>
+                        <option value="verdana">Verdana</option>
+                        <option value="katibeh">Katibeh</option>
+                        <option value="lateef">Lateef</option>
+                    </select>
+                    <select class="toolbar-select" data-format="size" title="Size">
+                        <option value="small">Small</option>
+                        <option value="">Normal</option>
+                        <option value="large">Large</option>
+                        <option value="huge">Huge</option>
+                    </select>
+                </div>
+                <div class="toolbar-row">
+                    <select class="toolbar-select" data-format="align" title="Align">
+                        <option value="">Left</option>
+                        <option value="center">Center</option>
+                        <option value="right">Right</option>
+                        <option value="justify">Justify</option>
+                    </select>
+                    <button data-format="color" data-value="#000000" title="Text Color">A</button>
+                    <button data-format="background" data-value="#ffff00" title="Highlight">⬛</button>
+                    <button data-format="link" title="Link">🔗</button>
+                </div>
+            </div>
         </div>
         <div id="status-msg" class="status-msg"></div>
     </main>
