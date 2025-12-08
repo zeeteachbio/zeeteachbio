@@ -44,23 +44,23 @@ export const searchIndex = [
         "thumbnail": null
     },
     {
+        "title": "Contribution of Muslim Scientists to Biology | Zee Teach",
+        "url": "/stb/class9/ch1-introduction-to-biology/contribution-of-muslims.html",
+        "excerpt": "Muslim scientists played an important role in the early development of biological sciences. They started experiments and...",
+        "category": "STB Class 9",
+        "chapter": "1. Introduction To Biology",
+        "date": "2025-12-06T16:15:51.152Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
+    },
+    {
         "title": "1. Introduction to Biology",
         "url": "/stb/class9/ch1-introduction-to-biology/introduciton-to-biology.html",
         "excerpt": "Biology is the branch of science that studies living organisms and their interactions with the environment. It explains ...",
         "category": "STB Class 9",
         "chapter": "1. Introduction To Biology",
         "date": "2025-12-06T16:15:51.153Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
-        "title": "Relationship of Biology with Other Sciences | Zee Teach",
-        "url": "/stb/class9/ch1-introduction-to-biology/relationship-of-biology-with-other-sciences.html",
-        "excerpt": "Biology is a multidimensional subject and is linked with other sciences. The movement of animals follows the laws of mot...",
-        "category": "STB Class 9",
-        "chapter": "1. Introduction To Biology",
-        "date": "2025-12-06T16:15:51.155Z",
         "views": 0,
         "comments": 0,
         "thumbnail": null
