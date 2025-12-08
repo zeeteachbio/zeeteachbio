@@ -42,5 +42,16 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
+    },
+    {
+        "title": "1.2 Divisions and Branches of Biology",
+        "url": "/akueb/class9/ch1-introduction-to-biology/1.2-Divisions-and-Branches-of-Biology.html",
+        "excerpt": "1.2 Divisions and Branches of Biology - AKUEB Class 9 (1. Introduction to Biology) notes.",
+        "category": "AKUEB Class 9",
+        "chapter": "1. Introduction to Biology",
+        "date": "2025-12-08T07:46:41.464Z",
+        "views": 0,
+        "comments": 0,
+        "thumbnail": null
     }
 ];
