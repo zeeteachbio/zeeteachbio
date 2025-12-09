@@ -1,7 +1,12 @@
 import './style.css';
 // Disqus comments removed
 import { api } from './services/api.js';
-import './bioParticles.js'; // Biology-themed animated background
+// Lazy load bioParticles
+if (window.requestIdleCallback) {
+    requestIdleCallback(() => import('./bioParticles.js'));
+} else {
+    setTimeout(() => import('./bioParticles.js'), 2000);
+}
 
 const initLoader = () => {
     const loader = document.getElementById('loader-wrapper');
