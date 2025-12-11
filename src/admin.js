@@ -395,9 +395,9 @@ async function loadFiles() {
                         if (groups[category].chapters[chapter]) {
                             groups[category].chapters[chapter].push(file);
                         } else {
-                            // Try case-insensitive match
+                            // Try fuzzy match (ignore case and punctuation)
                             const targetChapter = Object.keys(groups[category].chapters).find(
-                                c => c.toLowerCase() === chapter.toLowerCase()
+                                c => c.replace(/[.,]/g, '').toLowerCase() === chapter.replace(/[.,]/g, '').toLowerCase()
                             );
                             if (targetChapter) {
                                 groups[category].chapters[targetChapter].push(file);
