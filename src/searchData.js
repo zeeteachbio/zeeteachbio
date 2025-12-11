@@ -75,38 +75,5 @@ export const searchIndex = [
         "views": 0,
         "comments": 0,
         "thumbnail": null
-    },
-    {
-        "title": "ZeeTeach Animated Logo",
-        "url": "/animated-logo.html",
-        "excerpt": "ZeeTeach Animated Logo",
-        "category": "General",
-        "chapter": "General",
-        "date": "2025-12-11T05:28:37.342Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
-        "title": "DNA Animation - ZeeTeach Bio",
-        "url": "/dna-animation.html",
-        "excerpt": "DNA Animation - ZeeTeach Bio",
-        "category": "General",
-        "chapter": "General",
-        "date": "2025-12-11T05:28:38.041Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
-    },
-    {
-        "title": "API Test",
-        "url": "/test_api.html",
-        "excerpt": "API Test",
-        "category": "General",
-        "chapter": "General",
-        "date": "2025-12-11T05:28:39.114Z",
-        "views": 0,
-        "comments": 0,
-        "thumbnail": null
     }
 ];
