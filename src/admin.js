@@ -1084,7 +1084,10 @@ if (syncBtn) {
                 !item.path.includes('index.html') &&
                 !item.path.includes('search.html') &&
                 !item.path.includes('chapter.html') &&
-                !item.path.includes('404.html')
+                !item.path.includes('404.html') &&
+                !item.path.includes('test_api.html') &&
+                !item.path.includes('dna-animation.html') &&
+                !item.path.includes('animated-logo.html')
             );
 
             log(`Found ${articleFiles.length} articles. Processing...`, 'info');
@@ -1101,7 +1104,30 @@ if (syncBtn) {
                     const doc = parser.parseFromString(content, 'text/html');
 
                     // Extract Metadata
-                    const title = doc.querySelector('title')?.innerText.replace(' - Zee Teach', '').trim() || 'Untitled';
+                    // Extract Metadata (Robust)
+                    let title = doc.querySelector('title')?.innerText.replace(' - Zee Teach', '').trim();
+
+                    // Fallback 1: Try H1
+                    if (!title) {
+                        const h1 = doc.querySelector('h1');
+                        if (h1) {
+                            // Clone to avoid modifying original if we need to strip tags
+                            const h1Clone = h1.cloneNode(true);
+                            // Remove any nested tags if they are just formatting, but keep text
+                            title = h1Clone.innerText.trim();
+                            // Clean up common artifacts like "1.1.1 Define Biology" if it's mixed with title
+                            // But for now, raw text is better than "Untitled"
+                        }
+                    }
+
+                    // Fallback 2: Try Filename
+                    if (!title) {
+                        const filename = file.path.split('/').pop().replace('.html', '');
+                        // Convert kebab-case to Title Case
+                        title = filename.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    }
+
+                    title = title || 'Untitled'; // Final fallback
 
                     // Excerpt Strategy: Meta Description -> First Paragraph -> Default
                     let excerpt = doc.querySelector('meta[name="description"]')?.content;
