@@ -32,7 +32,7 @@ function findHtmlFiles(dir, basePath = '') {
 }
 
 // Find all HTML files in the project
-const htmlFiles = findHtmlFiles(__dirname);
+const htmlFiles = findHtmlFiles(process.cwd());
 
 const updateIndexPlugin = () => {
     return {
