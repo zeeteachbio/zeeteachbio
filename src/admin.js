@@ -402,7 +402,8 @@ async function loadFiles() {
                             if (targetChapter) {
                                 groups[category].chapters[targetChapter].push(file);
                             } else {
-                                groups[category].files.push(file); // Chapter not found in predefined list
+                                // Dynamic Chapter Creation: If chapter exists in metadata but not in our list, create it
+                                groups[category].chapters[chapter] = [file];
                             }
                         }
                     } else {
@@ -452,7 +453,12 @@ async function loadFiles() {
 
             // Render Chapters
             if (chapters[groupName]) {
-                chapters[groupName].forEach(chapterName => {
+                // Merge hardcoded chapters with any dynamic ones we created
+                const hardcodedChapters = chapters[groupName];
+                const dynamicChapters = Object.keys(groupData.chapters);
+                const allChapters = [...new Set([...hardcodedChapters, ...dynamicChapters])]; // Unique list
+
+                allChapters.forEach(chapterName => {
                     const chapterFiles = groupData.chapters[chapterName];
 
                     const chapterHeader = document.createElement('div');
