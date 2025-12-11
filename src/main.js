@@ -641,11 +641,12 @@ const initApp = async () => {
             titleEl.textContent = `${chapterName} (${className})`;
             document.title = `${chapterName} - ${className} - Zee Teach`;
 
-            // Filter articles by class and chapter (Case Insensitive)
-            // Note: api.getArticles returns newest first. User wants oldest first.
+            // Filter articles by class and chapter (Fuzzy Match: Case Insensitive & Ignore Punctuation)
+            const normalize = (str) => str.toLowerCase().replace(/[.,]/g, '').trim();
+
             const chapterArticles = articles.filter(article =>
                 article.category.toLowerCase() === className.toLowerCase() &&
-                article.chapter.toLowerCase() === chapterName.toLowerCase()
+                normalize(article.chapter) === normalize(chapterName)
             ).sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort oldest to newest
 
             const renderArticles = (list) => {
