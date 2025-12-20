@@ -1,160 +1,161 @@
 /* ===== Tiptap Editor Core ===== */
+.tiptap-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-top: 1rem;
+}
+
 .tiptap-editor {
-    min-height: 400px;
-    padding: 1.5rem;
-    border: 1px solid #334155;
-    border-radius: 8px;
+    flex: 1;
+    min-height: 500px;
+    padding: 3rem;
+    border: none;
+    border-radius: 0 0 8px 8px;
     background: #1e293b;
-    color: #f8fafc;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #e2e8f0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 16px;
-    line-height: 1.6;
+    /* Base 16px for readability */
+    line-height: 1.7;
     outline: none;
+    max-width: 850px;
+    /* Document width */
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .tiptap-editor:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* No colored border focus on document itself */
 }
 
 /* ===== Toolbar ===== */
 .tiptap-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    padding: 12px;
-    background: #0f172a;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(8px);
     border: 1px solid #334155;
     border-radius: 8px 8px 0 0;
-    border-bottom: none;
+    border-bottom: 1px solid #334155;
     align-items: center;
+    max-width: 850px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .toolbar-group {
     display: flex;
-    gap: 4px;
+    gap: 0.25rem;
     align-items: center;
+    padding-right: 0.5rem;
+    margin-right: 0.5rem;
+    border-right: 1px solid #334155;
 }
 
-.toolbar-separator {
-    width: 1px;
-    height: 24px;
-    background: #334155;
-    margin: 0 4px;
+.toolbar-group:last-child {
+    border-right: none;
 }
 
+/* Icons are now handled by Feather in JS or text, generic styling */
 .toolbar-btn {
-    padding: 6px 10px;
-    border: 1px solid #334155;
-    background: #1e293b;
-    color: #f8fafc;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s;
-    min-width: 32px;
+    width: 32px;
     height: 32px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #94a3b8;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .toolbar-btn:hover {
     background: #334155;
-    border-color: #60a5fa;
-}
-
-.toolbar-btn:active {
-    background: #475569;
+    color: #f8fafc;
 }
 
 .toolbar-btn.is-active {
     background: #3b82f6;
     color: white;
-    border-color: #3b82f6;
 }
 
 .toolbar-select {
-    padding: 6px 10px;
+    height: 32px;
+    padding: 0 8px;
     border: 1px solid #334155;
     background: #1e293b;
-    color: #f8fafc;
+    color: #e2e8f0;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 0.85rem;
+    outline: none;
     cursor: pointer;
-    min-width: 120px;
-    height: 32px;
 }
 
 .toolbar-select:hover {
-    border-color: #60a5fa;
+    border-color: #64748b;
 }
 
 .toolbar-color {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #334155;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
     border-radius: 4px;
     cursor: pointer;
-    background: #1e293b;
+    background: transparent;
 }
 
 /* ===== Bubble Menu ===== */
 .bubble-menu {
     display: flex;
-    gap: 4px;
-    padding: 8px;
+    gap: 0.25rem;
+    padding: 0.5rem;
     background: #1e293b;
     border-radius: 6px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    align-items: center;
-    border: 1px solid #334155;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    border: 1px solid #475569;
 }
 
 .bubble-btn {
-    padding: 6px 10px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background: transparent;
-    color: #e2e8f0;
+    color: #cbd5e1;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
     transition: all 0.2s;
-    min-width: 32px;
-    height: 32px;
 }
 
 .bubble-btn:hover {
     background: #334155;
+    color: white;
 }
 
-.bubble-btn:active {
-    background: #475569;
+.bubble-btn.is-active {
+    color: #60a5fa;
 }
 
 .bubble-separator {
     width: 1px;
-    height: 20px;
+    height: 16px;
     background: #475569;
-    margin: 0 4px;
-}
-
-.bubble-select {
-    padding: 4px 8px;
-    border: 1px solid #334155;
-    background: #0f172a;
-    color: #f8fafc;
-    border-radius: 4px;
-    font-size: 13px;
-    cursor: pointer;
-    height: 28px;
-    outline: none;
-}
-
-.bubble-select:hover {
-    border-color: #60a5fa;
+    margin: 0 0.25rem;
+    align-self: center;
 }
 
 /* ===== Table Menu ===== */
@@ -581,7 +582,9 @@
 }
 
 .tiptap-editor *::selection {
-    background: #bfdbfe;
+    background: #2563eb;
+    /* Blue 600 */
+    color: #ffffff;
 }
 
 .tiptap-editor ul[data-type="taskList"] input[type="checkbox"] {

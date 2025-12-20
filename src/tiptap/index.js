@@ -1,3 +1,4 @@
+import './styles.css';
 import { createEditor, getHTML, setHTML, destroyEditor } from './editor.js';
 import { createToolbar } from './components/Toolbar.js';
 import { createBubbleMenu } from './components/BubbleMenu.js';
@@ -55,6 +56,11 @@ export function initializeTiptapEditor(containerId, options = {}) {
     wrapper.appendChild(toolbar);
     wrapper.appendChild(editorElement);
     container.appendChild(wrapper);
+
+    // Initialize icons
+    if (window.feather) {
+        feather.replace();
+    }
 
     // Add menus to body (not inside wrapper)
     document.body.appendChild(bubbleMenuElement);

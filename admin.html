@@ -31,16 +31,20 @@
         <div id="login-screen" class="login-screen active-screen">
             <h2>Welcome Back</h2>
             <p class="text-muted">Enter your GitHub Personal Access Token to manage content.</p>
-            
-            <input type="password" id="github-token" class="login-input" placeholder="ghp_..." autocomplete="current-password">
-            
+
+            <input type="password" id="github-token" class="login-input" placeholder="ghp_..."
+                autocomplete="current-password">
+
             <button id="login-btn" class="btn btn-primary" style="width: 100%;">Access Dashboard</button>
-            
+
             <p class="mt-4 text-sm text-muted">
-                Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank" style="color: var(--admin-primary); text-decoration: underline;">Generate here</a> (Select 'repo' scope).
+                Need a token? <a href="https://github.com/settings/tokens/new?scopes=repo" target="_blank"
+                    style="color: var(--admin-primary); text-decoration: underline;">Generate here</a> (Select 'repo'
+                scope).
             </p>
-            
-            <pre id="debug-log" style="text-align: left; margin-top: 1rem; padding: 1rem; background: #0f172a; color: #f8fafc; border-radius: 4px; font-size: 11px; display: none; max-height: 200px; overflow-y: auto; font-family: monospace;"></pre>
+
+            <pre id="debug-log"
+                style="text-align: left; margin-top: 1rem; padding: 1rem; background: #0f172a; color: #f8fafc; border-radius: 4px; font-size: 11px; display: none; max-height: 200px; overflow-y: auto; font-family: monospace;"></pre>
         </div>
 
         <!-- Dashboard Screen -->
@@ -51,13 +55,13 @@
                     <button class="tab-btn" data-tab="AKUEB">Aga Khan Board</button>
                     <button class="tab-btn" data-tab="Other">Other Files</button>
                 </div>
-                
+
                 <div class="dashboard-actions">
                     <div class="search-wrapper">
                         <i data-feather="search" class="search-icon"></i>
                         <input type="text" id="file-search" class="search-input" placeholder="Search articles...">
                     </div>
-                
+
                     <button id="refresh-btn" class="btn btn-secondary" title="Refresh">
                         <i data-feather="refresh-cw"></i>
                     </button>
@@ -74,18 +78,19 @@
             <div id="file-grid" class="file-grid">
                 <!-- Javascript will populate this -->
             </div>
-            
+
             <!-- Fallback/Legacy list -->
             <ul id="file-list" class="file-list hidden"></ul>
         </div>
 
         <!-- Editor Screen -->
         <div id="editor-screen" class="editor-screen hidden">
-            <div class="flex justify-between items-center" style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--admin-border);">
+            <div class="flex justify-between items-center"
+                style="margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--admin-border);">
                 <button id="back-btn" class="btn btn-secondary">
                     <i data-feather="arrow-left"></i> Back
                 </button>
-                
+
                 <div class="flex items-center gap-2">
                     <span id="current-file" class="text-sm text-muted font-mono bg-slate-900 px-2 py-1 rounded"></span>
                     <button id="editor-delete-btn" class="btn btn-danger">
@@ -97,44 +102,46 @@
                 </div>
             </div>
 
-            <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--admin-text-muted);">Page Title</label>
-                <input type="text" id="page-title" class="search-input" autocomplete="off" style="font-size: 1.1rem; padding: 0.8rem;">
-            </div>
+            <!-- Editor Layout Container -->
+            <div class="editor-layout" style="max-width: 850px; margin: 0 auto; width: 100%;">
+                <input type="text" id="page-title" placeholder="Untitled Page" autocomplete="off"
+                    style="width: 100%; background: transparent; border: none; font-size: 2.25rem; font-weight: 700; color: white; padding: 1rem 0; outline: none; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif;">
 
-            <!-- Toolbar logic remains inside editorCompat/tiptap but we keep the row for compatibility -->
-            <div class="toolbar-row hidden" id="legacy-toolbar"></div>
-
-            <!-- Editor Container -->
-            <div class="editor-container">
-                <div id="content-editor"></div>
+                <!-- Editor Container -->
+                <div class="editor-container">
+                    <div id="content-editor"></div>
+                </div>
             </div>
 
             <!-- Floating Toolbar (Legacy support, though Tiptap has its own) -->
             <div id="floating-toolbar" class="floating-toolbar hidden">
-                 <!-- Populated by JS if needed -->
+                <!-- Populated by JS if needed -->
             </div>
         </div>
 
-        <div id="status-msg" class="status-msg" style="display: none; margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md);"></div>
+        <div id="status-msg" class="status-msg"
+            style="display: none; margin-top: 1rem; padding: 1rem; border-radius: var(--radius-md);"></div>
     </main>
 
     <!-- New Article Modal -->
-    <div id="new-article-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 100;">
-        <div style="background: var(--admin-surface); color: var(--admin-text); padding: 2rem; border-radius: var(--radius-lg); width: 450px; max-width: 90%; border: 1px solid var(--admin-border); box-shadow: var(--shadow-lg);">
+    <div id="new-article-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 100;">
+        <div
+            style="background: var(--admin-surface); color: var(--admin-text); padding: 2rem; border-radius: var(--radius-lg); width: 450px; max-width: 90%; border: 1px solid var(--admin-border); box-shadow: var(--shadow-lg);">
             <h3 style="margin-top:0; font-size: 1.5rem;">Create New Article</h3>
-            
+
             <div style="margin: 1.5rem 0;">
                 <label class="block text-muted mb-2 font-semibold">Filename</label>
-                <input type="text" id="new-filename" class="search-input" placeholder="e.g. my-new-article" autocomplete="off">
+                <input type="text" id="new-filename" class="search-input" placeholder="e.g. my-new-article"
+                    autocomplete="off">
                 <p class="text-sm text-muted mt-1">.html will be added automatically</p>
             </div>
-            
+
             <div style="margin: 1.5rem 0;">
                 <label class="block text-muted mb-2 font-semibold">Display Title</label>
                 <input type="text" id="new-title" class="search-input" placeholder="Article Title" autocomplete="off">
             </div>
-            
+
             <div style="margin: 1.5rem 0;">
                 <label class="block text-muted mb-2 font-semibold">Category</label>
                 <select id="new-category" class="search-input">
@@ -149,14 +156,14 @@
                     <option value="AKUEB Class 12">AKUEB Class 12</option>
                 </select>
             </div>
-            
+
             <div id="chapter-container" style="margin: 1.5rem 0; display: none;">
                 <label class="block text-muted mb-2 font-semibold">Chapter</label>
                 <select id="new-chapter" class="search-input">
                     <option value="">Select Chapter</option>
                 </select>
             </div>
-            
+
             <div class="flex justify-between mt-4">
                 <button id="cancel-new-btn" class="btn btn-secondary">Cancel</button>
                 <button id="create-new-btn" class="btn btn-primary">Create File</button>
@@ -172,4 +179,5 @@
     </script>
     <script type="module" src="/src/admin.js?v=2.3"></script>
 </body>
+
 </html>
