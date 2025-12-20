@@ -63,9 +63,9 @@ const screens = {
 };
 
 // Add version indicator
-document.title = "Admin Dashboard v2.2 - Zee Teach";
+document.title = "Admin Dashboard v2.3 - Zee Teach";
 const headerTitle = document.querySelector('.header .logo');
-if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.2)</span>';
+if (headerTitle) headerTitle.innerHTML += ' <span style="font-size: 0.8rem; color: #666;">(v2.3)</span>';
 
 // Add Logout Button to Header
 const header = document.querySelector('header');
@@ -97,6 +97,7 @@ const syncBtn = document.getElementById('sync-btn'); // New Sync Button
 const pageTitleInput = document.getElementById('page-title');
 const statusMsg = document.getElementById('status-msg');
 const editorDeleteBtn = document.getElementById('editor-delete-btn');
+const searchInput = document.getElementById('file-search'); // New Search Input
 
 // New Article Elements
 const newArticleBtn = document.getElementById('new-article-btn');
@@ -127,8 +128,16 @@ function initializeQuill() {
 
 // Navigation
 function showScreen(screenName) {
-    Object.values(screens).forEach(el => el.classList.remove('active-screen'));
-    screens[screenName].classList.add('active-screen');
+    Object.values(screens).forEach(el => {
+        el.classList.add('hidden');
+        el.classList.remove('active-screen');
+    });
+
+    const target = screens[screenName];
+    if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('active-screen');
+    }
 }
 
 // Debug Logger
@@ -245,26 +254,42 @@ loginBtn.addEventListener('click', async () => {
 })();
 
 
-// Helper to create file item
+// Helper to create file item (Card Style)
 function createFileItem(file, label = null) {
     const div = document.createElement('div');
-    div.className = 'file-item';
+    div.className = 'file-card';
+
+    // Determine type (HTML or JS)
+    const isJS = file.name.endsWith('.js');
+    const icon = isJS ? 'code' : 'file-text';
+
     div.innerHTML = `
-        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 0.5rem;" title="${label || file.name}">${label || file.name}</span>
-        <div style="display: flex; gap: 0.25rem;">
-            <button class="btn-secondary btn-sm">Edit</button>
-            <button class="btn-danger btn-sm">Del</button>
+        <div class="file-card-header">
+            <span class="file-name" title="${label || file.name}">
+                <i data-feather="${icon}" style="width: 16px; height: 16px; vertical-align: text-bottom; margin-right: 4px;"></i>
+                ${label || file.name}
+            </span>
+        </div>
+        <div class="file-meta">
+           ${file.size ? (file.size / 1024).toFixed(1) + ' KB' : ''}
+        </div>
+        <div class="file-actions">
+            <button class="btn btn-secondary btn-sm edit-btn" style="flex: 1;">
+                <i data-feather="edit-2" style="width: 14px;"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm del-btn" title="Delete">
+                <i data-feather="trash-2" style="width: 14px;"></i>
+            </button>
         </div>
     `;
 
-    const buttons = div.querySelectorAll('button');
-    const editBtn = buttons[0];
-    const deleteBtn = buttons[1];
+    const editBtn = div.querySelector('.edit-btn');
+    const deleteBtn = div.querySelector('.del-btn');
 
     editBtn.addEventListener('click', () => loadFileContent(file.path));
 
     deleteBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent file item click if any
+        e.stopPropagation();
         if (confirm(`Are you sure you want to delete ${file.name}?`)) {
             deleteFile(file.path, file.sha);
         }
@@ -273,8 +298,9 @@ function createFileItem(file, label = null) {
     return div;
 }
 
-function renderDashboard() {
+function renderDashboard(filterText = '') {
     fileGrid.innerHTML = '';
+    const text = filterText.toLowerCase();
 
     // Filter groups based on currentTab
     let groupsToShow = [];
@@ -287,22 +313,28 @@ function renderDashboard() {
         groupsToShow = [];
     }
 
-    // Render Columns for Classes
+    // Render Classes
     groupsToShow.forEach(groupName => {
         const groupData = groups[groupName];
         if (!groupData) return;
 
-        const col = document.createElement('div');
-        col.className = 'file-column';
+        // Check if group has any matching files
+        // We need to do a pre-check to decide if we show the header
+        // Simple approach: Render everything to a fragment, if empty don't append to DOM
 
-        const header = document.createElement('h3');
+        const section = document.createElement('div');
+        section.className = 'class-section';
+
+        const header = document.createElement('div');
+        header.className = 'class-header';
         header.innerHTML = `
-            ${groupName}
-            <button class="btn-primary btn-sm" style="font-size: 0.75rem;">+ New</button>
+            <h3 class="class-title">${groupName}</h3>
+            <button class="btn btn-primary btn-sm new-btn" data-category="${groupName}">
+                <i data-feather="plus"></i> New
+            </button>
         `;
 
-        // Add New Article Button Logic
-        header.querySelector('button').onclick = () => {
+        header.querySelector('.new-btn').onclick = () => {
             const newCategorySelect = document.getElementById('new-category');
             if (newCategorySelect) {
                 newCategorySelect.value = groupName;
@@ -312,95 +344,114 @@ function renderDashboard() {
             if (newArticleModal) newArticleModal.style.display = 'flex';
         };
 
-        col.appendChild(header);
+        section.appendChild(header);
 
         let hasFiles = false;
+        const grid = document.createElement('div');
+        grid.className = 'file-grid';
 
         // Render Chapters
         if (chapters[groupName]) {
-            // Merge hardcoded chapters with any dynamic ones we created
             const hardcodedChapters = chapters[groupName];
             const dynamicChapters = groupData.chapters ? Object.keys(groupData.chapters) : [];
-            const allChapters = [...new Set([...hardcodedChapters, ...dynamicChapters])]; // Unique list
+            const allChapters = [...new Set([...hardcodedChapters, ...dynamicChapters])];
 
             allChapters.forEach(chapterName => {
-                const chapterFiles = groupData.chapters[chapterName];
+                const chapterFiles = groupData.chapters[chapterName] || [];
+                // Filter files by search text
+                const visibleFiles = chapterFiles.filter(f => f.name.toLowerCase().includes(text));
 
-                const chapterHeader = document.createElement('div');
-                chapterHeader.style.fontSize = '0.85rem';
-                chapterHeader.style.fontWeight = '600';
-                chapterHeader.style.color = '#64748b';
-                chapterHeader.style.marginTop = '0.75rem';
-                chapterHeader.style.marginBottom = '0.25rem';
-                chapterHeader.style.paddingBottom = '0.25rem';
-                chapterHeader.style.borderBottom = '1px dashed #e2e8f0';
-                chapterHeader.innerText = chapterName;
-                col.appendChild(chapterHeader);
+                if (visibleFiles.length > 0) {
+                    // Create Chapter Sub-Section
+                    // We actually want to group these properly in the grid
+                    // Current CSS grid is flat. Let's make a mini-section for chapter
 
-                if (chapterFiles && chapterFiles.length > 0) {
-                    chapterFiles.forEach(file => {
-                        col.appendChild(createFileItem(file));
+                    const chapterTitle = document.createElement('div');
+                    chapterTitle.className = 'chapter-section';
+                    chapterTitle.innerHTML = `<div class="chapter-title">${chapterName}</div>`;
+
+                    // To keep grid layout, we might need to break the grid flow or nest grids.
+                    // Let's use the 'class-section' as a container of multiple 'chapter-sections'
+                    // And each chapter section has its own grid.
+
+                    const chapterGrid = document.createElement('div');
+                    chapterGrid.className = 'file-grid';
+
+                    visibleFiles.forEach(file => {
+                        chapterGrid.appendChild(createFileItem(file));
                     });
+
+                    chapterTitle.appendChild(chapterGrid);
+                    section.appendChild(chapterTitle);
                     hasFiles = true;
-                } else {
-                    const emptyMsg = document.createElement('div');
-                    emptyMsg.style.fontSize = '0.75rem';
-                    emptyMsg.style.color = '#cbd5e1';
-                    emptyMsg.style.fontStyle = 'italic';
-                    emptyMsg.style.paddingLeft = '0.5rem';
-                    emptyMsg.innerText = 'No articles';
-                    col.appendChild(emptyMsg);
                 }
             });
         }
 
-        // Render Uncategorized Files for this Class
+        // Render Uncategorized Files
         if (groupData.files.length > 0) {
-            const otherHeader = document.createElement('div');
-            otherHeader.style.fontSize = '0.85rem';
-            otherHeader.style.fontWeight = '600';
-            otherHeader.style.color = '#64748b';
-            otherHeader.style.marginTop = '1rem';
-            otherHeader.innerText = 'Uncategorized / General';
-            col.appendChild(otherHeader);
+            const visibleFiles = groupData.files.filter(f => f.name.toLowerCase().includes(text));
+            if (visibleFiles.length > 0) {
+                const chapterTitle = document.createElement('div');
+                chapterTitle.className = 'chapter-section';
+                chapterTitle.innerHTML = `<div class="chapter-title">Uncategorized / General</div>`;
 
-            groupData.files.forEach(file => {
-                col.appendChild(createFileItem(file));
-            });
-            hasFiles = true;
+                const chapterGrid = document.createElement('div');
+                chapterGrid.className = 'file-grid';
+
+                visibleFiles.forEach(file => {
+                    chapterGrid.appendChild(createFileItem(file));
+                });
+
+                chapterTitle.appendChild(chapterGrid);
+                section.appendChild(chapterTitle);
+                hasFiles = true;
+            }
         }
 
-        fileGrid.appendChild(col);
+        if (hasFiles || text === '') {
+            fileGrid.appendChild(section);
+        }
     });
 
     // Render Other Files
     if (currentTab === 'Other') {
-        const otherSection = document.createElement('div');
-        otherSection.style.gridColumn = "1 / -1";
-        // otherSection.style.marginTop = "2rem";
+        const section = document.createElement('div');
+        section.className = 'class-section';
+        section.innerHTML = '<h3 class="class-title" style="margin-bottom:1rem;">Other Files</h3>';
 
         const list = document.createElement('div');
-        list.style.display = 'grid';
-        list.style.gridTemplateColumns = 'repeat(auto-fill, minmax(250px, 1fr))';
-        list.style.gap = '1rem';
+        list.className = 'file-grid';
 
-        if (searchDataFile) {
+        if (searchDataFile && ('src/searchData.js'.includes(text) || text === '')) {
             const item = createFileItem(searchDataFile, 'src/searchData.js');
-            item.style.borderLeft = "4px solid #f59e0b";
+            item.style.borderLeft = "4px solid #f59e0b"; // Warning color
             list.appendChild(item);
         }
 
-        otherFiles.forEach(file => {
+        const visibleOthers = otherFiles.filter(f => f.name.toLowerCase().includes(text));
+
+        visibleOthers.forEach(file => {
             list.appendChild(createFileItem(file));
         });
 
-        if (otherFiles.length === 0 && !searchDataFile) {
-            list.innerHTML = '<p style="color: #cbd5e1; font-style: italic;">No other files found.</p>';
+        if (visibleOthers.length === 0 && !searchDataFile) {
+            list.innerHTML = '<p class="text-muted" style="grid-column: 1/-1;">No files found matching criteria.</p>';
         }
 
-        otherSection.appendChild(list);
-        fileGrid.appendChild(otherSection);
+        section.appendChild(list);
+        fileGrid.appendChild(section);
     }
+
+    // Refresh Icons
+    if (window.feather) feather.replace();
+}
+
+// Search Listener
+if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+        renderDashboard(e.target.value);
+    });
 }
 
 // Tab Event Listeners
