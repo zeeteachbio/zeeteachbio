@@ -3717,3 +3717,43 @@ body::before {
 .article-body li>p {
   margin-bottom: 0.5rem;
 }
+
+/* ===== RESPONSIVE ARTICLE TYPOGRAPHY FIX ===== */
+@media (max-width: 768px) {
+
+  /* Fix huge headings on mobile */
+  .article-body h1,
+  .article-body h1 span {
+    font-size: 1.5rem !important;
+    line-height: 1.3 !important;
+    word-break: break-word;
+    word-wrap: break-word;
+  }
+
+  .article-body h2,
+  .article-body h2 span {
+    font-size: 1.25rem !important;
+    line-height: 1.3 !important;
+    word-break: break-word;
+    word-wrap: break-word;
+  }
+
+  .article-body h3,
+  .article-body h3 span {
+    font-size: 1.1rem !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Override inline 20px font size in paragraphs */
+  .article-body p span {
+    font-size: 1rem !important;
+    /* 16px is standard for mobile */
+    line-height: 1.6 !important;
+  }
+
+  /* Fix table cells text size */
+  .article-body table td,
+  .article-body table th {
+    font-size: 0.85rem !important;
+  }
+}
