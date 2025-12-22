@@ -63,10 +63,10 @@
     }
   }
   </script>
+  <script src="https://unpkg.com/feather-icons"></script>
 </head>
 
-<body
-  style="background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #1e293b, #0f172a); background-size: 400% 400%; margin: 0; padding: 0;">
+<body class="modern-bg">
   <!-- Loader -->
   <div id="loader-wrapper">
     <div class="bg-blob"></div>
@@ -83,23 +83,22 @@
       <div class="subtitle">Biology Made Easy</div>
     </div>
   </div>
+
   <div id="app">
-    <header class="header">
+    <header class="header glass-header">
       <div class="container header-content">
         <a href="/" class="logo">
           <img src="/logo-hexagon.svg" alt="Zeeteach Logo" class="logo-icon">
           Zee Teach
         </a>
+        <!-- Desktop Nav -->
         <nav class="nav">
           <a href="/" class="nav-link">Home</a>
           <div class="dropdown">
-            <a href="javascript:void(0)" class="nav-link dropdown-toggle">STB Notes <svg
-                xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                style="vertical-align: middle; margin-left: 4px;">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg></a>
-            <div class="dropdown-menu">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+              STB Notes <i data-feather="chevron-down" style="width: 14px; height: 14px;"></i>
+            </a>
+            <div class="dropdown-menu glass-panel">
               <a href="/stb/class9/" class="dropdown-item">Class 9</a>
               <a href="/stb/class10/" class="dropdown-item">Class 10</a>
               <a href="/stb/class11/" class="dropdown-item">Class 11</a>
@@ -107,13 +106,10 @@
             </div>
           </div>
           <div class="dropdown">
-            <a href="javascript:void(0)" class="nav-link dropdown-toggle">AKUEB Notes <svg
-                xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                style="vertical-align: middle; margin-left: 4px;">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg></a>
-            <div class="dropdown-menu">
+            <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+              AKUEB Notes <i data-feather="chevron-down" style="width: 14px; height: 14px;"></i>
+            </a>
+            <div class="dropdown-menu glass-panel">
               <a href="/akueb/class9/" class="dropdown-item">Class 9</a>
               <a href="/akueb/class10/" class="dropdown-item">Class 10</a>
               <a href="/akueb/class11/" class="dropdown-item">Class 11</a>
@@ -121,40 +117,52 @@
             </div>
           </div>
 
-          <a href="https://mcqsbuilder.vercel.app/test.html" class="btn btn-primary"
-            style="padding: 0.5rem 1rem; font-size: 0.9rem;">Take a Test</a>
-          <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search globally..." autocomplete="off">
+          <a href="https://mcqsbuilder.vercel.app/test.html" class="btn btn-primary btn-glow">Take a Test</a>
+
+          <div class="search-container nav-search">
             <button class="search-btn">
-              <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
+              <i data-feather="search"></i>
             </button>
+            <input type="text" class="search-input" placeholder="Search..." autocomplete="off">
           </div>
         </nav>
       </div>
     </header>
 
-    <section class="hero">
-      <div class="container">
-        <h1 class="hero-title">Biology Made Easy</h1>
-        <p class="hero-subtitle">Comprehensive study materials for STB and AKUEB students</p>
+    <section class="hero-section">
+      <div class="hero-bg-glow"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">Master Biology with Ease</h1>
+        <p class="hero-subtitle">Comprehensive, simplified study materials for STB and AKUEB students. Ace your exams
+          with confidence.</p>
+
+        <div class="hero-search-wrapper glass-panel">
+          <i data-feather="search" class="hero-search-icon"></i>
+          <input type="text" id="hero-search-input" placeholder="Search topics..." autocomplete="off">
+          <button id="hero-search-btn" class="btn btn-primary">Search</button>
+        </div>
+        <div class="search-suggestions" id="hero-search-suggestions"></div>
       </div>
     </section>
 
     <main>
       <div class="container page-layout">
         <div class="content-area">
-          <h2 class="section-title-left">Latest Articles</h2>
+          <h2 class="section-title-left">
+            <i data-feather="clock"
+              style="width: 24px; vertical-align: middle; margin-right: 8px; color: var(--color-primary);"></i>
+            Latest Articles
+          </h2>
           <div class="article-list">
             <!-- Latest articles will be injected here -->
           </div>
         </div>
         <aside class="sidebar">
-          <div class="sidebar-widget">
-            <h3 class="widget-title">Top Articles</h3>
+          <div class="sidebar-widget glass-panel">
+            <h3 class="widget-title">
+              <i data-feather="trending-up" style="width: 20px; vertical-align: middle; margin-right: 8px;"></i>
+              Top Articles
+            </h3>
             <ul class="recent-list" id="top-articles-list">
               <!-- Top articles will be injected here -->
             </ul>
@@ -162,34 +170,38 @@
         </aside>
       </div>
 
-      <section id="notes" class="section section-alt">
+      <section id="notes" class="section section-stb">
         <div class="container">
           <div class="section-header-box">
-            <h2 class="section-title">Choose Class</h2>
-            <p class="section-desc">Select your class to access curated notes and study materials.</p>
+            <h2 class="section-title">Sindh Board Notes</h2>
+            <p class="section-desc">Select your class to access curated notes.</p>
           </div>
           <div class="grid notes-grid">
-            <a href="/stb/class9/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">📚</div>
+            <a href="/stb/class9/" class="card note-card glass-card scroll-animate">
+              <div class="card-icon-wrapper">
+                <i data-feather="book-open" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 9</h3>
               <p class="card-text">Fundamental concepts of biology for 9th grade.</p>
             </a>
-            <a href="/stb/class10/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🔬</div>
+            <a href="/stb/class10/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.1s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="aperture" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 10</h3>
               <p class="card-text">Board exam preparation and core biological processes.</p>
             </a>
-            <a href="/stb/class11/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🧬</div>
+            <a href="/stb/class11/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.2s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="activity" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 11</h3>
               <p class="card-text">In-depth study of diversity, physiology, and cell biology.</p>
             </a>
-            <a href="/stb/class12/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🎓</div>
+            <a href="/stb/class12/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.3s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="cpu" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 12</h3>
               <p class="card-text">Advanced genetics, ecology, and reproduction topics.</p>
             </a>
@@ -197,34 +209,38 @@
         </div>
       </section>
 
-      <section id="akueb-notes" class="section section-alt">
+      <section id="akueb-notes" class="section section-akueb">
         <div class="container">
           <div class="section-header-box">
             <h2 class="section-title">AKUEB Notes</h2>
-            <p class="section-desc">Access comprehensive study materials for AKUEB curriculum.</p>
+            <p class="section-desc">Comprehensive study materials for Aga Khan Board.</p>
           </div>
           <div class="grid notes-grid">
-            <a href="/akueb/class9/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">📚</div>
+            <a href="/akueb/class9/" class="card note-card glass-card scroll-animate">
+              <div class="card-icon-wrapper">
+                <i data-feather="book" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 9</h3>
               <p class="card-text">AKUEB biology notes for 9th grade students.</p>
             </a>
-            <a href="/akueb/class10/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🔬</div>
+            <a href="/akueb/class10/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.1s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="layers" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 10</h3>
               <p class="card-text">AKUEB board exam preparation materials.</p>
             </a>
-            <a href="/akueb/class11/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🧬</div>
+            <a href="/akueb/class11/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.2s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="life-buoy" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 11</h3>
               <p class="card-text">Advanced AKUEB biology topics and concepts.</p>
             </a>
-            <a href="/akueb/class12/" class="card note-card"
-              style="text-decoration: none; color: inherit; display: block;">
-              <div class="card-icon">🎓</div>
+            <a href="/akueb/class12/" class="card note-card glass-card scroll-animate" style="animation-delay: 0.3s;">
+              <div class="card-icon-wrapper">
+                <i data-feather="award" class="card-feather-icon"></i>
+              </div>
               <h3 class="card-title">Class 12</h3>
               <p class="card-text">AKUEB pre-medical biology preparation.</p>
             </a>
@@ -237,9 +253,9 @@
       <div class="container footer-content">
         <p>&copy; 2025 Zeeteach. All rights reserved.</p>
         <div class="social-links">
-          <a href="#" class="social-link">Twitter</a>
-          <a href="#" class="social-link">YouTube</a>
-          <a href="#" class="social-link">Instagram</a>
+          <a href="#" class="social-link"><i data-feather="twitter"></i></a>
+          <a href="#" class="social-link"><i data-feather="youtube"></i></a>
+          <a href="#" class="social-link"><i data-feather="instagram"></i></a>
         </div>
       </div>
     </footer>

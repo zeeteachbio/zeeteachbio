@@ -171,6 +171,34 @@ const initApp = async () => {
     // Make tables responsive
     makeTablesResponsive();
 
+    // Initialize Feather Icons
+    if (window.feather) {
+        window.feather.replace();
+    }
+
+    // Scroll Animation Observer
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.scroll-animate').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Hero Search (Homepage)
+    const heroSearchInput = document.getElementById('hero-search-input');
+    const heroSearchBtn = document.getElementById('hero-search-btn');
+    const heroSearchContainer = document.querySelector('.hero-search-wrapper');
     // --- Mobile Menu & Header Logic ---
     const header = document.querySelector('.header');
     const headerContent = document.querySelector('.header-content');
@@ -183,7 +211,11 @@ const initApp = async () => {
         if (!headerContent.querySelector('.menu-toggle')) {
             const menuToggle = document.createElement('button');
             menuToggle.className = 'menu-toggle';
-            menuToggle.innerHTML = '☰'; // Hamburger icon
+            // Use Feather Icons SVG strings
+            const menuIcon = '<i data-feather="menu"></i>';
+            const closeIcon = '<i data-feather="x"></i>';
+
+            menuToggle.innerHTML = menuIcon;
             menuToggle.setAttribute('aria-label', 'Toggle navigation');
 
             // Insert after logo (which is usually first child)
@@ -193,6 +225,9 @@ const initApp = async () => {
             } else {
                 headerContent.prepend(menuToggle);
             }
+
+            // Re-initialize feather icons for the new button
+            if (window.feather) window.feather.replace();
 
             // Move search container outside nav for mobile
             const navSearchContainer = nav.querySelector('.search-container');
@@ -226,32 +261,87 @@ const initApp = async () => {
             });
 
             // Toggle Menu
-            menuToggle.addEventListener('click', () => {
+            menuToggle.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 nav.classList.toggle('active');
-                menuToggle.innerHTML = nav.classList.contains('active') ? '✕' : '☰';
-            });
 
-            // Close menu when clicking the close button (top-right area of nav)
-            nav.addEventListener('click', (e) => {
-                // Check if click is in top-right area (close button zone)
-                const rect = nav.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const clickY = e.clientY - rect.top;
-
-                // Close button is at top: 1rem, right: 1.5rem, size: 40px
-                if (clickX > rect.width - 80 && clickY < 80) {
-                    nav.classList.remove('active');
-                    menuToggle.innerHTML = '☰';
+                // Robust icon update with safe fallback
+                const isActive = nav.classList.contains('active');
+                try {
+                    if (window.feather && window.feather.icons && window.feather.icons.menu) {
+                        menuToggle.innerHTML = isActive ?
+                            window.feather.icons['x'].toSvg({ width: 24, height: 24 }) :
+                            window.feather.icons['menu'].toSvg({ width: 24, height: 24 });
+                    } else {
+                        throw new Error('Feather not ready');
+                    }
+                } catch (err) {
+                    // Unicode fallback - these are safe cross-platform symbols
+                    menuToggle.textContent = isActive ? '\u00D7' : '\u2630';
                 }
-            });
+                menuToggle.setAttribute('aria-label', isActive ? 'Close menu' : 'Open menu');
+            };
+
+            // Close menu when clicking the close button zone (top-right of nav) - REMOVED as redundant/problematic
+            // Instead rely on the menu toggle button which is now visible and functional
 
             // Close menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (!nav.contains(e.target) && !menuToggle.contains(e.target) && nav.classList.contains('active')) {
                     nav.classList.remove('active');
-                    menuToggle.innerHTML = '☰';
+                    // Update icon to menu state
+                    try {
+                        if (window.feather && window.feather.icons && window.feather.icons.menu) {
+                            menuToggle.innerHTML = window.feather.icons['menu'].toSvg({ width: 24, height: 24 });
+                        } else {
+                            menuToggle.textContent = '\u2630'; // ☰
+                        }
+                    } catch (err) {
+                        menuToggle.textContent = '\u2630';
+                    }
                 }
             });
+
+            // Create dedicated close button inside nav menu
+            if (!nav.querySelector('.nav-close-btn')) {
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'nav-close-btn';
+                closeBtn.setAttribute('aria-label', 'Close menu');
+
+                // Use Feather X icon or fallback
+                try {
+                    if (window.feather && window.feather.icons && window.feather.icons.x) {
+                        closeBtn.innerHTML = window.feather.icons['x'].toSvg({ width: 20, height: 20 });
+                    } else {
+                        closeBtn.textContent = '\u00D7'; // ×
+                    }
+                } catch (err) {
+                    closeBtn.textContent = '\u00D7';
+                }
+
+                // Insert at the beginning of nav
+                nav.insertBefore(closeBtn, nav.firstChild);
+
+                // Close button click handler
+                closeBtn.onclick = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nav.classList.remove('active');
+
+                    // Update hamburger icon
+                    try {
+                        if (window.feather && window.feather.icons && window.feather.icons.menu) {
+                            menuToggle.innerHTML = window.feather.icons['menu'].toSvg({ width: 24, height: 24 });
+                        } else {
+                            menuToggle.textContent = '\u2630';
+                        }
+                    } catch (err) {
+                        menuToggle.textContent = '\u2630';
+                    }
+                    menuToggle.setAttribute('aria-label', 'Open menu');
+                };
+            }
         }
     }
 
@@ -267,7 +357,8 @@ const initApp = async () => {
             if (header) header.classList.add('hide');
             if (nav) nav.classList.remove('active'); // Close menu on scroll down
             if (headerContent && headerContent.querySelector('.menu-toggle')) {
-                headerContent.querySelector('.menu-toggle').innerHTML = '☰';
+                headerContent.querySelector('.menu-toggle').innerHTML = '<i data-feather="menu"></i>';
+                if (window.feather) window.feather.replace();
             }
         } else {
             // Scroll Up
@@ -431,10 +522,10 @@ const initApp = async () => {
     const headerSearchBtn = document.querySelector('.header .search-btn');
     const headerSearchContainer = document.querySelector('.header .search-container');
 
-    // Hero Search (Homepage)
-    const heroSearchInput = document.getElementById('hero-search-input');
-    const heroSearchBtn = document.getElementById('hero-search-btn');
-    const heroSearchContainer = document.querySelector('.hero-search');
+    // Hero Search (Homepage) - Declared above
+    // const heroSearchInput = document.getElementById('hero-search-input');
+    // const heroSearchBtn = document.getElementById('hero-search-btn');
+    // const heroSearchContainer = document.querySelector('.hero-search');
 
     const setupSearch = (input, btn, container) => {
         if (!input || !btn) return;
