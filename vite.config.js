@@ -54,6 +54,8 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             workbox: {
+                cleanupOutdatedCaches: true,
+                navigateFallback: null,
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp}'],
                 runtimeCaching: [
                     {
