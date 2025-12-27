@@ -42,6 +42,14 @@ header {
   align-items: center;
 }
 
+@media (max-width: 768px) {
+  header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
 .logo {
   font-size: 1.25rem;
   font-weight: 700;
@@ -72,6 +80,21 @@ header {
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  flex-wrap: wrap;
+  /* Allow wrapping on medium screens */
+}
+
+@media (max-width: 768px) {
+  .dashboard-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .dashboard-actions .btn {
+    width: 100%;
+    /* Full width buttons on mobile */
+  }
 }
 
 /* Tabs as Pill Navigation */
@@ -83,6 +106,9 @@ header {
   border-radius: var(--radius-lg);
   width: fit-content;
   border: 1px solid var(--admin-border);
+  overflow-x: auto;
+  /* Allow scrolling on small screens */
+  max-width: 100%;
 }
 
 .tab-btn {
@@ -113,6 +139,19 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .file-grid {
+    grid-template-columns: 1fr;
+    /* Single column on phones */
+    gap: 1rem;
+  }
+
+  .admin-container {
+    padding: 1rem;
+    /* Reduce padding on mobile */
+  }
 }
 
 .class-section {
@@ -148,8 +187,60 @@ header {
   letter-spacing: 0.05em;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
-  padding-left: 0.5rem;
-  border-left: 3px solid var(--admin-primary);
+  padding-left: 0.75rem;
+  border-left: 4px solid var(--admin-primary);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.02);
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-right: 1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.chapter-title:hover {
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--admin-text);
+}
+
+/* Use a clean CSS arrow instead of broken font icons */
+.chapter-title::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid var(--admin-text-muted);
+  border-bottom: 2px solid var(--admin-text-muted);
+  transform: rotate(45deg);
+  /* Down arrow */
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-right: 0.5rem;
+}
+
+.chapter-section.collapsed .chapter-title::after {
+  transform: rotate(-135deg);
+  /* Right arrow */
+}
+
+/* Smooth transition for file grid */
+.chapter-section .file-grid {
+  max-height: 5000px;
+  /* Large enough for many articles */
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, padding 0.3s ease;
+  opacity: 1;
+  padding-top: 1rem;
+}
+
+.chapter-section.collapsed .file-grid {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  pointer-events: none;
 }
 
 .file-card {
@@ -257,6 +348,13 @@ body .btn-secondary:hover {
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  .search-wrapper {
+    max-width: 100%;
+    /* Full width on mobile */
+  }
+}
+
 .admin-container .search-input {
   width: 100%;
   background: var(--admin-surface);
@@ -339,6 +437,16 @@ body .btn-secondary:hover {
   border: 1px solid var(--admin-border);
   border-radius: var(--radius-md);
   padding: 2rem !important;
+}
+
+@media (max-width: 768px) {
+  .editor-container {
+    padding: 1rem;
+  }
+
+  .ql-editor {
+    padding: 1rem !important;
+  }
 }
 
 /* Utils */

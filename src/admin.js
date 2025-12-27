@@ -363,16 +363,17 @@ function renderDashboard(filterText = '') {
 
                 if (visibleFiles.length > 0) {
                     // Create Chapter Sub-Section
-                    // We actually want to group these properly in the grid
-                    // Current CSS grid is flat. Let's make a mini-section for chapter
+                    const chapterSection = document.createElement('div');
+                    chapterSection.className = 'chapter-section collapsed'; // Collapsed by default
 
                     const chapterTitle = document.createElement('div');
-                    chapterTitle.className = 'chapter-section';
-                    chapterTitle.innerHTML = `<div class="chapter-title">${chapterName}</div>`;
+                    chapterTitle.className = 'chapter-title';
+                    chapterTitle.innerHTML = `<span>${chapterName}</span>`;
 
-                    // To keep grid layout, we might need to break the grid flow or nest grids.
-                    // Let's use the 'class-section' as a container of multiple 'chapter-sections'
-                    // And each chapter section has its own grid.
+                    // Add click toggle
+                    chapterTitle.onclick = () => {
+                        chapterSection.classList.toggle('collapsed');
+                    };
 
                     const chapterGrid = document.createElement('div');
                     chapterGrid.className = 'file-grid';
@@ -381,8 +382,9 @@ function renderDashboard(filterText = '') {
                         chapterGrid.appendChild(createFileItem(file));
                     });
 
-                    chapterTitle.appendChild(chapterGrid);
-                    section.appendChild(chapterTitle);
+                    chapterSection.appendChild(chapterTitle);
+                    chapterSection.appendChild(chapterGrid);
+                    section.appendChild(chapterSection);
                     hasFiles = true;
                 }
             });
@@ -392,9 +394,16 @@ function renderDashboard(filterText = '') {
         if (groupData.files.length > 0) {
             const visibleFiles = groupData.files.filter(f => f.name.toLowerCase().includes(text));
             if (visibleFiles.length > 0) {
+                const chapterSection = document.createElement('div');
+                chapterSection.className = 'chapter-section collapsed';
+
                 const chapterTitle = document.createElement('div');
-                chapterTitle.className = 'chapter-section';
-                chapterTitle.innerHTML = `<div class="chapter-title">Uncategorized / General</div>`;
+                chapterTitle.className = 'chapter-title';
+                chapterTitle.innerHTML = `<span>Uncategorized / General</span>`;
+
+                chapterTitle.onclick = () => {
+                    chapterSection.classList.toggle('collapsed');
+                };
 
                 const chapterGrid = document.createElement('div');
                 chapterGrid.className = 'file-grid';
@@ -403,8 +412,9 @@ function renderDashboard(filterText = '') {
                     chapterGrid.appendChild(createFileItem(file));
                 });
 
-                chapterTitle.appendChild(chapterGrid);
-                section.appendChild(chapterTitle);
+                chapterSection.appendChild(chapterTitle);
+                chapterSection.appendChild(chapterGrid);
+                section.appendChild(chapterSection);
                 hasFiles = true;
             }
         }
