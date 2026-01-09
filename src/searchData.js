@@ -22,7 +22,7 @@ export const searchIndex = [
         "thumbnail": null
     },
     {
-        "title": "1.2 Divisions and Branches of Biology",
+        "title": "1.3 Relationship of Biology with Other Sciences",
         "url": "/akueb/class9/ch1-introduction-to-biology/1.3-Relationship-of-Biology-with-Other-Sciences.html",
         "excerpt": "1.3.1 relate biology to other branches of science, i.e., biophysics, biochemistry, biostatistics, biomathematics (biometry), biogeography, bio-economi...",
         "category": "AKUEB Class 9",
@@ -33,7 +33,7 @@ export const searchIndex = [
         "thumbnail": null
     },
     {
-        "title": "1.2 Divisions and Branches of Biology",
+        "title": "1.4 Careers in Biology",
         "url": "/akueb/class9/ch1-introduction-to-biology/1.4-Careers-in-Biology.html",
         "excerpt": "1.4 Careers in Biology...",
         "category": "AKUEB Class 9",

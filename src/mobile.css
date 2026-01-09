@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+
+/* Scoped Reset for Mobile App Root */
+#mobile-app-root {
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    /* Allow natural document scrolling */
+    min-height: 100vh;
+    width: 100%;
+    background-color: #000;
+    /* Darker base for transitions */
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    /* Safe Area for notch */
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+#mobile-app-root *,
+#mobile-app-root *::before,
+#mobile-app-root *::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Default Element Resets within scope */
+#mobile-app-root div,
+#mobile-app-root span,
+#mobile-app-root h1,
+#mobile-app-root h2,
+#mobile-app-root h3,
+#mobile-app-root h4,
+#mobile-app-root p,
+#mobile-app-root a,
+#mobile-app-root ul,
+#mobile-app-root li,
+#mobile-app-root section,
+#mobile-app-root nav,
+#mobile-app-root header,
+#mobile-app-root footer {
+    margin: 0;
+    padding: 0;
+    display: block;
+    /* Force block by default to avoid inline crampedness */
+}
+
+#mobile-app-root span,
+#mobile-app-root i,
+#mobile-app-root svg,
+#mobile-app-root a {
+    display: inline-block;
+    /* Revert for inline elements */
+}
+
+#mobile-app-root button,
+#mobile-app-root input {
+    font-family: inherit;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    line-height: inherit;
+    color: inherit;
+    background: transparent;
+}
+
+#mobile-app-root a {
+    text-decoration: none;
+    color: inherit;
+}
+
+#mobile-app-root img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* SVG icons - critical sizing rules */
+#mobile-app-root svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    /* Prevent SVGs from growing to fill container */
+    width: auto;
+    height: auto;
+    max-width: 100%;
+}
+
+/* Explicit icon sizing classes */
+#mobile-app-root .w-5 {
+    width: 1.25rem !important;
+}
+
+#mobile-app-root .h-5 {
+    height: 1.25rem !important;
+}
+
+#mobile-app-root .w-6 {
+    width: 1.5rem !important;
+}
+
+#mobile-app-root .h-6 {
+    height: 1.5rem !important;
+}
+
+#mobile-app-root .w-11 {
+    width: 2.75rem !important;
+}
+
+#mobile-app-root .h-11 {
+    height: 2.75rem !important;
+}
+
+/* Custom Glass Utilities */
+.glass-panel {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.glass-card-premium {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar hiding for cleaner mobile look */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

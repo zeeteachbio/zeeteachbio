@@ -1,4 +1,6 @@
 import './style.css';
+import './mobile.css';
+import { renderMobileApp } from './mobile/MobileAppView.js';
 // Disqus comments removed
 import { api } from './services/api.js';
 // Lazy load bioParticles
@@ -834,6 +836,40 @@ const initApp = async () => {
         });
     }
 };
+
+// Mobile View Logic
+const handleViewSwitch = () => {
+    const isMobile = window.innerWidth < 768;
+    const desktopApp = document.getElementById('app');
+    let mobileRoot = document.getElementById('mobile-app-root');
+
+    if (!mobileRoot) {
+        mobileRoot = document.createElement('div');
+        mobileRoot.id = 'mobile-app-root';
+        document.body.appendChild(mobileRoot);
+    }
+
+    if (desktopApp && mobileRoot) {
+        if (isMobile) {
+            console.log('Switching to Mobile App View');
+            desktopApp.style.display = 'none';
+            mobileRoot.style.display = 'block';
+            if (mobileRoot.innerHTML === '') {
+                renderMobileApp(mobileRoot);
+            }
+        } else {
+            console.log('Switching to Desktop View');
+            desktopApp.style.display = 'block';
+            mobileRoot.style.display = 'none';
+        }
+    }
+};
+
+// Run on load
+handleViewSwitch();
+
+// Run on resize
+window.addEventListener('resize', handleViewSwitch);
 
 // Robust initialization
 if (document.readyState === 'loading') {
