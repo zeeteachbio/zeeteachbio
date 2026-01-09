@@ -40,12 +40,10 @@ export function renderHeader() {
 
   return `
     <header id="mobile-header" style="${headerStyle}">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <div style="${logoCircleStyle}">
-          <img src="/logo-hexagon.svg" alt="Zee Teach" style="width: 20px; height: 20px;" />
-        </div>
-        <span style="font-size: 17px; font-weight: 700; color: white; white-space: nowrap;">Zee Teach</span>
-      </div>
+      <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none; -webkit-tap-highlight-color: transparent;">
+        <img src="/logo-hexagon.svg" alt="Zee Teach" style="width: 28px; height: 28px; flex-shrink: 0;" />
+        <span style="font-size: 18px; font-weight: 800; color: white; white-space: nowrap; letter-spacing: -0.02em;">Zee Teach</span>
+      </a>
       
       <div style="${searchBarStyle}">
         <input id="mz-search-input-header" type="text" placeholder="Search..." style="flex: 1; background: transparent; border: none; outline: none; color: white; font-size: 13px; font-family: inherit;" />

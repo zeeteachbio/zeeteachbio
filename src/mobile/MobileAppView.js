@@ -217,14 +217,12 @@ export async function renderMobileApp(root) {
       if (header) {
         header.style.background = currentScroll > 50 ? 'rgba(15, 23, 42, 0.95)' : 'rgba(15, 23, 42, 0.85)';
         header.style.boxShadow = currentScroll > 50 ? '0 10px 30px -10px rgba(0,0,0,0.5)' : 'none';
-      }
-      if (currentScroll > 150) {
-        if (currentScroll > lastScroll) {
-          if (header) header.style.transform = 'translateY(-100%)';
-          if (bottomNav) bottomNav.style.transform = 'translateY(100%)';
+
+        // Only hide/show header, keep bottom nav persistent for stability
+        if (currentScroll > 150) {
+          header.style.transform = currentScroll > lastScroll ? 'translateY(-100%)' : 'translateY(0)';
         } else {
-          if (header) header.style.transform = 'translateY(0)';
-          if (bottomNav) bottomNav.style.transform = 'translateY(0)';
+          header.style.transform = 'translateY(0)';
         }
       }
       lastScroll = currentScroll;
