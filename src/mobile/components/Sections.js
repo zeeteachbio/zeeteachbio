@@ -254,7 +254,10 @@ async function loadClassChapters(type, classId) {
     filtered.forEach(a => {
       const chName = a.chapter || 'General Articles';
       if (!chaptersMap[chName]) chaptersMap[chName] = [];
-      chaptersMap[chName].push(a);
+      // Deduplicate by URL to prevent ghost entries
+      if (!chaptersMap[chName].some(existing => existing.url === a.url)) {
+        chaptersMap[chName].push(a);
+      }
     });
 
     // Sort chapters numerically
@@ -270,7 +273,16 @@ async function loadClassChapters(type, classId) {
     }
 
     container.innerHTML = sortedChapterNames.map(chName => {
-      const articles = chaptersMap[chName];
+      // Sort articles within the chapter numerically by their title prefix
+      const articles = chaptersMap[chName].sort((a, b) => {
+        const numA = a.title.match(/^[\d.]+/);
+        const numB = b.title.match(/^[\d.]+/);
+        if (numA && numB) {
+          return numA[0].localeCompare(numB[0], undefined, { numeric: true, sensitivity: 'base' });
+        }
+        return a.title.localeCompare(b.title);
+      });
+
       return `
         <div class="glass-card-premium" style="padding: 18px; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.06);">
           <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
@@ -278,7 +290,7 @@ async function loadClassChapters(type, classId) {
                 <span style="color: #a78bfa; font-weight: 700; font-size: 14px;">${chName.match(/^\d+/) || '•'}</span>
              </div>
              <h3 style="font-size: 16px; font-weight: 700; color: white; margin: 0; line-height: 1.4;">
-               ${chName.replace(/^\d+\s*/, '')}
+               ${chName.replace(/^\d+[\.\s]*/, '')}
              </h3>
           </div>
           <div style="display: flex; flex-direction: column; gap: 4px;">

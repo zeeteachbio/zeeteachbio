@@ -20,7 +20,8 @@ function findHtmlFiles(dir, fileList = []) {
     for (const item of items) {
         const fullPath = path.join(dir, item.name);
         if (item.isDirectory()) {
-            if (!EXCLUDED_NAMES.includes(item.name)) {
+            // Exclude common names and ANY folder starting with underscore (backups)
+            if (!EXCLUDED_NAMES.includes(item.name) && !item.name.startsWith('_')) {
                 findHtmlFiles(fullPath, fileList);
             }
         } else if (item.name.endsWith('.html') && !EXCLUDED_FILES.includes(item.name)) {
@@ -36,16 +37,24 @@ function findHtmlFiles(dir, fileList = []) {
 }
 
 function extractData(content, filepath) {
-    // Title
-    let titleMatch = content.match(/<title>(.*?) - Zee Teach<\/title>/);
-    let title = titleMatch ? titleMatch[1] : '';
-    if (!title) {
-        titleMatch = content.match(/<title>(.*?)<\/title>/);
-        title = titleMatch ? titleMatch[1] : '';
+    // Help decode basic entities
+    const decodeEntities = (s) => s.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+
+    // Title Strategy: Prefer H1 inside content if available, then <title>
+    let title = '';
+    const h1Match = content.match(/<h1[^>]*>(.*?)<\/h1>/i);
+    if (h1Match) {
+        title = decodeEntities(h1Match[1].replace(/<[^>]+>/g, '').trim());
     }
+
     if (!title) {
-        titleMatch = content.match(/<h1.*?>(.*?)<\/h1>/);
-        title = titleMatch ? titleMatch[1] : path.basename(filepath, '.html');
+        let titleMatch = content.match(/<title>(.*?) - Zee Teach<\/title>/i);
+        if (!titleMatch) titleMatch = content.match(/<title>(.*?)<\/title>/i);
+        if (titleMatch) title = decodeEntities(titleMatch[1].trim());
+    }
+
+    if (!title) {
+        title = path.basename(filepath, '.html');
     }
 
     // Category & Chapter from Path
@@ -77,7 +86,7 @@ function extractData(content, filepath) {
             if (match) {
                 const num = match[1];
                 const text = match[2].replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                chapter = `${num}. ${text}`;
+                chapter = `${num} ${text}`;
             } else {
                 chapter = parent;
             }
@@ -146,6 +155,24 @@ function extractData(content, filepath) {
 
     if (!excerpt || excerpt.length < 5) excerpt = "Click to read more.";
     if (excerpt.length > 120) excerpt = excerpt.substring(0, 120) + '...';
+
+    // Final Title Cleanup: If the title starts with the chapter name, strip it
+    // Example: "1. Introduction to Biology1.1.1 Define Biology" -> "1.1.1 Define Biology"
+    if (chapter) {
+        const cleanCh = chapter.replace(/^\d+\s*/, '').toLowerCase();
+        let cleanedTitle = title;
+        if (title.toLowerCase().includes(cleanCh)) {
+            // Find where the chapter text ends in the title
+            const index = title.toLowerCase().indexOf(cleanCh);
+            if (index !== -1) {
+                const potentialTitle = title.substring(index + cleanCh.length).trim();
+                if (potentialTitle && /^\d+/.test(potentialTitle)) {
+                    cleanedTitle = potentialTitle;
+                }
+            }
+        }
+        title = cleanedTitle;
+    }
 
     return { title, category, chapter, excerpt };
 }

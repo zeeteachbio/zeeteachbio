@@ -48,7 +48,7 @@ function generateArticleHTML(title, contentHTML) {
 
       <div style="margin-top: 40px; padding: 24px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; background: rgba(30,41,59,0.3); border-radius: 20px;">
         <p style="margin-bottom: 16px; color: #94a3b8; font-size: 14px;">End of article. Hope you learned something today!</p>
-        <a href="/" class="mobile-nav-link" style="display: inline-flex; align-items: center; gap: 8px; color: white; background: #8b5cf6; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);">
+        <a href="javascript:history.back()" class="mobile-nav-link" style="display: inline-flex; align-items: center; gap: 8px; color: white; background: #8b5cf6; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 14px; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); -webkit-tap-highlight-color: transparent;">
           Explore More Topics
         </a>
       </div>
@@ -62,6 +62,14 @@ function generateArticleHTML(title, contentHTML) {
       .article-body-mobile li { margin-bottom: 12px; }
       .article-body-mobile strong { color: white; font-weight: 700; }
       .article-body-mobile img { max-width: 100%; height: auto; border-radius: 16px; margin: 24px 0; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+      
+      /* Table Styles */
+      .article-body-mobile table { width: 100% !important; border-collapse: separate !important; border-spacing: 0 !important; margin: 24px 0 !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 12px !important; overflow: hidden !important; background: rgba(255,255,255,0.02) !important; }
+      .article-body-mobile th { background: rgba(139, 92, 246, 0.2) !important; color: white !important; font-weight: 700 !important; text-align: left !important; padding: 12px !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; border-right: 1px solid rgba(255,255,255,0.1) !important; }
+      .article-body-mobile td { padding: 12px !important; border-bottom: 1px solid rgba(255,255,255,0.05) !important; border-right: 1px solid rgba(255,255,255,0.05) !important; font-size: 14px !important; vertical-align: top !important; }
+      .article-body-mobile tr:last-child td { border-bottom: none !important; }
+      .article-body-mobile th:last-child, .article-body-mobile td:last-child { border-right: none !important; }
+
       /* Hide elements that shouldn't be in mobile view */
       .article-body-mobile .back-btn, 
       .article-body-mobile header, 
